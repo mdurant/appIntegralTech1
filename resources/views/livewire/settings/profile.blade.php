@@ -29,7 +29,7 @@
                         class="block w-full text-sm text-zinc-700 file:mr-4 file:rounded-md file:border-0 file:bg-zinc-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-zinc-700 hover:file:bg-zinc-200 dark:text-zinc-200 dark:file:bg-zinc-800 dark:file:text-zinc-200 dark:hover:file:bg-zinc-700"
                     />
                     @error('avatar')
-                        <flux:text class="text-sm !text-red-600 !dark:text-red-400">{{ $message }}</flux:text>
+                        <flux:text class="text-sm !text-danger">{{ $message }}</flux:text>
                     @enderror
                 </div>
             </div>
@@ -50,7 +50,7 @@
                         </flux:text>
 
                         @if (session('status') === 'verification-code-sent')
-                            <flux:text class="mt-2 font-medium !dark:text-green-400 !text-green-600">
+                            <flux:text class="mt-2 font-medium !text-success">
                                 {{ __('A new verification code has been sent to your email address.') }}
                             </flux:text>
                         @endif

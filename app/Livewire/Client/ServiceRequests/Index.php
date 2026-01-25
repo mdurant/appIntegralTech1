@@ -44,6 +44,16 @@ class Index extends Component
      */
     public array $photos = [];
 
+    public function removePhoto(int $index): void
+    {
+        if (! array_key_exists($index, $this->photos)) {
+            return;
+        }
+
+        unset($this->photos[$index]);
+        $this->photos = array_values($this->photos);
+    }
+
     #[Computed]
     public function topCategories(): Collection
     {

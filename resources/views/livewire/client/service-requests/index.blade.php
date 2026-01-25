@@ -4,7 +4,7 @@
         <flux:text>{{ __('Crea una necesidad (draft) y luego publícala para recibir presupuestos.') }}</flux:text>
     </div>
 
-    <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+    <div class="rounded-xl border border-app-border bg-app-surface p-5">
         <flux:heading size="md">{{ __('Nueva solicitud') }}</flux:heading>
 
         <form wire:submit="create" class="mt-4 space-y-4">
@@ -37,20 +37,58 @@
             </div>
 
             <div class="space-y-2">
-                <flux:text class="text-sm font-medium">{{ __('Imágenes (máx 4)') }}</flux:text>
+                <flux:text class="text-sm font-medium">
+                    {{ __('Imágenes (máx 4)') }}
+                    @if (count($photos))
+                        <span class="font-normal text-app-muted">({{ count($photos) }}/4)</span>
+                    @endif
+                </flux:text>
                 <input
                     type="file"
                     wire:model="photos"
                     multiple
                     accept="image/*"
-                    class="block w-full text-sm text-zinc-700 file:mr-4 file:rounded-md file:border-0 file:bg-zinc-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-zinc-700 hover:file:bg-zinc-200 dark:text-zinc-200 dark:file:bg-zinc-800 dark:file:text-zinc-200 dark:hover:file:bg-zinc-700"
+                    @disabled(count($photos) >= 4)
+                    class="block w-full text-sm text-app-text file:mr-4 file:rounded-md file:border-0 file:bg-app-surface-2 file:px-3 file:py-2 file:text-sm file:font-medium file:text-app-text hover:file:bg-brand-50 disabled:opacity-60"
                 />
                 @error('photos')
-                    <flux:text class="text-sm !text-red-600 !dark:text-red-400">{{ $message }}</flux:text>
+                    <flux:text class="text-sm !text-danger">{{ $message }}</flux:text>
                 @enderror
                 @error('photos.*')
-                    <flux:text class="text-sm !text-red-600 !dark:text-red-400">{{ $message }}</flux:text>
+                    <flux:text class="text-sm !text-danger">{{ $message }}</flux:text>
                 @enderror
+
+                <div wire:loading wire:target="photos">
+                    <flux:text class="text-sm text-app-muted">{{ __('Procesando imágenes…') }}</flux:text>
+                </div>
+
+                @if (count($photos))
+                    <div class="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+                        @foreach ($photos as $idx => $photo)
+                            <div
+                                wire:key="photo-preview-{{ $idx }}"
+                                class="relative overflow-hidden rounded-lg border border-app-border bg-app-surface"
+                            >
+                                <img
+                                    src="{{ $photo->temporaryUrl() }}"
+                                    alt=""
+                                    class="aspect-square w-full object-cover"
+                                />
+
+                                <button
+                                    type="button"
+                                    wire:click="removePhoto({{ $idx }})"
+                                    class="absolute right-2 top-2 rounded-md bg-white/90 px-2 py-1 text-xs font-medium text-app-text shadow-sm ring-1 ring-app-border hover:bg-white"
+                                >
+                                    {{ __('Quitar') }}
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
+                    <flux:text class="text-xs text-app-muted">
+                        {{ __('Tip: se mostrarán como miniaturas al publicar la solicitud.') }}
+                    </flux:text>
+                @endif
             </div>
 
             @if ($this->formFields->count())
@@ -85,12 +123,12 @@
         </form>
     </div>
 
-    <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+    <div class="rounded-xl border border-app-border bg-app-surface p-5">
         <flux:heading size="md">{{ __('Mis solicitudes') }}</flux:heading>
 
         <div class="mt-4 space-y-3">
             @forelse ($this->serviceRequests as $request)
-                <div class="flex flex-col gap-3 rounded-lg border border-zinc-200 p-4 dark:border-zinc-700 md:flex-row md:items-center md:justify-between">
+                <div class="flex flex-col gap-3 rounded-lg border border-app-border p-4 md:flex-row md:items-center md:justify-between">
                     <div class="space-y-1">
                         <flux:heading size="sm">{{ $request->title }}</flux:heading>
                         <flux:text class="text-sm">

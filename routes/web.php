@@ -10,13 +10,16 @@ use App\Livewire\Admin\Tenants as AdminTenants;
 use App\Livewire\Admin\Users as AdminUsers;
 use App\Livewire\Client\ServiceRequests\Index as ClientServiceRequestsIndex;
 use App\Livewire\Client\ServiceRequests\Show as ClientServiceRequestsShow;
+use App\Livewire\Marketing\Landing;
+use App\Livewire\Marketing\PublicServicesBrowse as PublicServicesBrowse;
 use App\Livewire\Services\Browse as ServicesBrowse;
 use App\Livewire\Services\Show as ServicesShow;
+use App\Http\Controllers\ServiceRequestAttachmentController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::livewire('/', Landing::class)->name('home');
+
+Route::livewire('explorar-servicios', PublicServicesBrowse::class)->name('public.services.browse');
 
 Route::livewire('verify-code', VerifyCode::class)
     ->middleware(['auth'])
@@ -25,6 +28,9 @@ Route::livewire('verify-code', VerifyCode::class)
 Route::middleware(['auth', 'email.code'])->group(function () {
     Route::livewire('services', ServicesBrowse::class)->name('services.browse');
     Route::livewire('services/{serviceRequest}', ServicesShow::class)->name('services.show');
+
+    Route::get('attachments/{attachment}', ServiceRequestAttachmentController::class)
+        ->name('attachments.show');
 
     Route::livewire('client/requests', ClientServiceRequestsIndex::class)->name('client.requests.index');
     Route::livewire('client/requests/{serviceRequest}', ClientServiceRequestsShow::class)->name('client.requests.show');

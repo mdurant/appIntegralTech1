@@ -6,7 +6,6 @@ use App\Models\ServiceBid;
 use App\Models\ServiceRequest;
 use App\Services\ServiceBidService;
 use App\ServiceRequestStatus;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -59,7 +58,7 @@ class Show extends Component
     public function attachmentUrls(): array
     {
         return $this->serviceRequest->attachments
-            ->map(fn ($a) => Storage::disk('public')->url($a->path))
+            ->map(fn ($a) => route('attachments.show', $a))
             ->all();
     }
 
