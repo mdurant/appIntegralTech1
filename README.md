@@ -198,13 +198,42 @@ Relaciones:
 
 ---
 
+## Dashboard Principal
+
+El dashboard principal (`dashboard`) incluye:
+
+### Visualización de Datos
+
+- **Perfil de Usuario**: Visible en la barra superior derecha (desktop) con avatar, nombre y email
+- **3 Gráficos Principales**:
+  - **Usuarios Registrados**: Total de usuarios en el sistema
+  - **Servicios Solicitados (Cotizaciones)**: Total de solicitudes publicadas
+  - **Órdenes de Trabajo Generadas**: Total de OTs creadas
+  - *Nota: Los gráficos están preparados para integración con Chart.js*
+
+### Tarjetas de Estadísticas
+
+- **Precios de Cotizaciones**: Muestra el precio promedio de las cotizaciones informadas (ej: $50.400)
+- **Venta Estimada**: Muestra el valor acumulado de cotizaciones (ej: $18.400.000)
+- **Cotizaciones Aceptadas**: Total de cotizaciones aceptadas
+- **Tasa de Conversión**: Porcentaje de conversión de cotizaciones a OTs
+
+### Cápsulas de Configuración
+
+Tres cápsulas con íconos descriptivos SVG:
+- **Perfil**: Ícono de usuario - Actualiza nombre, email y avatar
+- **Seguridad**: Ícono de escudo - Cambia contraseña y protege cuenta
+- **2FA**: Ícono de candado - Activa 2FA con QR y guarda códigos
+
+---
+
 ## Rutas principales
 
 - **Auth**
   - `login`, `register`, `forgot-password`, `reset-password`
   - `verify-code` (validación 6 dígitos)
 - **Dashboard**
-  - `dashboard`
+  - `dashboard` - Dashboard principal con gráficos y estadísticas
   - `settings/*` (perfil/password/2FA)
 - **Cliente**
   - `client/requests`
