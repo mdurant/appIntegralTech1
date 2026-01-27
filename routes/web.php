@@ -28,6 +28,8 @@ Route::livewire('verify-code', VerifyCode::class)
 Route::middleware(['auth', 'email.code'])->group(function () {
     Route::livewire('services', ServicesBrowse::class)->name('services.browse');
     Route::livewire('services/{serviceRequest}', ServicesShow::class)->name('services.show');
+    Route::livewire('services/{serviceRequest}/payment', \App\Livewire\Services\Payment::class)->name('services.payment');
+    Route::livewire('services/{serviceRequest}/contact', \App\Livewire\Services\ContactDetails::class)->name('services.contact');
 
     Route::get('attachments/{attachment}', ServiceRequestAttachmentController::class)
         ->name('attachments.show');

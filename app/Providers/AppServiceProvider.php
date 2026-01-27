@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\PaymentSimulation;
 use App\Models\Rating;
+use App\Policies\PaymentSimulationPolicy;
 use App\Policies\RatingPolicy;
 use App\Support\TenantContext;
 use Carbon\CarbonImmutable;
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
     protected function registerPolicies(): void
     {
         Gate::policy(Rating::class, RatingPolicy::class);
+        Gate::policy(PaymentSimulation::class, PaymentSimulationPolicy::class);
     }
 
     protected function configureDefaults(): void

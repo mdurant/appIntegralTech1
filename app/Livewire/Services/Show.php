@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Services;
 
+use App\Models\PaymentSimulation;
 use App\Models\ServiceBid;
 use App\Models\ServiceRequest;
 use App\ServiceRequestStatus;
@@ -24,11 +25,26 @@ class Show extends Component
             'category',
             'category.parent',
             'tenant',
+            'region',
+            'commune',
             'fieldAnswers.field.options',
             'attachments',
         ]);
 
         $this->authorize('view', $this->serviceRequest);
+    }
+
+    #[Computed]
+    public function hasPayment(): bool
+    {
+        if (auth()->user()->isClient() || auth()->user()->isGuest()) {
+            return false;
+        }
+
+        return PaymentSimulation::where('user_id', auth()->id())
+            ->where('service_request_id', $this->serviceRequest->id)
+            ->where('status', 'approved')
+            ->exists();
     }
 
     #[Computed]

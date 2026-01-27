@@ -25,7 +25,7 @@ class Browse extends Component
         return ServiceRequest::query()
             ->where('status', ServiceRequestStatus::Published->value)
             ->when($this->categoryId, fn ($q) => $q->where('category_id', (int) $this->categoryId))
-            ->with(['category', 'tenant'])
+            ->with(['category', 'tenant', 'region', 'commune'])
             ->latest('published_at')
             ->get();
     }
@@ -36,4 +36,3 @@ class Browse extends Component
             ->layout('layouts.app', ['title' => __('Servicios')]);
     }
 }
-

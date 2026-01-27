@@ -1,4 +1,6 @@
 <section class="mx-auto w-full max-w-4xl space-y-4 px-4 py-6 sm:space-y-6 sm:px-6">
+    <livewire:services.detail-modal />
+
     <div class="space-y-2">
         <flux:heading size="lg" class="text-2xl sm:text-3xl">{{ $serviceRequest->title }}</flux:heading>
         <flux:text class="text-xs sm:text-sm">
@@ -30,18 +32,79 @@
         @endif
     </div>
 
-    <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
-        <flux:heading size="md">{{ __('Contacto y localización') }}</flux:heading>
-        <div class="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-            <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Nombre') }}:</span> {{ $serviceRequest->contact_name ?? '—' }}</flux:text>
-            <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Email') }}:</span> {{ $serviceRequest->contact_email ?? '—' }}</flux:text>
-            <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Teléfono') }}:</span> {{ $serviceRequest->contact_phone ?? '—' }}</flux:text>
+    {{-- Contacto: Mostrar datos completos u ofuscados según pago --}}
+    @if (!auth()->user()->isClient() && !auth()->user()->isGuest() && $serviceRequest->status->value === 'published')
+        @if ($this->hasPayment)
+            {{-- Usuario con pago: Mostrar datos completos --}}
+            <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+                <flux:heading size="md">{{ __('Contacto y localización') }}</flux:heading>
+                <div class="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                    <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Nombre') }}:</span> {{ $serviceRequest->contact_name ?? '—' }}</flux:text>
+                    <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Email') }}:</span> {{ $serviceRequest->contact_email ?? '—' }}</flux:text>
+                    <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Teléfono') }}:</span> {{ $serviceRequest->contact_phone ?? '—' }}</flux:text>
+                </div>
+                <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                    <flux:text class="text-sm"><span class="font-medium">{{ __('Localización') }}:</span> {{ $serviceRequest->location_display }}</flux:text>
+                    <flux:text class="text-sm"><span class="font-medium">{{ __('Dirección') }}:</span> {{ $serviceRequest->address ?? '—' }}</flux:text>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ route('services.contact', $serviceRequest) }}" wire:navigate>
+                        <flux:button variant="primary">{{ __('Ver datos completos') }}</flux:button>
+                    </a>
+                </div>
+            </div>
+        @else
+            {{-- Usuario sin pago: Mostrar datos ofuscados --}}
+            <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+                <flux:heading size="md">{{ __('Contacto y localización') }}</flux:heading>
+                <div class="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                    <flux:text class="text-xs sm:text-sm">
+                        <span class="font-medium">{{ __('Nombre') }}:</span>
+                        {{ $serviceRequest->obfuscated_contact_name }}
+                    </flux:text>
+                    <flux:text class="text-xs sm:text-sm">
+                        <span class="font-medium">{{ __('Email') }}:</span>
+                        <span class="font-mono">{{ $serviceRequest->obfuscated_email }}</span>
+                    </flux:text>
+                    <flux:text class="text-xs sm:text-sm">
+                        <span class="font-medium">{{ __('Teléfono') }}:</span>
+                        <span class="font-mono">{{ $serviceRequest->obfuscated_phone }}</span>
+                    </flux:text>
+                </div>
+                <div class="mt-3">
+                    <flux:text class="text-sm">
+                        <span class="font-medium">{{ __('Localización') }}:</span>
+                        {{ $serviceRequest->location_display }}
+                    </flux:text>
+                </div>
+                <div class="mt-4 flex flex-wrap gap-3">
+                    <button
+                        wire:click="$dispatch('open-detail-modal', { serviceRequestId: {{ $serviceRequest->id }} })"
+                        class="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                    >
+                        {{ __('Ver detalle') }}
+                    </button>
+                    <a href="{{ route('services.payment', $serviceRequest) }}" wire:navigate>
+                        <flux:button variant="primary">{{ __('Ver contacto') }}</flux:button>
+                    </a>
+                </div>
+            </div>
+        @endif
+    @else
+        {{-- Cliente o invitado: Mostrar datos completos si es el dueño --}}
+        <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+            <flux:heading size="md">{{ __('Contacto y localización') }}</flux:heading>
+            <div class="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Nombre') }}:</span> {{ $serviceRequest->contact_name ?? '—' }}</flux:text>
+                <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Email') }}:</span> {{ $serviceRequest->contact_email ?? '—' }}</flux:text>
+                <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Teléfono') }}:</span> {{ $serviceRequest->contact_phone ?? '—' }}</flux:text>
+            </div>
+            <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                <flux:text class="text-sm"><span class="font-medium">{{ __('Localización') }}:</span> {{ $serviceRequest->location_text ?? '—' }}</flux:text>
+                <flux:text class="text-sm"><span class="font-medium">{{ __('Dirección') }}:</span> {{ $serviceRequest->address ?? '—' }}</flux:text>
+            </div>
         </div>
-        <div class="mt-3 grid gap-3 sm:grid-cols-2">
-            <flux:text class="text-sm"><span class="font-medium">{{ __('Localización') }}:</span> {{ $serviceRequest->location_text ?? '—' }}</flux:text>
-            <flux:text class="text-sm"><span class="font-medium">{{ __('Dirección') }}:</span> {{ $serviceRequest->address ?? '—' }}</flux:text>
-        </div>
-    </div>
+    @endif
 
     @if (count($this->attachmentUrls))
         <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
