@@ -39,16 +39,37 @@
             <div class="space-y-4 rounded-xl border border-app-border bg-app-surface p-6">
                 <flux:heading size="sm">{{ __('Información Personal') }}</flux:heading>
 
-                <flux:input wire:model="name" :label="__('Nombre completo')" type="text" required autofocus autocomplete="name" />
+                <div class="form-control-with-icon">
+                    <flux:input wire:model="name" :label="__('Nombre completo')" type="text" required autofocus autocomplete="name" />
+                    <div class="form-control-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <flux:input wire:model="first_name" :label="__('Nombres')" type="text" autocomplete="given-name" />
-                    <flux:input wire:model="last_name" :label="__('Apellidos')" type="text" autocomplete="family-name" />
+                    <div class="form-control-with-icon">
+                        <flux:input wire:model="first_name" :label="__('Nombres')" type="text" autocomplete="given-name" />
+                        <div class="form-control-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="form-control-with-icon">
+                        <flux:input wire:model="last_name" :label="__('Apellidos')" type="text" autocomplete="family-name" />
+                        <div class="form-control-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>
-                        <flux:select wire:model="gender" :label="__('Sexo')">
+                        <flux:select wire:model="gender" class="select2" :label="__('Sexo')">
                             <option value="">{{ __('Seleccionar') }}</option>
                             <option value="hombre">{{ __('Hombre') }}</option>
                             <option value="mujer">{{ __('Mujer') }}</option>
@@ -58,10 +79,24 @@
                         @enderror
                     </div>
 
-                    <flux:input wire:model="birth_date" :label="__('Fecha de Nacimiento')" type="text" placeholder="DD-MM-YYYY" hint="{{ __('Formato: DD-MM-YYYY') }}" />
+                    <div class="form-control-with-icon">
+                        <flux:input wire:model="birth_date" class="date-picker" :label="__('Fecha de Nacimiento')" type="text" placeholder="DD-MM-YYYY" hint="{{ __('Formato: DD-MM-YYYY') }}" />
+                        <div class="date-picker-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
-                <flux:input wire:model="email" :label="__('Correo electrónico')" type="email" required autocomplete="email" />
+                <div class="form-control-with-icon">
+                    <flux:input wire:model="email" :label="__('Correo electrónico')" type="email" required autocomplete="email" />
+                    <div class="form-control-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                </div>
 
                 @if ($this->hasUnverifiedEmail)
                     <div>
@@ -87,18 +122,39 @@
                 <div class="space-y-4 rounded-xl border border-app-border bg-app-surface p-6">
                     <flux:heading size="sm">{{ __('Información Profesional') }}</flux:heading>
 
-                    <flux:input wire:model="rut" :label="__('RUT')" type="text" placeholder="12345678-9" hint="{{ __('Ingresa tu RUT chileno') }}" />
+                    <div class="form-control-with-icon">
+                        <flux:input wire:model="rut" :label="__('RUT')" type="text" placeholder="12345678-9" hint="{{ __('Ingresa tu RUT chileno') }}" />
+                        <div class="form-control-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                            </svg>
+                        </div>
+                    </div>
                     @error('rut')
                         <flux:text class="text-sm !text-danger">{{ $message }}</flux:text>
                     @enderror
 
-                    <flux:input wire:model="fantasy_name" :label="__('Nombre de Fantasía para Banner')" type="text" hint="{{ __('Este nombre aparecerá en el dashboard en lugar de "Integral Service Tech"') }}" />
+                    <div class="form-control-with-icon">
+                        <flux:input wire:model="fantasy_name" :label="__('Nombre de Fantasía para Banner')" type="text" hint="{{ __('Este nombre aparecerá en el dashboard en lugar de "Integral Service Tech"') }}" />
+                        <div class="form-control-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                            </svg>
+                        </div>
+                    </div>
 
-                    <flux:input wire:model="economic_activity" :label="__('Actividad económica')" type="text" />
+                    <div class="form-control-with-icon">
+                        <flux:input wire:model="economic_activity" :label="__('Actividad económica')" type="text" />
+                        <div class="form-control-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
 
                     <div class="grid gap-4 sm:grid-cols-2">
                         <div>
-                            <flux:select wire:model.live="region_id" :label="__('Región')">
+                            <flux:select wire:model.live="region_id" class="select2" :label="__('Región')">
                                 <option value="">{{ __('Seleccionar región') }}</option>
                                 @foreach ($this->regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -110,7 +166,7 @@
                         </div>
 
                         <div>
-                            <flux:select wire:model="commune_id" :label="__('Comuna')" :disabled="!$region_id">
+                            <flux:select wire:model="commune_id" class="select2" :label="__('Comuna')" :disabled="!$region_id">
                                 <option value="">{{ __('Seleccionar comuna') }}</option>
                                 @if ($region_id)
                                     @foreach ($this->communes as $commune)

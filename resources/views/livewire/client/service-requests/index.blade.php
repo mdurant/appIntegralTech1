@@ -98,19 +98,40 @@
 
                         <div class="md:col-span-{{ $field->type->value === 'textarea' ? 2 : 1 }}">
                             @if ($field->type->value === 'select')
-                                <flux:select wire:model="{{ $name }}" :label="$field->label" placeholder="{{ __('Selecciona...') }}">
+                                <flux:select wire:model="{{ $name }}" class="select2" :label="$field->label" placeholder="{{ __('Selecciona...') }}">
                                     @foreach ($field->options as $opt)
                                         <option value="{{ $opt->value }}">{{ $opt->label }}</option>
                                     @endforeach
                                 </flux:select>
                             @elseif ($field->type->value === 'number')
-                                <flux:input wire:model="{{ $name }}" :label="$field->label" type="number" inputmode="numeric" />
+                                <div class="form-control-with-icon">
+                                    <flux:input wire:model="{{ $name }}" :label="$field->label" type="number" inputmode="numeric" />
+                                    <div class="form-control-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                                        </svg>
+                                    </div>
+                                </div>
                             @elseif ($field->type->value === 'date')
-                                <flux:input wire:model="{{ $name }}" :label="$field->label" type="date" />
+                                <div class="form-control-with-icon">
+                                    <flux:input wire:model="{{ $name }}" class="date-picker" :label="$field->label" type="text" />
+                                    <div class="date-picker-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                </div>
                             @elseif ($field->type->value === 'textarea')
                                 <flux:textarea wire:model="{{ $name }}" :label="$field->label" rows="3" />
                             @else
-                                <flux:input wire:model="{{ $name }}" :label="$field->label" type="text" />
+                                <div class="form-control-with-icon">
+                                    <flux:input wire:model="{{ $name }}" :label="$field->label" type="text" />
+                                    <div class="form-control-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </div>
+                                </div>
                             @endif
                         </div>
                     @endforeach
