@@ -8,7 +8,23 @@
         <flux:header class="hidden lg:flex border-b border-app-border bg-app-surface">
             <div class="flex w-full items-center justify-between px-6 py-4">
                 <div class="flex items-center gap-4">
-                    <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
+                    @php($user = auth()->user())
+                    @if ($user->shouldShowFantasyName())
+                        <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3">
+                            @if ($user->avatarUrl())
+                                <img src="{{ $user->avatarUrl() }}" alt="{{ $user->fantasy_name }}" class="size-10 rounded-lg object-cover" />
+                            @else
+                                <div class="flex size-10 items-center justify-center rounded-lg bg-brand-700 text-white">
+                                    <x-app-logo-icon class="size-6 text-white" />
+                                </div>
+                            @endif
+                            <div class="min-w-0">
+                                <div class="truncate text-sm font-semibold">{{ $user->fantasy_name }}</div>
+                            </div>
+                        </a>
+                    @elseif (!$user->isGuest() && !$user->isClient())
+                        <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
+                    @endif
                 </div>
                 <div class="flex items-center gap-4">
                     <flux:dropdown position="bottom" align="end">
@@ -107,7 +123,7 @@
 
             <flux:spacer />
 
-            <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+            {{-- Ocultar sección de usuario en sidebar (solo mostrar en header superior) --}}
         </flux:sidebar>
 
         <!-- Mobile User Menu -->

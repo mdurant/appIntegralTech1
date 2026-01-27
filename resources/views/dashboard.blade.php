@@ -9,25 +9,7 @@
                 <flux:text class="max-w-2xl text-sm text-app-muted">
                     {{ __('Bienvenido a IntegralTech. Ajusta tu perfil, fortalece tu seguridad y comienza a operar en la plataforma.') }}
                 </flux:text>
-                <flux:text class="text-sm">
-                    {{ __('Rol') }}: <span class="font-medium">{{ $user->system_role?->label() ?? __('Usuario') }}</span>
-                    @if ($user->currentTenant)
-                        · {{ __('Organización') }}: <span class="font-medium">{{ $user->currentTenant->name }}</span>
-                    @endif
-                </flux:text>
-            </div>
-
-            {{-- Perfil de usuario en barra superior derecha --}}
-            <div class="flex items-center gap-3">
-                <div class="hidden text-right sm:block">
-                    <flux:text class="text-sm font-medium">{{ $user->name }}</flux:text>
-                    <flux:text class="text-xs text-app-muted">{{ $user->email }}</flux:text>
-                </div>
-                <flux:avatar
-                    :name="$user->name"
-                    :initials="$user->initials()"
-                    class="size-10"
-                />
+                
             </div>
         </div>
 
@@ -236,14 +218,6 @@
                     </flux:text>
                 </div>
             </a>
-        </div>
-
-        {{-- Sección siguiente paso --}}
-        <div class="rounded-xl border border-app-border bg-app-surface-2 p-5">
-            <flux:heading size="md">{{ __('Siguiente paso') }}</flux:heading>
-            <flux:text class="mt-1 text-sm text-app-muted">
-                {{ __('Si eres Cliente, podrás crear solicitudes de servicio. Si eres Usuario, podrás ofertar en solicitudes publicadas.') }}
-            </flux:text>
         </div>
     </div>
 </x-layouts::app>

@@ -1,12 +1,13 @@
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <flux:heading class="sr-only">{{ __('Profile Settings') }}</flux:heading>
+    <flux:heading class="sr-only">{{ __('Configuración de Perfil') }}</flux:heading>
 
-    <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
+    <x-settings.layout :heading="__('Perfil')" :subheading="__('Actualiza tu información personal y profesional')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
+            {{-- Avatar/Foto de perfil --}}
             <div class="flex items-center gap-4">
-                <div class="size-12 overflow-hidden rounded-full bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
+                <div class="size-16 overflow-hidden rounded-full bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700">
                     @if (auth()->user()->avatarUrl())
                         <img
                             src="{{ auth()->user()->avatarUrl() }}"
@@ -21,7 +22,7 @@
                 </div>
 
                 <div class="flex-1 space-y-1">
-                    <flux:text class="text-sm font-medium">{{ __('Avatar') }}</flux:text>
+                    <flux:text class="text-sm font-medium">{{ __('Foto de perfil o Logo') }}</flux:text>
                     <input
                         type="file"
                         wire:model="avatar"
@@ -34,37 +35,145 @@
                 </div>
             </div>
 
-            <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
+            {{-- Información básica --}}
+            <div class="space-y-4 rounded-xl border border-app-border bg-app-surface p-6">
+                <flux:heading size="sm">{{ __('Información Personal') }}</flux:heading>
 
-            <div>
-                <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
+                <flux:input wire:model="name" :label="__('Nombre completo')" type="text" required autofocus autocomplete="name" />
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <flux:input wire:model="first_name" :label="__('Nombres')" type="text" autocomplete="given-name" />
+                    <flux:input wire:model="last_name" :label="__('Apellidos')" type="text" autocomplete="family-name" />
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <flux:select wire:model="gender" :label="__('Sexo')">
+                            <option value="">{{ __('Seleccionar') }}</option>
+                            <option value="hombre">{{ __('Hombre') }}</option>
+                            <option value="mujer">{{ __('Mujer') }}</option>
+                        </flux:select>
+                        @error('gender')
+                            <flux:text class="mt-1 text-sm !text-danger">{{ $message }}</flux:text>
+                        @enderror
+                    </div>
+
+                    <flux:input wire:model="birth_date" :label="__('Fecha de Nacimiento')" type="text" placeholder="DD-MM-YYYY" hint="{{ __('Formato: DD-MM-YYYY') }}" />
+                </div>
+
+                <flux:input wire:model="email" :label="__('Correo electrónico')" type="email" required autocomplete="email" />
 
                 @if ($this->hasUnverifiedEmail)
                     <div>
                         <flux:text class="mt-4">
-                            {{ __('Your email address is unverified.') }}
+                            {{ __('Tu dirección de correo no está verificada.') }}
 
                             <flux:link class="text-sm cursor-pointer" wire:click.prevent="resendVerificationNotification">
-                                {{ __('Click here to re-send the verification code.') }}
+                                {{ __('Haz clic aquí para reenviar el código de verificación.') }}
                             </flux:link>
                         </flux:text>
 
                         @if (session('status') === 'verification-code-sent')
                             <flux:text class="mt-2 font-medium !text-success">
-                                {{ __('A new verification code has been sent to your email address.') }}
+                                {{ __('Se ha enviado un nuevo código de verificación a tu correo.') }}
                             </flux:text>
                         @endif
                     </div>
                 @endif
             </div>
 
+            {{-- Información profesional (solo para proveedores) --}}
+            @if (auth()->user()->isProvider())
+                <div class="space-y-4 rounded-xl border border-app-border bg-app-surface p-6">
+                    <flux:heading size="sm">{{ __('Información Profesional') }}</flux:heading>
+
+                    <flux:input wire:model="rut" :label="__('RUT')" type="text" placeholder="12345678-9" hint="{{ __('Ingresa tu RUT chileno') }}" />
+                    @error('rut')
+                        <flux:text class="text-sm !text-danger">{{ $message }}</flux:text>
+                    @enderror
+
+                    <flux:input wire:model="fantasy_name" :label="__('Nombre de Fantasía para Banner')" type="text" hint="{{ __('Este nombre aparecerá en el dashboard en lugar de "Integral Service Tech"') }}" />
+
+                    <flux:input wire:model="economic_activity" :label="__('Actividad económica')" type="text" />
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div>
+                            <flux:select wire:model.live="region_id" :label="__('Región')">
+                                <option value="">{{ __('Seleccionar región') }}</option>
+                                @foreach ($this->regions as $region)
+                                    <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                @endforeach
+                            </flux:select>
+                            @error('region_id')
+                                <flux:text class="mt-1 text-sm !text-danger">{{ $message }}</flux:text>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <flux:select wire:model="commune_id" :label="__('Comuna')" :disabled="!$region_id">
+                                <option value="">{{ __('Seleccionar comuna') }}</option>
+                                @if ($region_id)
+                                    @foreach ($this->communes as $commune)
+                                        <option value="{{ $commune->id }}">{{ $commune->name }}</option>
+                                    @endforeach
+                                @endif
+                            </flux:select>
+                            @error('commune_id')
+                                <flux:text class="mt-1 text-sm !text-danger">{{ $message }}</flux:text>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div>
+                        <flux:text class="mb-2 text-sm font-medium">{{ __('Tipo de Servicio entregado') }}</flux:text>
+                        <flux:text class="mb-3 text-xs text-app-muted">{{ __('Selecciona hasta 10 categorías de servicios que ofreces') }}</flux:text>
+                        <div class="space-y-2 max-h-64 overflow-y-auto rounded-lg border border-app-border bg-app-surface-2 p-4">
+                            @foreach ($this->serviceCategories as $category)
+                                <div class="space-y-1">
+                                    <label class="flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            wire:model="service_category_ids"
+                                            value="{{ $category->id }}"
+                                            class="rounded border-app-border text-brand-600 focus:ring-brand-500"
+                                        />
+                                        <flux:text class="text-sm font-medium">{{ $category->name }}</flux:text>
+                                    </label>
+                                    @if ($category->children->isNotEmpty())
+                                        <div class="ml-6 space-y-1">
+                                            @foreach ($category->children as $child)
+                                                <label class="flex items-center gap-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        wire:model="service_category_ids"
+                                                        value="{{ $child->id }}"
+                                                        class="rounded border-app-border text-brand-600 focus:ring-brand-500"
+                                                    />
+                                                    <flux:text class="text-xs text-app-muted">{{ $child->name }}</flux:text>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                        @error('service_category_ids')
+                            <flux:text class="mt-1 text-sm !text-danger">{{ $message }}</flux:text>
+                        @enderror
+                        @if (count($service_category_ids) > 10)
+                            <flux:text class="mt-2 text-sm !text-danger">{{ __('Máximo 10 categorías permitidas') }}</flux:text>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
+                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Guardar') }}</flux:button>
                 </div>
 
                 <x-action-message class="me-3" on="profile-updated">
-                    {{ __('Saved.') }}
+                    {{ __('Guardado.') }}
                 </x-action-message>
             </div>
         </form>
