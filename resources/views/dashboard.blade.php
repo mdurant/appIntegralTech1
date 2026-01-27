@@ -9,25 +9,7 @@
                 <flux:text class="max-w-2xl text-sm text-app-muted">
                     {{ __('Bienvenido a IntegralTech. Ajusta tu perfil, fortalece tu seguridad y comienza a operar en la plataforma.') }}
                 </flux:text>
-                <flux:text class="text-sm">
-                    {{ __('Rol') }}: <span class="font-medium">{{ $user->system_role?->label() ?? __('Usuario') }}</span>
-                    @if ($user->currentTenant)
-                        · {{ __('Organización') }}: <span class="font-medium">{{ $user->currentTenant->name }}</span>
-                    @endif
-                </flux:text>
-            </div>
-
-            {{-- Perfil de usuario en barra superior derecha --}}
-            <div class="flex items-center gap-3">
-                <div class="hidden text-right sm:block">
-                    <flux:text class="text-sm font-medium">{{ $user->name }}</flux:text>
-                    <flux:text class="text-xs text-app-muted">{{ $user->email }}</flux:text>
-                </div>
-                <flux:avatar
-                    :name="$user->name"
-                    :initials="$user->initials()"
-                    class="size-10"
-                />
+                
             </div>
         </div>
 
@@ -43,12 +25,12 @@
                         </svg>
                     </div>
                 </div>
-                <div class="h-48 flex items-center justify-center rounded-lg border border-app-border bg-app-surface-2">
-                    <flux:text class="text-sm text-app-muted">{{ __('Gráfico de usuarios - Se implementará con Chart.js') }}</flux:text>
+                <div class="h-48">
+                    <canvas id="chart-usuarios-registrados"></canvas>
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                     <flux:text class="text-xs text-app-muted">{{ __('Total registrados') }}</flux:text>
-                    <flux:text class="text-lg font-bold">1,247</flux:text>
+                    <flux:text class="text-lg font-bold" id="total-usuarios">1,247</flux:text>
                 </div>
             </div>
 
@@ -60,12 +42,12 @@
                         <flux:icon.layout-grid class="size-5" />
                     </div>
                 </div>
-                <div class="h-48 flex items-center justify-center rounded-lg border border-app-border bg-app-surface-2">
-                    <flux:text class="text-sm text-app-muted">{{ __('Gráfico de cotizaciones - Se implementará con Chart.js') }}</flux:text>
+                <div class="h-48">
+                    <canvas id="chart-servicios-solicitados"></canvas>
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                     <flux:text class="text-xs text-app-muted">{{ __('Total solicitudes') }}</flux:text>
-                    <flux:text class="text-lg font-bold">892</flux:text>
+                    <flux:text class="text-lg font-bold" id="total-servicios">892</flux:text>
                 </div>
             </div>
 
@@ -77,12 +59,12 @@
                         <flux:icon.wrench class="size-5" />
                     </div>
                 </div>
-                <div class="h-48 flex items-center justify-center rounded-lg border border-app-border bg-app-surface-2">
-                    <flux:text class="text-sm text-app-muted">{{ __('Gráfico de OTs - Se implementará con Chart.js') }}</flux:text>
+                <div class="h-48">
+                    <canvas id="chart-ordenes-trabajo"></canvas>
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                     <flux:text class="text-xs text-app-muted">{{ __('Total OTs') }}</flux:text>
-                    <flux:text class="text-lg font-bold">456</flux:text>
+                    <flux:text class="text-lg font-bold" id="total-ordenes">456</flux:text>
                 </div>
             </div>
         </div>
@@ -184,7 +166,7 @@
         <div class="grid gap-4 md:grid-cols-3">
             <a
                 href="{{ route('profile.edit') }}"
-                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-app-border-hover hover:shadow-md"
+                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md"
             >
                 <div class="grid shrink-0 size-12 place-items-center rounded-lg bg-brand-50 text-brand-700 group-hover:bg-brand-100">
                     <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,7 +185,7 @@
 
             <a
                 href="{{ route('user-password.edit') }}"
-                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-app-border-hover hover:shadow-md"
+                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md"
             >
                 <div class="grid shrink-0 size-12 place-items-center rounded-lg bg-blue-50 text-blue-700 group-hover:bg-blue-100">
                     <flux:icon.shield class="size-6" />
@@ -220,7 +202,7 @@
 
             <a
                 href="{{ route('two-factor.show') }}"
-                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-app-border-hover hover:shadow-md"
+                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md"
             >
                 <div class="grid shrink-0 size-12 place-items-center rounded-lg bg-green-50 text-green-700 group-hover:bg-green-100">
                     <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -237,13 +219,107 @@
                 </div>
             </a>
         </div>
-
-        {{-- Sección siguiente paso --}}
-        <div class="rounded-xl border border-app-border bg-app-surface-2 p-5">
-            <flux:heading size="md">{{ __('Siguiente paso') }}</flux:heading>
-            <flux:text class="mt-1 text-sm text-app-muted">
-                {{ __('Si eres Cliente, podrás crear solicitudes de servicio. Si eres Usuario, podrás ofertar en solicitudes publicadas.') }}
-            </flux:text>
-        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar que Chart.js esté disponible
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js no está disponible');
+                return;
+            }
+
+            // Cargar datos JSON
+            fetch('/data/dashboard-charts.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Configuración común para todos los gráficos
+                    const chartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                padding: 12,
+                                titleFont: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 12
+                                },
+                                cornerRadius: 8,
+                                displayColors: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11
+                                    },
+                                    color: '#6b7280'
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11
+                                    },
+                                    color: '#6b7280',
+                                    stepSize: 20
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    };
+
+                    // Gráfico: Usuarios Registrados
+                    const ctxUsuarios = document.getElementById('chart-usuarios-registrados');
+                    if (ctxUsuarios) {
+                        new Chart(ctxUsuarios, {
+                            type: 'line',
+                            data: data.usuarios_registrados,
+                            options: chartOptions
+                        });
+                        document.getElementById('total-usuarios').textContent = data.usuarios_registrados.total.toLocaleString('es-CL');
+                    }
+
+                    // Gráfico: Servicios Solicitados
+                    const ctxServicios = document.getElementById('chart-servicios-solicitados');
+                    if (ctxServicios) {
+                        new Chart(ctxServicios, {
+                            type: 'line',
+                            data: data.servicios_solicitados,
+                            options: chartOptions
+                        });
+                        document.getElementById('total-servicios').textContent = data.servicios_solicitados.total.toLocaleString('es-CL');
+                    }
+
+                    // Gráfico: Órdenes de Trabajo
+                    const ctxOrdenes = document.getElementById('chart-ordenes-trabajo');
+                    if (ctxOrdenes) {
+                        new Chart(ctxOrdenes, {
+                            type: 'line',
+                            data: data.ordenes_trabajo,
+                            options: chartOptions
+                        });
+                        document.getElementById('total-ordenes').textContent = data.ordenes_trabajo.total.toLocaleString('es-CL');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar datos de gráficos:', error);
+                });
+        });
+    </script>
 </x-layouts::app>

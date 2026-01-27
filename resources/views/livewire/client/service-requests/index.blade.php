@@ -98,7 +98,7 @@
 
                         <div class="md:col-span-{{ $field->type->value === 'textarea' ? 2 : 1 }}">
                             @if ($field->type->value === 'select')
-                                <flux:select wire:model="{{ $name }}" :label="$field->label" placeholder="{{ __('Selecciona...') }}">
+                                <flux:select wire:model="{{ $name }}" class="select2" :label="$field->label" placeholder="{{ __('Selecciona...') }}">
                                     @foreach ($field->options as $opt)
                                         <option value="{{ $opt->value }}">{{ $opt->label }}</option>
                                     @endforeach
@@ -106,7 +106,7 @@
                             @elseif ($field->type->value === 'number')
                                 <flux:input wire:model="{{ $name }}" :label="$field->label" type="number" inputmode="numeric" />
                             @elseif ($field->type->value === 'date')
-                                <flux:input wire:model="{{ $name }}" :label="$field->label" type="date" />
+                                <flux:input wire:model="{{ $name }}" class="date-picker" :label="$field->label" type="text" />
                             @elseif ($field->type->value === 'textarea')
                                 <flux:textarea wire:model="{{ $name }}" :label="$field->label" rows="3" />
                             @else

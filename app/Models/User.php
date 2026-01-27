@@ -25,6 +25,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'system_role',
@@ -32,6 +34,12 @@ class User extends Authenticatable
         'avatar_path',
         'rut',
         'giro_sii',
+        'gender',
+        'birth_date',
+        'fantasy_name',
+        'economic_activity',
+        'region_id',
+        'commune_id',
     ];
 
     /**
@@ -57,6 +65,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'system_role' => SystemRole::class,
+            'birth_date' => 'date',
         ];
     }
 
@@ -70,6 +79,24 @@ class User extends Authenticatable
         return $this->belongsToMany(Tenant::class)
             ->withPivot('role')
             ->withTimestamps();
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function commune(): BelongsTo
+    {
+        return $this->belongsTo(Commune::class);
+    }
+
+    public function serviceCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(ServiceCategory::class, 'user_service_categories')
+            ->withTimestamps()
+            ->orderBy('service_categories.sort_order')
+            ->orderBy('service_categories.name');
     }
 
     public function isAdministrator(): bool
@@ -110,6 +137,51 @@ class User extends Authenticatable
             return null;
         }
 
+        // Verificar que el archivo existe
+        if (! Storage::disk('public')->exists($this->avatar_path)) {
+            return null;
+        }
+
         return Storage::disk('public')->url($this->avatar_path);
+    }
+
+    /**
+     * Get the full name (first_name + last_name) or fallback to name
+     */
+    public function getFullNameAttribute(): string
+    {
+        if ($this->first_name && $this->last_name) {
+            return trim("{$this->first_name} {$this->last_name}");
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * Get display name for banner (fantasy_name for providers, full name for others)
+     */
+    public function getDisplayNameAttribute(): string
+    {
+        if ($this->system_role === SystemRole::User && $this->fantasy_name) {
+            return $this->fantasy_name;
+        }
+
+        return $this->full_name;
+    }
+
+    /**
+     * Check if user is a provider (User role)
+     */
+    public function isProvider(): bool
+    {
+        return $this->system_role === SystemRole::User;
+    }
+
+    /**
+     * Check if user should show fantasy name in banner
+     */
+    public function shouldShowFantasyName(): bool
+    {
+        return $this->isProvider() && ! empty($this->fantasy_name);
     }
 }
