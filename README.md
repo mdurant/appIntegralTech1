@@ -427,8 +427,88 @@ Retorna JSON compatible con Select2 para autocompletado de categorías en formul
 
 ---
 
+## Sistema de Ofuscación de Datos y Pago Simulado
+
+### Flujo de Visualización de Servicios Publicados
+
+Cuando un cliente publica una solicitud de servicio, los usuarios (proveedores) solo pueden ver datos parciales hasta realizar un pago simulado:
+
+#### 1. Vista de Listado (`services/browse`)
+Los proveedores ven:
+- **Título** y **Categoría** del servicio
+- **Región + Comuna** (sin dirección específica)
+- **Nombre ofuscado**: Solo el primer nombre del cliente (ej: "Juan" en lugar de "Juan Pérez González")
+- **Teléfono ofuscado**: 3 primeros dígitos + "XXX XXX" (ej: "569 XXX XXX")
+- **Email ofuscado**: 3 primeros caracteres + "xxxxx@xxxxxx.xxx" (ej: "jua xxxxx@xxxxxx.xxx")
+
+#### 2. Modal "Ver Detalle"
+Al hacer clic en "Ver detalle", se abre un modal con:
+- **Panel Izquierdo**: Características completas del servicio (sin dirección específica, solo región+comuna)
+- **Panel Derecho**: Sección "Contacta con tu potencial cliente" con:
+  - Datos ofuscados (nombre, email, teléfono)
+  - Precio para ver contacto completo ($6.105 CLP)
+  - Botón "Ver contacto" que redirige al pago
+
+#### 3. Pago Simulado (`services/{serviceRequest}/payment`)
+Formulario de pago con:
+- Titular de la tarjeta
+- Número de tarjeta (16 dígitos)
+- Fecha de expiración (mes/año)
+- CVV (3-4 dígitos)
+- Email
+- Monto a pagar
+
+**Nota**: Este es un pago simulado. No se procesa ningún cargo real. Los datos ingresados son solo para demostración.
+
+#### 4. Vista de Contacto Completo (`services/{serviceRequest}/contact`)
+Después del pago aprobado, el proveedor puede ver:
+- Nombres completos del cliente
+- Email completo
+- Teléfono completo
+- Dirección completa
+- Idea del proyecto (descripción completa)
+- Detalles adicionales del formulario
+- Imágenes del proyecto
+- Botones para contactar (email, teléfono)
+
+### Modelo de Datos
+
+**Tabla `payment_simulations`**:
+- `user_id`: Usuario que realizó el pago
+- `service_request_id`: Solicitud de servicio
+- `amount`: Monto pagado
+- `card_last_four`: Últimos 4 dígitos de la tarjeta
+- `cardholder_name`: Nombre del titular
+- `status`: Estado (pending, approved, rejected)
+- `paid_at`: Fecha de pago
+
+**Restricción**: Un usuario solo puede pagar una vez por solicitud (unique constraint).
+
+### Rutas Relacionadas
+
+- `services` - Listado de servicios con datos ofuscados
+- `services/{serviceRequest}` - Detalle del servicio (datos según estado de pago)
+- `services/{serviceRequest}/payment` - Formulario de pago simulado
+- `services/{serviceRequest}/contact` - Datos completos después del pago
+
+### Helpers y Utilidades
+
+**`App\Helpers\DataObfuscationHelper`**:
+- `obfuscateName(string $fullName): string` - Retorna solo el primer nombre
+- `obfuscatePhone(string $phone): string` - Formato: "569 XXX XXX"
+- `obfuscateEmail(string $email): string` - Formato: "jua xxxxx@xxxxxx.xxx"
+
+**Accessors en `ServiceRequest`**:
+- `obfuscated_contact_name` - Nombre ofuscado
+- `obfuscated_phone` - Teléfono ofuscado
+- `obfuscated_email` - Email ofuscado
+- `location_display` - Región + Comuna (sin dirección)
+
+---
+
 ## Notas
 - Zona horaria usada localmente: `America/Santiago` (según tu config actual).
 - Para cambios en UI (Vite), asegúrate de tener `npm run dev` ejecutándose.
 - Todos los datos generados por seeders son en español y específicos de Chile.
+- El sistema de pago es simulado y no procesa cargos reales.
 
