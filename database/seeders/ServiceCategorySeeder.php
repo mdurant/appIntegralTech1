@@ -13,11 +13,9 @@ class ServiceCategorySeeder extends Seeder
     public function run(): void
     {
         $top = [
-            ['key' => 'construccion', 'name' => 'Construcción', 'sort_order' => 10],
-            ['key' => 'remodelacion', 'name' => 'Remodelación', 'sort_order' => 20],
-            ['key' => 'mantencion', 'name' => 'Mantención', 'sort_order' => 30],
-            ['key' => 'maestros', 'name' => 'Maestros', 'sort_order' => 40],
-            ['key' => 'mudanzas', 'name' => 'Mudanzas', 'sort_order' => 50],
+            ['key' => 'fletes', 'name' => 'Fletes y Transporte', 'sort_order' => 10],
+            ['key' => 'mudanzas', 'name' => 'Mudanzas', 'sort_order' => 20],
+            ['key' => 'logistica', 'name' => 'Logística', 'sort_order' => 30],
         ];
 
         $topIds = [];
@@ -36,12 +34,14 @@ class ServiceCategorySeeder extends Seeder
         }
 
         $sub = [
-            ['parent' => 'construccion', 'key' => 'construccion-casa', 'name' => 'Construcción Casa', 'sort_order' => 10],
-            ['parent' => 'construccion', 'key' => 'ampliar-casa', 'name' => 'Ampliar Casa', 'sort_order' => 20],
-            ['parent' => 'remodelacion', 'key' => 'remodelacion-cocina', 'name' => 'Remodelación Cocina', 'sort_order' => 10],
-            ['parent' => 'mantencion', 'key' => 'mantencion-aire-acondicionado', 'name' => 'Aire Acondicionado', 'sort_order' => 10],
-            ['parent' => 'maestros', 'key' => 'maestros-albaniles', 'name' => 'Albañiles', 'sort_order' => 10],
-            ['parent' => 'mudanzas', 'key' => 'mudanzas-fletes', 'name' => 'Fletes', 'sort_order' => 10],
+            ['parent' => 'fletes', 'key' => 'fletes-urbanos', 'name' => 'Fletes Urbanos', 'sort_order' => 10],
+            ['parent' => 'fletes', 'key' => 'fletes-interurbanos', 'name' => 'Fletes Interurbanos', 'sort_order' => 20],
+            ['parent' => 'fletes', 'key' => 'fletes-carga-pesada', 'name' => 'Carga Pesada', 'sort_order' => 30],
+            ['parent' => 'fletes', 'key' => 'fletes-urgentes', 'name' => 'Fletes Urgentes', 'sort_order' => 40],
+            ['parent' => 'mudanzas', 'key' => 'mudanzas-residenciales', 'name' => 'Mudanzas Residenciales', 'sort_order' => 10],
+            ['parent' => 'mudanzas', 'key' => 'mudanzas-comerciales', 'name' => 'Mudanzas Comerciales', 'sort_order' => 20],
+            ['parent' => 'logistica', 'key' => 'logistica-distribucion', 'name' => 'Distribución', 'sort_order' => 10],
+            ['parent' => 'logistica', 'key' => 'logistica-almacenamiento', 'name' => 'Almacenamiento', 'sort_order' => 20],
         ];
 
         foreach ($sub as $item) {

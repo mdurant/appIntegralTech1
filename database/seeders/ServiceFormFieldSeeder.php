@@ -15,7 +15,7 @@ class ServiceFormFieldSeeder extends Seeder
      */
     public function run(): void
     {
-        $subcategory = ServiceCategory::query()->where('key', 'construccion-casa')->first();
+        $subcategory = ServiceCategory::query()->where('key', 'fletes-urbanos')->first();
 
         if (! $subcategory) {
             return;
@@ -23,56 +23,85 @@ class ServiceFormFieldSeeder extends Seeder
 
         $fields = [
             [
-                'key' => 'plazo_realizacion',
-                'label' => 'Plazo de realización',
+                'key' => 'tipo_carga',
+                'label' => '¿Qué tipo de carga necesitas transportar?',
                 'type' => ServiceFormFieldType::Select,
                 'required' => true,
                 'sort_order' => 10,
                 'options' => [
-                    ['value' => '1_semana', 'label' => '1 semana'],
-                    ['value' => '3_semanas', 'label' => '3 semanas'],
-                    ['value' => '1_mes', 'label' => '1 mes'],
-                    ['value' => 'mas_de_3_meses', 'label' => 'Más de 3 meses'],
-                    ['value' => '1_ano', 'label' => '1 año'],
+                    ['value' => 'muebles', 'label' => 'Muebles'],
+                    ['value' => 'electrodomesticos', 'label' => 'Electrodomésticos'],
+                    ['value' => 'cajas', 'label' => 'Cajas y pertenencias'],
+                    ['value' => 'mercaderia', 'label' => 'Mercadería comercial'],
+                    ['value' => 'materiales', 'label' => 'Materiales de construcción'],
+                    ['value' => 'vehiculo', 'label' => 'Vehículo o moto'],
+                    ['value' => 'otro', 'label' => 'Otro'],
                 ],
             ],
             [
-                'key' => 'superficie_aproximada',
-                'label' => '¿Superficie aproximada a ampliar?',
+                'key' => 'volumen_aproximado',
+                'label' => 'Volumen aproximado de carga',
                 'type' => ServiceFormFieldType::Select,
                 'required' => true,
                 'sort_order' => 20,
                 'options' => [
-                    ['value' => 'menos_20', 'label' => 'Menos de 20 m²'],
-                    ['value' => 'mas_21', 'label' => 'Más de 21 m²'],
-                    ['value' => 'mas_50', 'label' => 'Más de 50 m²'],
-                    ['value' => 'mas_100', 'label' => 'Más de 100 m²'],
+                    ['value' => 'pequeno', 'label' => 'Pequeño (hasta 5 m³)'],
+                    ['value' => 'mediano', 'label' => 'Mediano (5-15 m³)'],
+                    ['value' => 'grande', 'label' => 'Grande (15-30 m³)'],
+                    ['value' => 'muy_grande', 'label' => 'Muy grande (más de 30 m³)'],
                 ],
             ],
             [
-                'key' => 'tipo_construccion',
-                'label' => '¿Qué tipo de construcción necesitas?',
-                'type' => ServiceFormFieldType::Text,
+                'key' => 'distancia',
+                'label' => 'Distancia del traslado',
+                'type' => ServiceFormFieldType::Select,
                 'required' => true,
                 'sort_order' => 30,
+                'options' => [
+                    ['value' => 'local', 'label' => 'Local (misma comuna)'],
+                    ['value' => 'regional', 'label' => 'Regional (misma región)'],
+                    ['value' => 'interregional', 'label' => 'Interregional (otra región)'],
+                ],
             ],
             [
-                'key' => 'necesita_planos',
-                'label' => '¿Necesitas además los planos?',
+                'key' => 'plazo_realizacion',
+                'label' => 'Plazo para realizar el servicio',
                 'type' => ServiceFormFieldType::Select,
                 'required' => true,
                 'sort_order' => 40,
                 'options' => [
-                    ['value' => 'si', 'label' => 'Necesito planos'],
-                    ['value' => 'no', 'label' => 'No necesito planos'],
+                    ['value' => 'urgente', 'label' => 'Urgente (hoy o mañana)'],
+                    ['value' => 'esta_semana', 'label' => 'Esta semana'],
+                    ['value' => 'proxima_semana', 'label' => 'Próxima semana'],
+                    ['value' => 'este_mes', 'label' => 'Este mes'],
+                    ['value' => 'flexible', 'label' => 'Flexible'],
                 ],
             ],
             [
-                'key' => 'localizacion',
-                'label' => 'Localización del trabajo',
-                'type' => ServiceFormFieldType::Text,
+                'key' => 'requiere_embalaje',
+                'label' => '¿Requiere servicio de embalaje?',
+                'type' => ServiceFormFieldType::Select,
                 'required' => true,
                 'sort_order' => 50,
+                'options' => [
+                    ['value' => 'si', 'label' => 'Sí, necesito embalaje'],
+                    ['value' => 'no', 'label' => 'No, ya está embalado'],
+                    ['value' => 'parcial', 'label' => 'Parcial, algunos artículos'],
+                ],
+            ],
+            [
+                'key' => 'direccion_origen',
+                'label' => 'Dirección de origen',
+                'type' => ServiceFormFieldType::Textarea,
+                'required' => true,
+                'sort_order' => 60,
+            ],
+            [
+                'key' => 'direccion_destino',
+                'label' => 'Dirección de destino',
+                'type' => ServiceFormFieldType::Textarea,
+                'required' => true,
+                'sort_order' => 70,
             ],
         ];
 

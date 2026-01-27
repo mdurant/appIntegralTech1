@@ -1,8 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 42" {{ $attributes }}>
+{{-- Logo IntegralTech Services - Icono abstracto estilizado (bucles entrelazados tipo S fluido) --}}
+{{-- Diseño minimalista basado en el logo oficial de IntegralTech Services --}}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" {{ $attributes }}>
+    {{-- Icono abstracto: bucles entrelazados tipo "S" fluido - diseño moderno y profesional --}}
     <path 
         fill="currentColor" 
         fill-rule="evenodd" 
         clip-rule="evenodd"
-        d="M17.2 5.633 8.6.855 0 5.633v26.51l16.2 9 16.2-9v-8.442l7.6-4.223V9.856l-8.6-4.777-8.6 4.777V18.3l-5.6 3.111V5.633ZM38 18.301l-5.6 3.11v-6.157l5.6-3.11V18.3Zm-1.06-7.856-5.54 3.078-5.54-3.079 5.54-3.078 5.54 3.079ZM24.8 18.3v-6.157l5.6 3.111v6.158L24.8 18.3Zm-1 1.732 5.54 3.078-13.14 7.302-5.54-3.078 13.14-7.3v-.002Zm-16.2 7.89 7.6 4.222V38.3L2 30.966V7.92l5.6 3.111v16.892ZM8.6 9.3 3.06 6.222 8.6 3.143l5.54 3.08L8.6 9.3Zm21.8 15.51-13.2 7.334V38.3l13.2-7.334v-6.156ZM9.6 11.034l5.6-3.11v14.6l-5.6 3.11v-14.6Z"
+        d="M50 0C22.386 0 0 22.386 0 50s22.386 50 50 50 50-22.386 50-50S77.614 0 50 0zm0 8c23.196 0 42 18.804 42 42S73.196 92 50 92 8 73.196 8 50 26.804 8 50 8zM30 25c-2.761 0-5 2.239-5 5v40c0 2.761 2.239 5 5 5h40c2.761 0 5-2.239 5-5V30c0-2.761-2.239-5-5-5H30zm0 5h40v40H30V30zm10 5c-2.761 0-5 2.239-5 5v20c0 2.761 2.239 5 5 5h20c2.761 0 5-2.239 5-5V40c0-2.761-2.239-5-5-5H40zm0 5h20v20H40V40z"
     />
+    {{-- Elemento decorativo central que representa conexión y servicio --}}
+    <circle cx="50" cy="50" r="6" fill="currentColor" opacity="0.8"/>
 </svg>

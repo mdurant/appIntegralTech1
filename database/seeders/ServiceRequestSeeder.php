@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Helpers\ChileanDataHelper;
 use App\Models\ServiceCategory;
 use App\Models\ServiceFormField;
-use App\Models\ServiceRequestFieldAnswer;
 use App\Models\ServiceRequest;
+use App\Models\ServiceRequestFieldAnswer;
 use App\Models\Tenant;
 use App\Models\User;
 use App\ServiceRequestStatus;
@@ -34,19 +35,31 @@ class ServiceRequestSeeder extends Seeder
 
             foreach (range(1, 3) as $i) {
                 $category = $categories[array_rand($categories)];
+                $location = ChileanDataHelper::randomLocation();
+                $contactName = ChileanDataHelper::chileanName();
+
+                // Obtener región y comuna desde la BD
+                $region = \App\Models\Region::where('name', $location['region'])->first();
+                $commune = $region
+                    ? \App\Models\Commune::where('region_id', $region->id)
+                        ->where('name', $location['comuna'])
+                        ->first()
+                    : null;
 
                 $request = ServiceRequest::create([
                     'tenant_id' => $tenant->id,
                     'category_id' => $category->id,
                     'created_by_user_id' => $owner->id,
-                    'contact_name' => $owner->name,
-                    'contact_email' => $owner->email,
-                    'contact_phone' => fake()->phoneNumber(),
-                    'title' => fake()->sentence(6),
-                    'description' => fake()->paragraphs(asText: true),
-                    'location_text' => fake()->city().', Chile',
-                    'address' => fake()->streetAddress(),
-                    'notes' => fake()->paragraphs(asText: true),
+                    'contact_name' => $contactName,
+                    'contact_email' => ChileanDataHelper::chileanEmail($contactName),
+                    'contact_phone' => ChileanDataHelper::chileanPhone(),
+                    'title' => ChileanDataHelper::fleteRequestTitle(),
+                    'description' => ChileanDataHelper::fleteRequestDescription(),
+                    'location_text' => $location['location_text'],
+                    'address' => ChileanDataHelper::chileanAddress(),
+                    'region_id' => $region?->id,
+                    'commune_id' => $commune?->id,
+                    'notes' => 'Por favor, contactar con anticipación para coordinar el servicio. Disponibilidad preferiblemente en horario laboral.',
                     'status' => ServiceRequestStatus::Draft->value,
                 ]);
 
@@ -55,22 +68,34 @@ class ServiceRequestSeeder extends Seeder
 
             foreach (range(1, 3) as $i) {
                 $category = $categories[array_rand($categories)];
+                $location = ChileanDataHelper::randomLocation();
+                $contactName = ChileanDataHelper::chileanName();
+
+                // Obtener región y comuna desde la BD
+                $region = \App\Models\Region::where('name', $location['region'])->first();
+                $commune = $region
+                    ? \App\Models\Commune::where('region_id', $region->id)
+                        ->where('name', $location['comuna'])
+                        ->first()
+                    : null;
 
                 $request = ServiceRequest::create([
                     'tenant_id' => $tenant->id,
                     'category_id' => $category->id,
                     'created_by_user_id' => $owner->id,
-                    'contact_name' => $owner->name,
-                    'contact_email' => $owner->email,
-                    'contact_phone' => fake()->phoneNumber(),
-                    'title' => fake()->sentence(6),
-                    'description' => fake()->paragraphs(asText: true),
+                    'contact_name' => $contactName,
+                    'contact_email' => ChileanDataHelper::chileanEmail($contactName),
+                    'contact_phone' => ChileanDataHelper::chileanPhone(),
+                    'title' => ChileanDataHelper::fleteRequestTitle(),
+                    'description' => ChileanDataHelper::fleteRequestDescription(),
                     'status' => ServiceRequestStatus::Published->value,
                     'published_at' => now()->subDays(random_int(0, 7)),
                     'expires_at' => now()->addDays(15 - random_int(0, 7)),
-                    'location_text' => fake()->city().', Chile',
-                    'address' => fake()->streetAddress(),
-                    'notes' => fake()->paragraphs(asText: true),
+                    'location_text' => $location['location_text'],
+                    'address' => ChileanDataHelper::chileanAddress(),
+                    'region_id' => $region?->id,
+                    'commune_id' => $commune?->id,
+                    'notes' => 'Servicio disponible de lunes a viernes. Se requiere vehículo con capacidad adecuada para la carga.',
                 ]);
 
                 $this->seedAnswers($request);
@@ -88,16 +113,31 @@ class ServiceRequestSeeder extends Seeder
         foreach ($fields as $field) {
             $value = null;
 
-            if ($field->type->value === 'select' && $field->options->count()) {
+            // Campos específicos de fletes
+            if ($field->key === 'direccion_origen' || $field->key === 'direccion_destino') {
+                $location = ChileanDataHelper::randomLocation();
+                $value = ChileanDataHelper::chileanAddress().', '.$location['comuna'].', '.$location['region'];
+            } elseif ($field->type->value === 'select' && $field->options->count()) {
                 $value = $field->options->random()->value;
             } elseif ($field->type->value === 'number') {
                 $value = (string) random_int(1, 100);
             } elseif ($field->type->value === 'date') {
                 $value = now()->addDays(random_int(1, 60))->format('Y-m-d');
             } elseif ($field->type->value === 'textarea') {
-                $value = fake()->paragraph();
+                $value = ChileanDataHelper::fleteRequestDescription();
+            } elseif ($field->type->value === 'text') {
+                // Para campos de texto genéricos, usar datos relacionados con fletes
+                $textos = [
+                    'Muebles de sala y comedor',
+                    'Electrodomésticos y cajas',
+                    'Mercadería comercial',
+                    'Materiales de construcción',
+                    'Mudanza completa de departamento',
+                ];
+                $value = fake()->randomElement($textos);
             } else {
-                $value = fake()->sentence();
+                // Fallback para campos de texto genéricos
+                $value = 'Información adicional sobre el servicio de flete solicitado';
             }
 
             ServiceRequestFieldAnswer::updateOrCreate(

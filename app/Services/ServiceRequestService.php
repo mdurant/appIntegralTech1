@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\ServiceCategory;
+use App\Models\ServiceFormField;
 use App\Models\ServiceRequest;
 use App\Models\ServiceRequestFieldAnswer;
-use App\Models\ServiceFormField;
+use App\Models\SystemSetting;
 use App\Models\Tenant;
 use App\Models\User;
 use App\ServiceRequestStatus;
@@ -19,6 +20,8 @@ class ServiceRequestService
         string $title,
         string $description,
         array $answers = [],
+        ?int $regionId = null,
+        ?int $communeId = null,
     ): ServiceRequest {
         $serviceRequest = ServiceRequest::create([
             'tenant_id' => $tenant->id,
@@ -26,6 +29,8 @@ class ServiceRequestService
             'created_by_user_id' => $actor->id,
             'title' => $title,
             'description' => $description,
+            'region_id' => $regionId,
+            'commune_id' => $communeId,
             'status' => ServiceRequestStatus::Draft,
         ]);
 
@@ -76,10 +81,12 @@ class ServiceRequestService
 
     public function publish(ServiceRequest $serviceRequest): ServiceRequest
     {
+        $expiryDays = (int) SystemSetting::get('service_request_expiry_days', 15);
+
         $serviceRequest->update([
             'status' => ServiceRequestStatus::Published,
             'published_at' => now(),
-            'expires_at' => now()->addDays(15),
+            'expires_at' => now()->addDays($expiryDays),
         ]);
 
         return $serviceRequest;
@@ -87,10 +94,12 @@ class ServiceRequestService
 
     public function reopen(ServiceRequest $serviceRequest): ServiceRequest
     {
+        $expiryDays = (int) SystemSetting::get('service_request_expiry_days', 15);
+
         $serviceRequest->update([
             'status' => ServiceRequestStatus::Published,
             'published_at' => $serviceRequest->published_at ?? now(),
-            'expires_at' => now()->addDays(15),
+            'expires_at' => now()->addDays($expiryDays),
         ]);
 
         return $serviceRequest;

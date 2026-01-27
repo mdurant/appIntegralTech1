@@ -1,7 +1,7 @@
 <section class="mx-auto w-full max-w-6xl space-y-6">
     <div class="flex items-end justify-between gap-4">
         <div class="space-y-2">
-            <flux:heading size="lg">{{ __('Tenants') }}</flux:heading>
+            <flux:heading size="lg">{{ __('Organizaciones') }}</flux:heading>
             <flux:text>{{ __('Listado y eliminación básica.') }}</flux:text>
         </div>
         <a href="{{ route('admin.dashboard') }}" wire:navigate>
@@ -22,7 +22,7 @@
                     </flux:button>
                 </div>
             @empty
-                <flux:text>{{ __('No hay tenants.') }}</flux:text>
+                <flux:text>{{ __('No hay organizaciones.') }}</flux:text>
             @endforelse
         </div>
     </div>

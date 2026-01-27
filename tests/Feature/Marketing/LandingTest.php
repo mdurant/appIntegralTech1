@@ -18,7 +18,7 @@ test('landing de marketing muestra marca y buscador', function () {
         ->assertSee('Integral Service Tech');
 
     Livewire::test(Landing::class)
-        ->assertSee('Tu próxima oportunidad técnica');
+        ->assertSee('Conecta con profesionales técnicos');
 });
 
 test('buscador público filtra solicitudes publicadas', function () {
@@ -50,4 +50,3 @@ test('buscador público filtra solicitudes publicadas', function () {
         ->set('q', 'eléctrica')
         ->assertSee('Instalación eléctrica');
 });
-

@@ -6,7 +6,7 @@
 
     <div class="grid gap-4 md:grid-cols-4">
         <a href="{{ route('admin.tenants') }}" wire:navigate class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
-            <flux:heading size="sm">{{ __('Tenants') }}</flux:heading>
+            <flux:heading size="sm">{{ __('Organizaciones') }}</flux:heading>
             <flux:text class="mt-2 text-2xl font-semibold">{{ $tenantsCount }}</flux:text>
         </a>
 

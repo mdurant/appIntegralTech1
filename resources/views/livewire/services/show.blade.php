@@ -1,14 +1,14 @@
-<section class="mx-auto w-full max-w-4xl space-y-6">
+<section class="mx-auto w-full max-w-4xl space-y-4 px-4 py-6 sm:space-y-6 sm:px-6">
     <div class="space-y-2">
-        <flux:heading size="lg">{{ $serviceRequest->title }}</flux:heading>
-        <flux:text class="text-sm">
+        <flux:heading size="lg" class="text-2xl sm:text-3xl">{{ $serviceRequest->title }}</flux:heading>
+        <flux:text class="text-xs sm:text-sm">
             {{ $serviceRequest->category?->parent?->name }} / {{ $serviceRequest->category?->name }}
             · {{ $serviceRequest->tenant?->name }}
             · <span class="font-medium">{{ $serviceRequest->status->value }}</span>
         </flux:text>
     </div>
 
-    <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+    <div class="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900 sm:rounded-xl sm:p-5">
         <flux:heading size="md">{{ __('Detalle') }}</flux:heading>
 
         @if ($this->detailRows->count())
@@ -32,12 +32,12 @@
 
     <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:heading size="md">{{ __('Contacto y localización') }}</flux:heading>
-        <div class="mt-3 grid gap-3 md:grid-cols-3">
-            <flux:text class="text-sm"><span class="font-medium">{{ __('Nombre') }}:</span> {{ $serviceRequest->contact_name ?? '—' }}</flux:text>
-            <flux:text class="text-sm"><span class="font-medium">{{ __('Email') }}:</span> {{ $serviceRequest->contact_email ?? '—' }}</flux:text>
-            <flux:text class="text-sm"><span class="font-medium">{{ __('Teléfono') }}:</span> {{ $serviceRequest->contact_phone ?? '—' }}</flux:text>
+        <div class="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+            <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Nombre') }}:</span> {{ $serviceRequest->contact_name ?? '—' }}</flux:text>
+            <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Email') }}:</span> {{ $serviceRequest->contact_email ?? '—' }}</flux:text>
+            <flux:text class="text-xs sm:text-sm"><span class="font-medium">{{ __('Teléfono') }}:</span> {{ $serviceRequest->contact_phone ?? '—' }}</flux:text>
         </div>
-        <div class="mt-3 grid gap-3 md:grid-cols-2">
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
             <flux:text class="text-sm"><span class="font-medium">{{ __('Localización') }}:</span> {{ $serviceRequest->location_text ?? '—' }}</flux:text>
             <flux:text class="text-sm"><span class="font-medium">{{ __('Dirección') }}:</span> {{ $serviceRequest->address ?? '—' }}</flux:text>
         </div>
@@ -63,7 +63,7 @@
             @if ($this->myBid)
                 <flux:text class="mt-2 text-sm">
                     {{ __('Estado') }}: <span class="font-medium">{{ $this->myBid->status->value }}</span>
-                    · {{ __('Monto') }}: <span class="font-medium">{{ $this->myBid->amount }} {{ $this->myBid->currency }}</span>
+                    · {{ __('Monto') }}: <span class="font-medium">${{ $this->myBid->formatted_amount }} {{ $this->myBid->currency }}</span>
                     @if ($this->myBid->valid_until)
                         · {{ __('Vigencia') }}: <span class="font-medium">{{ $this->myBid->valid_until->format('Y-m-d') }}</span>
                     @endif
@@ -71,10 +71,10 @@
             @endif
 
             <form wire:submit="submit" class="mt-4 space-y-4">
-                <flux:input wire:model="amount" :label="__('Monto')" type="number" step="0.01" inputmode="decimal" />
-                <flux:textarea wire:model="message" :label="__('Mensaje (opcional)')" rows="4" />
+                <flux:input wire:model="amount" :label="__('Monto')" type="number" step="1" inputmode="numeric" class="min-h-[44px]" />
+                <flux:textarea wire:model="message" :label="__('Mensaje (opcional)')" rows="4" class="min-h-[120px]" />
                 <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit">{{ __('Enviar presupuesto') }}</flux:button>
+                    <flux:button variant="primary" type="submit" class="min-h-[44px] px-6 py-2.5">{{ __('Enviar presupuesto') }}</flux:button>
                 </div>
                 <flux:text class="text-sm">
                     {{ __('La cotización tiene una vigencia de 15 días.') }}
@@ -89,7 +89,7 @@
             <div class="mt-4 space-y-3">
                 @foreach ($this->bidsForClient as $bid)
                     <div class="rounded-lg border border-zinc-200 p-4 dark:border-zinc-700">
-                        <flux:text class="text-sm font-medium">{{ $bid->user?->name }} · {{ $bid->amount }} {{ $bid->currency }}</flux:text>
+                        <flux:text class="text-sm font-medium">{{ $bid->user?->name }} · ${{ $bid->formatted_amount }} {{ $bid->currency }}</flux:text>
                         <flux:text class="mt-1 text-sm">{{ __('Estado') }}: {{ $bid->status->value }}</flux:text>
                         @if ($bid->message)
                             <flux:text class="mt-2 text-sm whitespace-pre-line">{{ $bid->message }}</flux:text>

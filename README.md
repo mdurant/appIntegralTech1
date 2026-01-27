@@ -3,8 +3,8 @@
 **Documentación v0.1 (2026-01-24)**
 
 **Líder de Desarrollo**: Mauricio Durán  
-**Contacto**: `Mauricioduant@gmail.com`  
-**Empresa**: IntegralTech - Soluciones Tech. Chile
+**Contacto**: `mauriciodurant@gmail.com`  
+**Empresa**: IntegralTech - Soluciones Tech --  Chile
 
 ---
 
@@ -29,6 +29,9 @@ La aplicación usa autenticación con **Laravel Fortify** y UI con **Livewire v4
 - **DB**: SQLite (por defecto)
 - **Queue**: database (por defecto)
 - **Tests**: Pest
+- **Permisos**: Spatie Laravel Permission (pendiente instalación)
+- **Media**: Spatie Laravel Media Library (pendiente instalación)
+- **PDF**: DomPDF (pendiente instalación)
 
 ---
 
@@ -82,16 +85,16 @@ php artisan test --compact
 El seeding crea usuarios base en `Database\\Seeders\\UserSeeder`:
 
 - **Admin**
-  - Email: `admin@example.com`
+  - Email: `admin@integraltech.cl`
   - Password: `password`
 
 - **Guest**
-  - Email: `guest@example.com`
+  - Email: `invitado@integraltech.cl`
   - Password: `password`
 
 Además se crean:
-- **Providers (users)**: 20 usuarios (email aleatorio) con password `password`
-- **Clients**: 3 usuarios (email aleatorio) con password `password`
+- **Providers (users)**: 20 usuarios con nombres chilenos, emails chilenos y password `password`
+- **Clients**: 3 usuarios con nombres chilenos, emails chilenos y password `password`
 
 ---
 
@@ -230,7 +233,202 @@ Luego reinicia `php artisan serve` (y `queue:work` si aplica).
 
 ---
 
+## Datos de Seeders (Chilenos)
+
+Todos los seeders generan datos realistas chilenos:
+
+- **Nombres**: Nombres y apellidos chilenos comunes
+- **Teléfonos**: Formato `+569 xxxxxxxx` (celular chileno)
+- **Emails**: Dominios chilenos (`gmail.com`, `hotmail.com`, `yahoo.cl`, `outlook.cl`, `live.cl`)
+- **Localizaciones**: Regiones y comunas reales de Chile (16 regiones, todas las comunas)
+- **Direcciones**: Direcciones chilenas con formato estándar
+- **Empresas**: Nombres de empresas de fletes/transporte chilenos
+- **Solicitudes**: Enfocadas en servicios de **fletes y transporte**
+- **Categorías**: 
+  - Fletes y Transporte (Fletes Urbanos, Interurbanos, Carga Pesada, Urgentes)
+  - Mudanzas (Residenciales, Comerciales)
+  - Logística (Distribución, Almacenamiento)
+
+### Helper de Datos Chilenos
+
+El proyecto incluye `App\Helpers\ChileanDataHelper` que proporciona métodos para generar:
+- Teléfonos chilenos (`chileanPhone()`)
+- Nombres chilenos (`chileanName()`)
+- Emails chilenos (`chileanEmail()`)
+- Localizaciones chilenas (`randomLocation()`)
+- Direcciones chilenas (`chileanAddress()`)
+- Nombres de empresas de fletes (`fleteCompanyName()`)
+- Títulos y descripciones de solicitudes de fletes (`fleteRequestTitle()`, `fleteRequestDescription()`)
+- Mensajes de cotización (`fleteBidMessage()`)
+
+Los datos de regiones y comunas se basan en el JSON oficial de Chile disponible en: https://gist.github.com/juanbrujo/0fd2f4d126b3ce5a95a7dd1f28b3d8dd
+
+---
+
+## Arquitectura de Permisos
+
+El proyecto está preparado para integrar **Spatie Laravel Permission** para gestión granular de permisos. La estructura base está lista:
+
+### Instalación Pendiente
+
+```bash
+composer require spatie/laravel-permission
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+php artisan migrate
+```
+
+### Permisos Planificados
+
+- **Cliente**: `view-own-requests`, `create-requests`, `manage-own-requests`
+- **Profesional**: `view-published-requests`, `create-bids`, `manage-own-bids`
+- **Admin**: `manage-all`, `configure-system`, `view-analytics`
+
+### Seeder de Permisos
+
+El seeder `RolePermissionSeeder` está creado y listo para poblar roles y permisos base una vez instalado el paquete.
+
+---
+
+## Sistema de Valoraciones
+
+El sistema permite a los clientes valorar órdenes de trabajo completadas con:
+
+- **Valoración**: 1-5 estrellas
+- **Comentario**: Opcional, máximo 1000 caracteres
+- **Validaciones**: Solo OTs completadas, una valoración por cliente por OT
+
+### Modelo y Relaciones
+
+- `ratings` table: `work_order_id`, `user_id`, `rating`, `comment`
+- `Rating` **belongsTo** `WorkOrder`, `User`
+- `WorkOrder` **hasMany** `Rating`
+
+### Rutas
+
+- `ratings/create/{workOrder}`: Formulario de valoración
+
+---
+
+## Dashboards Analíticos
+
+### Dashboard Cliente (`client/dashboard`)
+
+- **Métricas por estado**: Pendientes, En Curso, Completadas, Pagadas
+- **Listado de OTs**: Con filtrado por estado
+- **Gráfico de gastos por categoría**: Distribución de gastos (preparado para Chart.js)
+
+### Dashboard Profesional (`provider/dashboard`)
+
+- **Métricas de rendimiento**:
+  - Total de cotizaciones enviadas
+  - Cotizaciones aceptadas
+  - Tasa de conversión (%)
+  - Total de órdenes de trabajo
+- **Análisis financiero**:
+  - Total ofertado vs Total real (OTs completadas)
+  - Gráfico comparativo (preparado para Chart.js)
+- **Listado de OTs**: Órdenes de trabajo adjudicadas
+
+### Configuración de Perfil Profesional (`provider/profile-settings`)
+
+Permite a los profesionales completar:
+- **RUT**: Validación con formato chileno
+- **Giro SII**: Código de actividad económica
+- **Logo/Imagen**: Upload de imagen de perfil
+
+---
+
+## Configuraciones del Sistema
+
+El sistema incluye una tabla `system_settings` para parámetros configurables:
+
+### Settings Disponibles
+
+- `quote_validity_days`: Días de vigencia de cotizaciones (default: 15)
+- `service_request_expiry_days`: Días de expiración de solicitudes (default: 15)
+- `enable_ratings`: Habilitar sistema de valoraciones (default: true)
+- `min_rating`: Valoración mínima (default: 1)
+- `max_rating`: Valoración máxima (default: 5)
+
+### Uso en Código
+
+```php
+use App\Models\SystemSetting;
+
+// Obtener valor
+$validityDays = SystemSetting::get('quote_validity_days', 15);
+
+// Establecer valor
+SystemSetting::set('quote_validity_days', 20, 'integer', 'Días de vigencia');
+```
+
+---
+
+## Nuevas Tablas y Campos
+
+### Tablas Nuevas
+
+- `regions`: Regiones de Chile
+- `communes`: Comunas de Chile (relacionadas con regiones)
+- `banks`: Bancos activos en Chile
+- `account_types`: Tipos de cuenta bancaria
+- `ratings`: Valoraciones de órdenes de trabajo
+- `system_settings`: Configuraciones del sistema
+
+### Campos Nuevos
+
+**`users`**:
+- `rut`: RUT chileno (nullable)
+- `giro_sii`: Giro SII (nullable)
+
+**`service_requests`**:
+- `region_id`: FK a `regions` (nullable)
+- `commune_id`: FK a `communes` (nullable)
+
+**`work_orders`**:
+- `budget_estimated`: Presupuesto estimado del cliente (decimal)
+- `final_price`: Precio final del profesional (decimal)
+- `started_at`: Fecha de inicio (timestamp, nullable)
+- `completed_at`: Fecha de finalización (timestamp, nullable)
+- `paid_at`: Fecha de pago (timestamp, nullable)
+
+### Estados Nuevos
+
+**`ServiceBidStatus`**:
+- `Draft`: Borrador
+- `Expired`: Vencida (marcada automáticamente por comando)
+
+**`WorkOrderStatus`**:
+- `Paid`: Pagada
+
+---
+
+## Comandos Artisan
+
+### Marcar Cotizaciones Vencidas
+
+```bash
+php artisan quotes:mark-expired
+```
+
+Este comando se ejecuta automáticamente diariamente vía scheduler. Marca como `Expired` todas las cotizaciones con `valid_until < now()` y estado `Submitted`.
+
+---
+
+## API Endpoints
+
+### Búsqueda de Categorías (Select2)
+
+```
+GET /api/service-categories/search?q=texto
+```
+
+Retorna JSON compatible con Select2 para autocompletado de categorías en formularios.
+
+---
+
 ## Notas
 - Zona horaria usada localmente: `America/Santiago` (según tu config actual).
 - Para cambios en UI (Vite), asegúrate de tener `npm run dev` ejecutándose.
+- Todos los datos generados por seeders son en español y específicos de Chile.
 

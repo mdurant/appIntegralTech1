@@ -37,7 +37,7 @@
             @forelse ($this->bids as $bid)
                 <div class="rounded-lg border border-zinc-200 p-4 dark:border-zinc-700">
                     <flux:text class="text-sm font-medium">
-                        {{ $bid->user?->name }} · {{ $bid->amount }} {{ $bid->currency }}
+                        {{ $bid->user?->name }} · ${{ $bid->formatted_amount }} {{ $bid->currency }}
                         @if ($bid->valid_until)
                             · {{ __('Vigencia') }}: {{ $bid->valid_until->format('Y-m-d') }}
                         @endif

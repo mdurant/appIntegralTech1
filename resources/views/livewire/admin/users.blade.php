@@ -2,7 +2,7 @@
     <div class="flex items-end justify-between gap-4">
         <div class="space-y-2">
             <flux:heading size="lg">{{ __('Usuarios') }}</flux:heading>
-            <flux:text>{{ __('Roles globales y tenant actual.') }}</flux:text>
+            <flux:text>{{ __('Roles globales y organización actual.') }}</flux:text>
         </div>
         <a href="{{ route('admin.dashboard') }}" wire:navigate>
             <flux:button>{{ __('Volver') }}</flux:button>
@@ -26,14 +26,14 @@
                         >
                             @foreach ($roles as $role)
                                 <option value="{{ $role->value }}" @selected($user->system_role?->value === $role->value)>
-                                    {{ $role->value }}
+                                    {{ $role->label() }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="md:col-span-4">
-                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-200">{{ __('Tenant actual') }}</label>
+                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-200">{{ __('Organización actual') }}</label>
                         <select
                             class="mt-1 w-full rounded-md border-zinc-200 bg-white text-sm dark:border-zinc-700 dark:bg-zinc-900"
                             wire:change="updateTenant({{ $user->id }}, $event.target.value ? parseInt($event.target.value) : null)"

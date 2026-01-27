@@ -11,7 +11,7 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav class="text-app-text">
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
+                <flux:sidebar.group :heading="__('Plataforma')" class="grid">
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
@@ -26,6 +26,18 @@
                         </flux:sidebar.item>
                     @endif
 
+                    @if (!auth()->user()->isClient() && !auth()->user()->isGuest())
+                        <flux:sidebar.item icon="wrench" :href="route('provider.work-orders.index')" :current="request()->routeIs('provider.work-orders.*')" wire:navigate>
+                            {{ __('Mis Órdenes de Trabajo') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="sparkles" :href="route('provider.work-orders.chart')" :current="request()->routeIs('provider.work-orders.chart')" wire:navigate>
+                            {{ __('Gráficos de OTs') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="folder-git-2" :href="route('provider.bids.index')" :current="request()->routeIs('provider.bids.*')" wire:navigate>
+                            {{ __('Mis Cotizaciones') }}
+                        </flux:sidebar.item>
+                    @endif
+
                     @if (auth()->user()->isAdministrator())
                         <flux:sidebar.item icon="cog" :href="route('admin.dashboard')" :current="request()->routeIs('admin.*')" wire:navigate>
                             {{ __('Admin') }}
@@ -35,16 +47,6 @@
             </flux:sidebar.nav>
 
             <flux:spacer />
-
-            <flux:sidebar.nav class="text-app-text">
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
-                </flux:sidebar.item>
-
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
-                </flux:sidebar.item>
-            </flux:sidebar.nav>
 
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
         </flux:sidebar>
@@ -82,7 +84,7 @@
 
                     <flux:menu.radio.group>
                         <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
-                            {{ __('Settings') }}
+                            {{ __('Configuración') }}
                         </flux:menu.item>
                     </flux:menu.radio.group>
 
@@ -90,15 +92,16 @@
 
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
-                        <flux:menu.item
-                            as="button"
+                        <button
                             type="submit"
-                            icon="arrow-right-start-on-rectangle"
-                            class="w-full cursor-pointer"
+                            class="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-app-text hover:bg-app-hover"
                             data-test="logout-button"
                         >
-                            {{ __('Log Out') }}
-                        </flux:menu.item>
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            {{ __('Cerrar sesión') }}
+                        </button>
                     </form>
                 </flux:menu>
             </flux:dropdown>

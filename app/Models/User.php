@@ -30,6 +30,8 @@ class User extends Authenticatable
         'system_role',
         'current_tenant_id',
         'avatar_path',
+        'rut',
+        'giro_sii',
     ];
 
     /**

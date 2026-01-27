@@ -22,18 +22,20 @@
             <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                 {{ __('Settings') }}
             </flux:menu.item>
-            <form method="POST" action="{{ route('logout') }}" class="w-full">
-                @csrf
-                <flux:menu.item
-                    as="button"
-                    type="submit"
-                    icon="arrow-right-start-on-rectangle"
-                    class="w-full cursor-pointer"
-                    data-test="logout-button"
-                >
-                    {{ __('Log Out') }}
-                </flux:menu.item>
-            </form>
         </flux:menu.radio.group>
+        <flux:menu.separator />
+        <form method="POST" action="{{ route('logout') }}" class="w-full">
+            @csrf
+            <button
+                type="submit"
+                class="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-app-text hover:bg-app-hover"
+                data-test="logout-button"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                {{ __('Log Out') }}
+            </button>
+        </form>
     </flux:menu>
 </flux:dropdown>

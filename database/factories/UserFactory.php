@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Helpers\ChileanDataHelper;
 use App\SystemRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -24,13 +25,17 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $name = ChileanDataHelper::chileanName();
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $name,
+            'email' => ChileanDataHelper::chileanEmail($name),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'system_role' => 'user',
             'current_tenant_id' => null,
+            'rut' => ChileanDataHelper::chileanRut(),
+            'giro_sii' => null,
             'remember_token' => Str::random(10),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
@@ -85,6 +90,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn () => [
             'system_role' => SystemRole::User->value,
+            'giro_sii' => ChileanDataHelper::giroSii(),
         ]);
     }
 }

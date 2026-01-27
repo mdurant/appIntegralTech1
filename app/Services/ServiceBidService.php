@@ -4,10 +4,10 @@ namespace App\Services;
 
 use App\Models\ServiceBid;
 use App\Models\ServiceRequest;
+use App\Models\SystemSetting;
 use App\Models\User;
 use App\ServiceBidStatus;
 use App\ServiceRequestStatus;
-use App\Services\WorkOrderService;
 
 class ServiceBidService
 {
@@ -20,17 +20,23 @@ class ServiceBidService
         ?string $message = null,
         string $currency = 'CLP',
     ): ServiceBid {
+        // Convertir a entero (sin decimales) para formato chileno
+        $amountInteger = (int) round((float) $amount);
+
+        // Obtener vigencia desde configuración del sistema
+        $validityDays = (int) SystemSetting::get('quote_validity_days', 15);
+
         return ServiceBid::updateOrCreate(
             [
                 'service_request_id' => $serviceRequest->id,
                 'user_id' => $actor->id,
             ],
             [
-                'amount' => $amount,
+                'amount' => $amountInteger,
                 'currency' => $currency,
                 'message' => $message,
                 'status' => ServiceBidStatus::Submitted,
-                'valid_until' => now()->addDays(15),
+                'valid_until' => now()->addDays($validityDays),
             ],
         );
     }

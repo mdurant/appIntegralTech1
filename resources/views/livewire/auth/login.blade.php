@@ -1,7 +1,5 @@
-<x-layouts::auth>
+<x-layouts::auth.login-split>
     <div class="flex flex-col gap-6">
-        <x-auth-header title="Accede a tu cuenta" description="Ingresa tu email y contraseña para continuar" />
-
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
 
@@ -17,7 +15,7 @@
                 required
                 autofocus
                 autocomplete="email"
-                placeholder="email@example.com"
+                class="min-h-[44px]"
             />
 
             <!-- Password -->
@@ -30,11 +28,12 @@
                     autocomplete="current-password"
                     placeholder="Contraseña"
                     viewable
+                    class="min-h-[44px]"
                 />
 
                 @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('¿Olvidaste tu contraseña?') }}
+                    <flux:link class="absolute top-0 text-sm end-0 mt-1" :href="route('password.request')" wire:navigate>
+                        {{ __('¿Problemas con tu clave? Recupérala') }}
                     </flux:link>
                 @endif
             </div>
@@ -43,8 +42,8 @@
             <flux:checkbox name="remember" label="Recordarme" :checked="old('remember')" />
 
             <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Ingresar') }}
+                <flux:button variant="primary" type="submit" class="w-full min-h-[44px] px-6 py-3 text-base" data-test="login-button">
+                    {{ __('INGRESAR') }}
                 </flux:button>
             </div>
         </form>
@@ -56,4 +55,4 @@
             </div>
         @endif
     </div>
-</x-layouts::auth>
+</x-layouts::auth.login-split>

@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Rating;
+use App\Policies\RatingPolicy;
 use App\Support\TenantContext;
 use Carbon\CarbonImmutable;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -25,8 +27,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->registerPolicies();
         $this->configureDefaults();
         $this->configureAuthorization();
+    }
+
+    /**
+     * Register the application's policies.
+     */
+    protected function registerPolicies(): void
+    {
+        Gate::policy(Rating::class, RatingPolicy::class);
     }
 
     protected function configureDefaults(): void

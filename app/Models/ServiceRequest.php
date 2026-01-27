@@ -27,6 +27,8 @@ class ServiceRequest extends Model
         'description',
         'location_text',
         'address',
+        'region_id',
+        'commune_id',
         'notes',
         'status',
         'published_at',
@@ -79,5 +81,15 @@ class ServiceRequest extends Model
     public function attachments(): HasMany
     {
         return $this->hasMany(ServiceRequestAttachment::class)->orderBy('sort_order');
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function commune(): BelongsTo
+    {
+        return $this->belongsTo(Commune::class);
     }
 }

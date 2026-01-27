@@ -28,7 +28,6 @@ class Tenants extends Component
     public function render()
     {
         return view('livewire.admin.tenants')
-            ->layout('layouts.app', ['title' => __('Admin · Tenants')]);
+            ->layout('layouts.app', ['title' => __('Admin · Organizaciones')]);
     }
 }
-

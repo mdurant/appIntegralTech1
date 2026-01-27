@@ -14,7 +14,7 @@
             @forelse ($this->bids as $bid)
                 <div class="flex flex-col gap-3 rounded-lg border border-zinc-200 p-4 dark:border-zinc-700 md:flex-row md:items-center md:justify-between">
                     <div class="space-y-1">
-                        <flux:heading size="sm">{{ $bid->user?->email }} · {{ $bid->amount }} {{ $bid->currency }}</flux:heading>
+                        <flux:heading size="sm">{{ $bid->user?->email }} · ${{ $bid->formatted_amount }} {{ $bid->currency }}</flux:heading>
                         <flux:text class="text-sm">
                             {{ __('Solicitud') }}: {{ $bid->serviceRequest?->title }} · {{ $bid->status->value }}
                         </flux:text>

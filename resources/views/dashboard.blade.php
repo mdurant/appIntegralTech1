@@ -9,9 +9,9 @@
             </flux:text>
 
             <flux:text class="text-sm">
-                {{ __('Rol') }}: <span class="font-medium">{{ $user->system_role?->value ?? 'user' }}</span>
+                {{ __('Rol') }}: <span class="font-medium">{{ $user->system_role?->label() ?? __('Usuario') }}</span>
                 @if ($user->currentTenant)
-                    · {{ __('Tenant') }}: <span class="font-medium">{{ $user->currentTenant->name }}</span>
+                    · {{ __('Organización') }}: <span class="font-medium">{{ $user->currentTenant->name }}</span>
                 @endif
             </flux:text>
         </div>

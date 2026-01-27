@@ -4,8 +4,8 @@ namespace App\Livewire\Services;
 
 use App\Models\ServiceBid;
 use App\Models\ServiceRequest;
-use App\Services\ServiceBidService;
 use App\ServiceRequestStatus;
+use App\Services\ServiceBidService;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -96,14 +96,14 @@ class Show extends Component
         abort_unless($this->serviceRequest->status === ServiceRequestStatus::Published, 403);
 
         $validated = $this->validate([
-            'amount' => ['required', 'numeric', 'min:0.01'],
+            'amount' => ['required', 'numeric', 'min:1'],
             'message' => ['nullable', 'string', 'max:2000'],
         ]);
 
         $serviceBidService->submit(
             actor: auth()->user(),
             serviceRequest: $this->serviceRequest,
-            amount: (string) $validated['amount'],
+            amount: (string) (int) $validated['amount'],
             message: $validated['message'] ?? null,
         );
 
@@ -116,4 +116,3 @@ class Show extends Component
             ->layout('layouts.app', ['title' => $this->serviceRequest->title]);
     }
 }
-

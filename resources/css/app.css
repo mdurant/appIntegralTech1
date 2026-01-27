@@ -119,6 +119,69 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+/*
+|--------------------------------------------------------------------------
+| Hover effects for buttons with links and footer links
+|--------------------------------------------------------------------------
+*/
+
+/* Color hover personalizado */
+:root {
+    --color-hover-link: oklch(0.48 0.19 275);
+}
+
+/* Botones dentro de enlaces - efecto hover en el texto con transición */
+a [data-flux-button],
+a button[data-flux-button] {
+    transition: color 0.2s ease-in-out;
+}
+
+/* Solo botones SIN variante primary cambian de color en hover */
+a:hover [data-flux-button]:not([data-variant="primary"]),
+a:hover button[data-flux-button]:not([data-variant="primary"]) {
+    --tw-text-opacity: 1;
+    color: var(--color-hover-link);
+}
+
+/* Botones primary mantienen el texto blanco en hover */
+a:hover [data-flux-button][data-variant="primary"],
+a:hover button[data-flux-button][data-variant="primary"] {
+    color: white;
+}
+
+/* Contenido interno de botones dentro de enlaces */
+a [data-flux-button] *,
+a button[data-flux-button] * {
+    transition: color 0.2s ease-in-out;
+}
+
+/* Solo contenido de botones SIN variante primary cambia de color en hover */
+a:hover [data-flux-button]:not([data-variant="primary"]) *,
+a:hover button[data-flux-button]:not([data-variant="primary"]) * {
+    color: var(--color-hover-link);
+}
+
+/* Contenido de botones primary mantiene el texto blanco en hover */
+a:hover [data-flux-button][data-variant="primary"] *,
+a:hover button[data-flux-button][data-variant="primary"] * {
+    color: white;
+}
+
+/* Enlaces del footer con hover y transición */
+.footer-link {
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover,
+footer a.footer-link:hover {
+    color: var(--color-hover-link);
+}
+
+/* Asegurar que el hover funcione en todos los elementos del enlace del footer */
+.footer-link:hover * {
+    color: var(--color-hover-link);
+}
+
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */

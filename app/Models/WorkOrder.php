@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Helpers\ChileanDataHelper;
 use App\WorkOrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WorkOrder extends Model
 {
@@ -21,6 +23,11 @@ class WorkOrder extends Model
         'tenant_id',
         'awarded_to_user_id',
         'status',
+        'budget_estimated',
+        'final_price',
+        'started_at',
+        'completed_at',
+        'paid_at',
     ];
 
     /**
@@ -30,6 +37,11 @@ class WorkOrder extends Model
     {
         return [
             'status' => WorkOrderStatus::class,
+            'budget_estimated' => 'decimal:2',
+            'final_price' => 'decimal:2',
+            'started_at' => 'datetime',
+            'completed_at' => 'datetime',
+            'paid_at' => 'datetime',
         ];
     }
 
@@ -51,5 +63,46 @@ class WorkOrder extends Model
     public function awardedTo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'awarded_to_user_id');
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    /**
+     * Formatea el budget_estimated en formato chileno
+     */
+    public function getFormattedBudgetEstimatedAttribute(): string
+    {
+        if (! $this->budget_estimated) {
+            return '—';
+        }
+
+        return ChileanDataHelper::formatChileanCurrency($this->budget_estimated);
+    }
+
+    /**
+     * Formatea el final_price en formato chileno
+     */
+    public function getFormattedFinalPriceAttribute(): string
+    {
+        if (! $this->final_price) {
+            return '—';
+        }
+
+        return ChileanDataHelper::formatChileanCurrency($this->final_price);
+    }
+
+    /**
+     * Calcula la diferencia entre presupuesto estimado y precio final
+     */
+    public function getPriceDifferenceAttribute(): ?float
+    {
+        if (! $this->budget_estimated || ! $this->final_price) {
+            return null;
+        }
+
+        return $this->final_price - $this->budget_estimated;
     }
 }

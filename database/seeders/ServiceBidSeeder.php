@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Helpers\ChileanDataHelper;
 use App\Models\ServiceBid;
 use App\Models\ServiceRequest;
 use App\Models\User;
@@ -35,9 +36,9 @@ class ServiceBidSeeder extends Seeder
                             'user_id' => $bidder->id,
                         ],
                         [
-                            'amount' => fake()->randomFloat(2, 10, 5000),
+                            'amount' => fake()->randomFloat(0, 20000, 500000),
                             'currency' => 'CLP',
-                            'message' => fake()->optional()->sentence(),
+                            'message' => ChileanDataHelper::fleteBidMessage(),
                             'status' => ServiceBidStatus::Submitted->value,
                             'valid_until' => now()->addDays(15),
                         ],

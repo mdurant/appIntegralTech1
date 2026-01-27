@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Helpers\ChileanDataHelper;
 use App\Models\ServiceRequest;
 use App\Models\User;
 use App\ServiceBidStatus;
@@ -22,9 +23,9 @@ class ServiceBidFactory extends Factory
         return [
             'service_request_id' => ServiceRequest::factory(),
             'user_id' => User::factory()->provider(),
-            'amount' => fake()->randomFloat(2, 10, 5000),
+            'amount' => fake()->randomFloat(0, 20000, 500000),
             'currency' => 'CLP',
-            'message' => fake()->optional()->sentence(),
+            'message' => ChileanDataHelper::fleteBidMessage(),
             'status' => ServiceBidStatus::Submitted->value,
         ];
     }

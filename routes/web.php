@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Auth\VerifyCode;
+use App\Http\Controllers\ServiceRequestAttachmentController;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\ServiceBids as AdminServiceBids;
 use App\Livewire\Admin\ServiceCategories as AdminServiceCategories;
@@ -8,13 +8,13 @@ use App\Livewire\Admin\ServiceFormFields as AdminServiceFormFields;
 use App\Livewire\Admin\ServiceRequests as AdminServiceRequests;
 use App\Livewire\Admin\Tenants as AdminTenants;
 use App\Livewire\Admin\Users as AdminUsers;
+use App\Livewire\Auth\VerifyCode;
 use App\Livewire\Client\ServiceRequests\Index as ClientServiceRequestsIndex;
 use App\Livewire\Client\ServiceRequests\Show as ClientServiceRequestsShow;
 use App\Livewire\Marketing\Landing;
-use App\Livewire\Marketing\PublicServicesBrowse as PublicServicesBrowse;
+use App\Livewire\Marketing\PublicServicesBrowse;
 use App\Livewire\Services\Browse as ServicesBrowse;
 use App\Livewire\Services\Show as ServicesShow;
-use App\Http\Controllers\ServiceRequestAttachmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::livewire('/', Landing::class)->name('home');
@@ -34,6 +34,16 @@ Route::middleware(['auth', 'email.code'])->group(function () {
 
     Route::livewire('client/requests', ClientServiceRequestsIndex::class)->name('client.requests.index');
     Route::livewire('client/requests/{serviceRequest}', ClientServiceRequestsShow::class)->name('client.requests.show');
+    Route::livewire('client/dashboard', \App\Livewire\Client\Dashboard::class)->name('client.dashboard');
+
+    Route::livewire('provider/dashboard', \App\Livewire\Provider\Dashboard::class)->name('provider.dashboard');
+    Route::livewire('provider/profile-settings', \App\Livewire\Provider\ProfileSettings::class)->name('provider.profile-settings');
+    Route::livewire('provider/work-orders', \App\Livewire\Provider\WorkOrders\Index::class)->name('provider.work-orders.index');
+    Route::livewire('provider/work-orders/{workOrder}', \App\Livewire\Provider\WorkOrders\Show::class)->name('provider.work-orders.show');
+    Route::livewire('provider/work-orders-chart', \App\Livewire\Provider\WorkOrders\Chart::class)->name('provider.work-orders.chart');
+    Route::livewire('provider/bids', \App\Livewire\Provider\Bids\Index::class)->name('provider.bids.index');
+
+    Route::livewire('ratings/create/{workOrder}', \App\Livewire\Ratings\CreateRating::class)->name('ratings.create');
 });
 
 Route::middleware(['auth', 'email.code', 'admin'])

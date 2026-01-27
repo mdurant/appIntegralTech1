@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Helpers\ChileanDataHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -17,7 +18,7 @@ class TenantFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->company();
+        $name = ChileanDataHelper::fleteCompanyName();
 
         return [
             'name' => $name,
