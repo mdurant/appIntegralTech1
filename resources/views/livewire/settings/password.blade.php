@@ -1,6 +1,4 @@
 <section class="w-full">
-    @include('partials.settings-heading')
-
     <flux:heading class="sr-only">{{ __('Configuración de Contraseña') }}</flux:heading>
 
     <x-settings.layout :heading="__('Seguridad')" :subheading="__('Asegúrate de usar una contraseña larga y aleatoria para mantener tu cuenta segura')">

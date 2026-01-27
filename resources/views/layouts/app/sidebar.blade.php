@@ -206,19 +206,89 @@
             }
 
             function initializeDatePickers(container = document) {
-                const dateInputs = container.querySelectorAll('.date-picker');
-                dateInputs.forEach(function(input) {
+                // Buscar todos los [data-flux-field] que contengan un elemento con data-date-picker="true"
+                const allFluxFields = container.querySelectorAll('[data-flux-field]');
+                
+                allFluxFields.forEach(function(fluxField) {
+                    // Verificar si este campo contiene un elemento con data-date-picker="true"
+                    const hasDatePicker = fluxField.querySelector('[data-date-picker="true"]') !== null;
+                    
+                    if (!hasDatePicker) {
+                        return; // No es un campo de fecha
+                    }
+                    
+                    // Buscar el input real dentro del contenedor Flux
+                    // Flux UI estructura: [data-flux-field] > [data-flux-control] > input
+                    let input = fluxField.querySelector('input[type="text"]') || 
+                               fluxField.querySelector('input') ||
+                               fluxField.querySelector('[data-flux-control]');
+                    
+                    // Si no encontramos un input válido, saltar
+                    if (!input || (input.tagName && input.tagName.toLowerCase() !== 'input')) {
+                        return;
+                    }
+                    
+                    // Si ya está inicializado, destruir y reinicializar para Livewire
                     if (input._flatpickr) {
-                        return; // Ya está inicializado
+                        input._flatpickr.destroy();
                     }
                     
                     if (typeof flatpickr !== 'undefined') {
+                        // Obtener el wire:model del input o del contenedor
+                        const wireModel = input.getAttribute('wire:model') || 
+                                        fluxField.getAttribute('wire:model') ||
+                                        fluxField.closest('[wire\\:model]')?.getAttribute('wire:model');
+                        
                         flatpickr(input, {
                             locale: flatpickr.l10ns.es,
                             dateFormat: 'd-m-Y',
                             allowInput: true,
                             clickOpens: true,
                             animate: true,
+                            defaultDate: input.value || null,
+                            onChange: function(selectedDates, dateStr, instance) {
+                                // Sincronizar con Livewire si está disponible
+                                if (typeof Livewire !== 'undefined' && wireModel) {
+                                    const livewireId = input.closest('[wire\\:id]')?.getAttribute('wire:id');
+                                    if (livewireId) {
+                                        const component = Livewire.find(livewireId);
+                                        if (component) {
+                                            component.set(wireModel, dateStr);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+                
+                // También buscar inputs directos con clase date-picker (fallback)
+                const directInputs = container.querySelectorAll('input.date-picker');
+                directInputs.forEach(function(input) {
+                    if (input._flatpickr) {
+                        input._flatpickr.destroy();
+                    }
+                    
+                    if (typeof flatpickr !== 'undefined') {
+                        const wireModel = input.getAttribute('wire:model');
+                        flatpickr(input, {
+                            locale: flatpickr.l10ns.es,
+                            dateFormat: 'd-m-Y',
+                            allowInput: true,
+                            clickOpens: true,
+                            animate: true,
+                            defaultDate: input.value || null,
+                            onChange: function(selectedDates, dateStr, instance) {
+                                if (typeof Livewire !== 'undefined' && wireModel) {
+                                    const livewireId = input.closest('[wire\\:id]')?.getAttribute('wire:id');
+                                    if (livewireId) {
+                                        const component = Livewire.find(livewireId);
+                                        if (component) {
+                                            component.set(wireModel, dateStr);
+                                        }
+                                    }
+                                }
+                            }
                         });
                     }
                 });

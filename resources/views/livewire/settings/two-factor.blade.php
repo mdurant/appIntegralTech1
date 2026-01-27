@@ -1,6 +1,4 @@
 <section class="w-full">
-    @include('partials.settings-heading')
-
     <flux:heading class="sr-only">{{ __('Configuración de Autenticación de Dos Factores') }}</flux:heading>
 
     <x-settings.layout
@@ -206,5 +204,9 @@
                 </div>
             @endif
         </div>
-    </flux:modal>
-</section>
+    </x-settings.layout>
+
+    <flux:modal
+        name="two-factor-setup-modal"
+        class="max-w-md md:min-w-md"
+        @close="closeModal"

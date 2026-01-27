@@ -1,6 +1,4 @@
 <section class="w-full">
-    @include('partials.settings-heading')
-
     <flux:heading class="sr-only">{{ __('Configuración de Perfil') }}</flux:heading>
 
     <x-settings.layout :heading="__('Perfil')" :subheading="__('Actualiza tu información personal y profesional')">
@@ -43,7 +41,7 @@
             </div>
 
             {{-- Información básica --}}
-            <div class="space-y-4 rounded-xl border border-app-border bg-app-surface p-6">
+            <div class="space-y-4 rounded-xl border border-app-border bg-app-surface-2 p-6">
                 <flux:heading size="sm">{{ __('Información Personal') }}</flux:heading>
 
                 <flux:input wire:model="name" :label="__('Nombre completo')" type="text" required autofocus autocomplete="name" />
@@ -63,7 +61,7 @@
                         <flux:text class="mt-1 text-sm !text-danger">{{ $message }}</flux:text>
                     @enderror
 
-                    <flux:input wire:model="birth_date" class="date-picker" :label="__('Fecha de Nacimiento')" type="text" placeholder="DD-MM-YYYY" hint="{{ __('Formato: DD-MM-YYYY') }}" />
+                    <flux:input wire:model="birth_date" class="date-picker" :label="__('Fecha de Nacimiento')" type="text" placeholder="DD-MM-YYYY" hint="{{ __('Formato: DD-MM-YYYY') }}" data-date-picker="true" />
                 </div>
 
                 <flux:input wire:model="email" :label="__('Correo electrónico')" type="email" required autocomplete="email" />
@@ -89,7 +87,7 @@
 
             {{-- Información profesional (solo para proveedores) --}}
             @if (auth()->user()->isProvider())
-                <div class="space-y-4 rounded-xl border border-app-border bg-app-surface p-6">
+                <div class="space-y-4 rounded-xl border border-app-border bg-app-surface-2 p-6">
                     <flux:heading size="sm">{{ __('Información Profesional') }}</flux:heading>
 
                     <flux:input wire:model.live="rut" class="rut-input" :label="__('RUT')" type="text" placeholder="12.345.678-9" />

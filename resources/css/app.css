@@ -1,6 +1,32 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
+/* Settings Tabs Styling */
+.settings-tab {
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    border-bottom: 2px solid transparent;
+}
+
+.settings-tab:hover {
+    color: var(--color-app-text);
+}
+
+.settings-tab-active {
+    color: var(--color-brand-700);
+}
+
+.settings-tab-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--color-brand-700);
+    border-radius: 1px 1px 0 0;
+}
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';

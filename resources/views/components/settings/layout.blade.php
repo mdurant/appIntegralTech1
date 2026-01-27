@@ -1,22 +1,54 @@
-<div class="flex items-start max-md:flex-col">
-    <div class="me-10 w-full pb-4 md:w-[220px]">
-        <flux:navlist aria-label="{{ __('Settings') }}">
-            <flux:navlist.item :href="route('profile.edit')" wire:navigate>{{ __('Profile') }}</flux:navlist.item>
-            <flux:navlist.item :href="route('user-password.edit')" wire:navigate>{{ __('Password') }}</flux:navlist.item>
-            @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-                <flux:navlist.item :href="route('two-factor.show')" wire:navigate>{{ __('Two-Factor Auth') }}</flux:navlist.item>
-            @endif
-            <flux:navlist.item :href="route('appearance.edit')" wire:navigate>{{ __('Apariencia') }}</flux:navlist.item>
-        </flux:navlist>
+<div class="w-full">
+    {{-- Header --}}
+    <div class="mb-6">
+        <flux:heading size="xl" level="1">{{ __('Configuración') }}</flux:heading>
+        <flux:subheading size="lg" class="mt-2">{{ __('Administra tu perfil y la configuración de tu cuenta') }}</flux:subheading>
     </div>
 
-    <flux:separator class="md:hidden" />
+    {{-- Tabs Navigation --}}
+    <div class="mb-8 border-b border-app-border">
+        <nav class="flex gap-1 -mb-px" aria-label="{{ __('Configuración') }}">
+            <a
+                href="{{ route('profile.edit') }}"
+                wire:navigate
+                class="settings-tab group relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all duration-200 {{ request()->routeIs('profile.edit') ? 'settings-tab-active text-brand-700' : 'text-app-muted hover:text-app-text' }}"
+            >
+                <svg class="size-4 shrink-0 {{ request()->routeIs('profile.edit') ? 'text-brand-700' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span>{{ __('Ficha Personal') }}</span>
+            </a>
+            <a
+                href="{{ route('user-password.edit') }}"
+                wire:navigate
+                class="settings-tab group relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all duration-200 {{ request()->routeIs('user-password.edit') ? 'settings-tab-active text-brand-700' : 'text-app-muted hover:text-app-text' }}"
+            >
+                <svg class="size-4 shrink-0 {{ request()->routeIs('user-password.edit') ? 'text-brand-700' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <span>{{ __('Password') }}</span>
+            </a>
+            @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+                <a
+                    href="{{ route('two-factor.show') }}"
+                    wire:navigate
+                    class="settings-tab group relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all duration-200 {{ request()->routeIs('two-factor.show') ? 'settings-tab-active text-brand-700' : 'text-app-muted hover:text-app-text' }}"
+                >
+                    <flux:icon.shield variant="micro" class="{{ request()->routeIs('two-factor.show') ? 'text-brand-700' : '' }}" />
+                    <span>{{ __('Two-Factor (2FA)') }}</span>
+                </a>
+            @endif
+        </nav>
+    </div>
 
-    <div class="flex-1 self-stretch max-md:pt-6">
-        <flux:heading>{{ $heading ?? '' }}</flux:heading>
-        <flux:subheading>{{ $subheading ?? '' }}</flux:subheading>
+    {{-- Content --}}
+    <div class="w-full">
+        <div class="mb-6">
+            <flux:heading size="lg">{{ $heading ?? '' }}</flux:heading>
+            <flux:subheading class="mt-2">{{ $subheading ?? '' }}</flux:subheading>
+        </div>
 
-        <div class="mt-5 w-full max-w-lg">
+        <div class="w-full max-w-4xl">
             {{ $slot }}
         </div>
     </div>
