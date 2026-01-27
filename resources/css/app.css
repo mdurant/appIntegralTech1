@@ -194,32 +194,118 @@ footer a.footer-link:hover {
 
 /*
 |--------------------------------------------------------------------------
-| Form Controls with Icons
+| Form Controls with Icons (Input Group Style - Bootstrap-like)
 |--------------------------------------------------------------------------
 */
 
-/* Contenedor de input con ícono */
-.form-control-with-icon {
-    @apply relative;
+/* Input Group Wrapper */
+.input-group-wrapper {
+    @apply w-full;
 }
 
-.form-control-with-icon [data-flux-control] {
-    @apply pl-10;
+/* Input Group Container - Para Flux UI fields */
+.input-group {
+    @apply flex relative items-stretch;
 }
 
-.form-control-icon {
-    @apply absolute left-3 top-1/2 -translate-y-1/2 text-app-muted pointer-events-none;
+/* Input Group Prefix (Icon) - Similar to Bootstrap */
+.input-group-prefix {
+    @apply inline-flex items-center justify-center px-3;
+    @apply border border-r-0 border-app-border rounded-l-lg;
+    @apply bg-app-surface-2 text-app-muted;
+    @apply transition-colors;
+    @apply flex-shrink-0;
+    @apply self-stretch;
+}
+
+.input-group-prefix svg {
     @apply size-5;
 }
 
-.form-control-icon svg {
-    @apply size-5;
+/* Input Group con Flux Field - El label debe estar fuera del grupo */
+.input-group-wrapper [data-flux-field] {
+    @apply flex-1 min-w-0;
 }
 
-/* Date picker icon */
-.date-picker-icon {
-    @apply absolute left-3 top-1/2 -translate-y-1/2 text-app-muted pointer-events-none z-10;
-    @apply size-5;
+.input-group-wrapper [data-flux-label] {
+    @apply mb-2;
+}
+
+.input-group [data-flux-control]:focus {
+    @apply z-10;
+}
+
+/* Ensure the prefix border matches on focus */
+.input-group:focus-within .input-group-prefix {
+    @apply border-brand-500;
+    @apply z-10;
+}
+
+.input-group:focus-within [data-flux-control] {
+    border-color: var(--color-brand-500) !important;
+}
+
+/* Date picker with icon group */
+.date-picker-group {
+    @apply flex relative items-stretch;
+}
+
+.date-picker-group .input-group-prefix {
+    @apply border-r-0;
+}
+
+.date-picker-group [data-flux-field] {
+    @apply flex-1 min-w-0;
+}
+
+.date-picker-group [data-flux-control].date-picker {
+    @apply rounded-l-none;
+    border-left-width: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.date-picker-group:focus-within .input-group-prefix {
+    @apply border-brand-500;
+    @apply z-10;
+}
+
+.date-picker-group:focus-within [data-flux-control] {
+    border-color: var(--color-brand-500) !important;
+}
+
+/* Select2 with icon group */
+.select2-group {
+    @apply flex relative items-stretch;
+}
+
+.select2-group .input-group-prefix {
+    @apply border-r-0;
+    @apply z-20;
+}
+
+.select2-group [data-flux-field] {
+    @apply flex-1 min-w-0;
+}
+
+.select2-group .select2-container {
+    @apply flex-1;
+    @apply min-w-0;
+}
+
+.select2-group .select2-container .select2-selection--single {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-left-width: 0 !important;
+}
+
+.select2-group:focus-within .input-group-prefix {
+    @apply border-brand-500;
+    @apply z-20;
+}
+
+.select2-group:focus-within .select2-container .select2-selection--single {
+    border-color: var(--color-brand-500) !important;
 }
 
 /*
@@ -325,7 +411,7 @@ footer a.footer-link:hover {
 }
 
 .select2-container--default .select2-selection--single:hover {
-    @apply border-app-border-hover;
+    @apply border-brand-300;
 }
 
 .select2-container--default.select2-container--open .select2-selection--single {

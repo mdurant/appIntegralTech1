@@ -45,10 +45,59 @@ class Profile extends Component
 
     public array $service_category_ids = [];
 
+    public string $avatarPreview = '';
+
     public function updatedRegionId(): void
     {
         // Reset commune when region changes
         $this->commune_id = null;
+    }
+
+    public function updatedAvatar(): void
+    {
+        $this->validate([
+            'avatar' => ['nullable', 'image', 'max:2048'],
+        ]);
+
+        if ($this->avatar) {
+            $this->avatarPreview = $this->avatar->temporaryUrl();
+        } else {
+            $this->avatarPreview = Auth::user()->avatarUrl() ?? '';
+        }
+    }
+
+    public function updatedRut($value): void
+    {
+        // Formatear RUT mientras el usuario escribe: xx.xxx.xxx-x
+        if ($value) {
+            // Remover todo excepto números y guión
+            $clean = preg_replace('/[^0-9kK-]/', '', $value);
+
+            // Si tiene más de 1 carácter, formatear
+            if (strlen($clean) > 1) {
+                // Separar dígito verificador si existe
+                $parts = explode('-', $clean);
+                $numbers = $parts[0];
+                $dv = isset($parts[1]) ? '-'.$parts[1] : '';
+
+                // Formatear números con puntos
+                if (strlen($numbers) > 0) {
+                    $formatted = '';
+                    $reversed = strrev($numbers);
+
+                    for ($i = 0; $i < strlen($reversed); $i++) {
+                        if ($i > 0 && $i % 3 == 0) {
+                            $formatted = '.'.$formatted;
+                        }
+                        $formatted = $reversed[$i].$formatted;
+                    }
+
+                    $this->rut = $formatted.$dv;
+                }
+            } else {
+                $this->rut = $clean;
+            }
+        }
     }
 
     /**
@@ -69,6 +118,7 @@ class Profile extends Component
         $this->region_id = $user->region_id;
         $this->commune_id = $user->commune_id;
         $this->service_category_ids = $user->serviceCategories->pluck('id')->toArray();
+        $this->avatarPreview = $user->avatarUrl() ?? '';
     }
 
     /**
@@ -109,9 +159,21 @@ class Profile extends Component
                 'avatar' => ['image', 'max:2048'],
             ]);
 
+            // Eliminar avatar anterior si existe
+            if ($user->avatar_path && Storage::disk('public')->exists($user->avatar_path)) {
+                Storage::disk('public')->delete($user->avatar_path);
+            }
+
             $path = $this->avatar->storePublicly('avatars/'.$user->id, 'public');
 
             $user->forceFill(['avatar_path' => $path])->save();
+
+            // Refresh user to get updated avatar
+            $user->refresh();
+            Auth::setUser($user); // Actualizar el usuario en la sesión
+
+            // Actualizar preview con la nueva URL
+            $this->avatarPreview = $user->avatarUrl() ?? '';
 
             $this->reset('avatar');
         }

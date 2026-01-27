@@ -25,12 +25,12 @@
                         </svg>
                     </div>
                 </div>
-                <div class="h-48 flex items-center justify-center rounded-lg border border-app-border bg-app-surface-2">
-                    <flux:text class="text-sm text-app-muted">{{ __('Gráfico de usuarios - Se implementará con Chart.js') }}</flux:text>
+                <div class="h-48">
+                    <canvas id="chart-usuarios-registrados"></canvas>
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                     <flux:text class="text-xs text-app-muted">{{ __('Total registrados') }}</flux:text>
-                    <flux:text class="text-lg font-bold">1,247</flux:text>
+                    <flux:text class="text-lg font-bold" id="total-usuarios">1,247</flux:text>
                 </div>
             </div>
 
@@ -42,12 +42,12 @@
                         <flux:icon.layout-grid class="size-5" />
                     </div>
                 </div>
-                <div class="h-48 flex items-center justify-center rounded-lg border border-app-border bg-app-surface-2">
-                    <flux:text class="text-sm text-app-muted">{{ __('Gráfico de cotizaciones - Se implementará con Chart.js') }}</flux:text>
+                <div class="h-48">
+                    <canvas id="chart-servicios-solicitados"></canvas>
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                     <flux:text class="text-xs text-app-muted">{{ __('Total solicitudes') }}</flux:text>
-                    <flux:text class="text-lg font-bold">892</flux:text>
+                    <flux:text class="text-lg font-bold" id="total-servicios">892</flux:text>
                 </div>
             </div>
 
@@ -59,12 +59,12 @@
                         <flux:icon.wrench class="size-5" />
                     </div>
                 </div>
-                <div class="h-48 flex items-center justify-center rounded-lg border border-app-border bg-app-surface-2">
-                    <flux:text class="text-sm text-app-muted">{{ __('Gráfico de OTs - Se implementará con Chart.js') }}</flux:text>
+                <div class="h-48">
+                    <canvas id="chart-ordenes-trabajo"></canvas>
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                     <flux:text class="text-xs text-app-muted">{{ __('Total OTs') }}</flux:text>
-                    <flux:text class="text-lg font-bold">456</flux:text>
+                    <flux:text class="text-lg font-bold" id="total-ordenes">456</flux:text>
                 </div>
             </div>
         </div>
@@ -166,7 +166,7 @@
         <div class="grid gap-4 md:grid-cols-3">
             <a
                 href="{{ route('profile.edit') }}"
-                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-app-border-hover hover:shadow-md"
+                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md"
             >
                 <div class="grid shrink-0 size-12 place-items-center rounded-lg bg-brand-50 text-brand-700 group-hover:bg-brand-100">
                     <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,7 +185,7 @@
 
             <a
                 href="{{ route('user-password.edit') }}"
-                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-app-border-hover hover:shadow-md"
+                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md"
             >
                 <div class="grid shrink-0 size-12 place-items-center rounded-lg bg-blue-50 text-blue-700 group-hover:bg-blue-100">
                     <flux:icon.shield class="size-6" />
@@ -202,7 +202,7 @@
 
             <a
                 href="{{ route('two-factor.show') }}"
-                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-app-border-hover hover:shadow-md"
+                class="group flex items-start gap-4 rounded-xl border border-app-border bg-app-surface p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md"
             >
                 <div class="grid shrink-0 size-12 place-items-center rounded-lg bg-green-50 text-green-700 group-hover:bg-green-100">
                     <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -220,4 +220,106 @@
             </a>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar que Chart.js esté disponible
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js no está disponible');
+                return;
+            }
+
+            // Cargar datos JSON
+            fetch('/data/dashboard-charts.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Configuración común para todos los gráficos
+                    const chartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                padding: 12,
+                                titleFont: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 12
+                                },
+                                cornerRadius: 8,
+                                displayColors: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11
+                                    },
+                                    color: '#6b7280'
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11
+                                    },
+                                    color: '#6b7280',
+                                    stepSize: 20
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    };
+
+                    // Gráfico: Usuarios Registrados
+                    const ctxUsuarios = document.getElementById('chart-usuarios-registrados');
+                    if (ctxUsuarios) {
+                        new Chart(ctxUsuarios, {
+                            type: 'line',
+                            data: data.usuarios_registrados,
+                            options: chartOptions
+                        });
+                        document.getElementById('total-usuarios').textContent = data.usuarios_registrados.total.toLocaleString('es-CL');
+                    }
+
+                    // Gráfico: Servicios Solicitados
+                    const ctxServicios = document.getElementById('chart-servicios-solicitados');
+                    if (ctxServicios) {
+                        new Chart(ctxServicios, {
+                            type: 'line',
+                            data: data.servicios_solicitados,
+                            options: chartOptions
+                        });
+                        document.getElementById('total-servicios').textContent = data.servicios_solicitados.total.toLocaleString('es-CL');
+                    }
+
+                    // Gráfico: Órdenes de Trabajo
+                    const ctxOrdenes = document.getElementById('chart-ordenes-trabajo');
+                    if (ctxOrdenes) {
+                        new Chart(ctxOrdenes, {
+                            type: 'line',
+                            data: data.ordenes_trabajo,
+                            options: chartOptions
+                        });
+                        document.getElementById('total-ordenes').textContent = data.ordenes_trabajo.total.toLocaleString('es-CL');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cargar datos de gráficos:', error);
+                });
+        });
+    </script>
 </x-layouts::app>

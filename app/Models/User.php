@@ -137,6 +137,11 @@ class User extends Authenticatable
             return null;
         }
 
+        // Verificar que el archivo existe
+        if (! Storage::disk('public')->exists($this->avatar_path)) {
+            return null;
+        }
+
         return Storage::disk('public')->url($this->avatar_path);
     }
 

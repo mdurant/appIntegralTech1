@@ -28,6 +28,7 @@ function initializeDatePickers(container = document) {
                 allowInput: true,
                 clickOpens: true,
                 animate: true,
+                defaultDate: input.value || null,
             });
         }
     });
@@ -52,6 +53,17 @@ function initializeSelect2(container = document) {
                         return 'Buscando...';
                     },
                 },
+            });
+            
+            // Manejar cambios de Livewire
+            $(select).on('change', function() {
+                const wireModel = select.getAttribute('wire:model');
+                if (wireModel && typeof Livewire !== 'undefined') {
+                    const component = Livewire.find(select.closest('[wire\\:id]')?.getAttribute('wire:id'));
+                    if (component) {
+                        component.set(wireModel, select.value);
+                    }
+                }
             });
         }
     });
