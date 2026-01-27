@@ -117,8 +117,10 @@ Además se crean:
 - Publica la solicitud → se habilita para recibir cotizaciones.
 
 ### 3) Proveedor: ver solicitudes publicadas y ofertar
-- Listado: `services`
-- Detalle: `services/{serviceRequest}`
+- Listado: `services` (muestra datos ofuscados: nombre parcial, teléfono XXX, email xxx)
+- Modal "Ver detalle": Muestra características del servicio y datos ofuscados del cliente
+- Pago simulado: `services/{serviceRequest}/payment` (para acceder a datos completos)
+- Contacto completo: `services/{serviceRequest}/contact` (después del pago)
 - Envía cotización (monto + mensaje)
 - La cotización queda con vigencia (`valid_until`) de **15 días**.
 
@@ -187,10 +189,12 @@ Relación:
 - `work_orders` (OT)
 
 Relaciones:
-- `ServiceRequest` **belongsTo** `Tenant`, `ServiceCategory`, `User` (creator)
-- `ServiceRequest` **hasMany** `ServiceBid`, `ServiceRequestFieldAnswer`, `ServiceRequestAttachment`
+- `ServiceRequest` **belongsTo** `Tenant`, `ServiceCategory`, `User` (creator), `Region`, `Commune`
+- `ServiceRequest` **hasMany** `ServiceBid`, `ServiceRequestFieldAnswer`, `ServiceRequestAttachment`, `PaymentSimulation`
 - `ServiceBid` **belongsTo** `ServiceRequest`, `User`
 - `WorkOrder` **belongsTo** `ServiceRequest`, `ServiceBid`, `Tenant`, `User` (awarded_to)
+- `WorkOrder` **hasMany** `Rating`
+- `PaymentSimulation` **belongsTo** `User`, `ServiceRequest`
 
 ---
 
@@ -206,8 +210,15 @@ Relaciones:
   - `client/requests`
   - `client/requests/{serviceRequest}`
 - **Proveedor**
-  - `services`
-  - `services/{serviceRequest}`
+  - `services` - Listado con datos ofuscados
+  - `services/{serviceRequest}` - Detalle (datos según estado de pago)
+  - `services/{serviceRequest}/payment` - Pago simulado para ver contacto
+  - `services/{serviceRequest}/contact` - Datos completos después del pago
+  - `provider/work-orders` - Mis órdenes de trabajo
+  - `provider/work-orders-chart` - Gráficos de OTs
+  - `provider/bids` - Mis cotizaciones
+  - `provider/dashboard` - Dashboard profesional
+  - `provider/profile-settings` - Configuración de perfil profesional
 - **Admin**
   - `admin/`
   - `admin/service-categories`
@@ -374,6 +385,7 @@ SystemSetting::set('quote_validity_days', 20, 'integer', 'Días de vigencia');
 - `account_types`: Tipos de cuenta bancaria
 - `ratings`: Valoraciones de órdenes de trabajo
 - `system_settings`: Configuraciones del sistema
+- `payment_simulations`: Pagos simulados para acceder a datos de contacto completos
 
 ### Campos Nuevos
 
