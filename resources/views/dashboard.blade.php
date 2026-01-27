@@ -222,7 +222,8 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Función para inicializar gráficos (reutilizable)
+        function initDashboardCharts() {
             // Verificar que Chart.js esté disponible
             if (typeof Chart === 'undefined') {
                 console.error('Chart.js no está disponible');
@@ -287,10 +288,25 @@
                 }
             };
 
+            // Función para destruir gráficos existentes
+            function destroyExistingCharts() {
+                const charts = ['chart-usuarios-registrados', 'chart-servicios-solicitados', 'chart-ordenes-trabajo'];
+                charts.forEach(id => {
+                    const canvas = document.getElementById(id);
+                    if (canvas && canvas.chart) {
+                        canvas.chart.destroy();
+                        canvas.chart = null;
+                    }
+                });
+            }
+
             // Función para inicializar gráficos
             function initializeCharts(data) {
-                    // Configuración común para todos los gráficos
-                    const chartOptions = {
+                // Destruir gráficos existentes primero
+                destroyExistingCharts();
+
+                // Configuración común para todos los gráficos
+                const chartOptions = {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
@@ -343,7 +359,7 @@
                     // Gráfico: Usuarios Registrados
                     const ctxUsuarios = document.getElementById('chart-usuarios-registrados');
                     if (ctxUsuarios) {
-                        new Chart(ctxUsuarios, {
+                        ctxUsuarios.chart = new Chart(ctxUsuarios, {
                             type: 'line',
                             data: data.usuarios_registrados,
                             options: chartOptions
@@ -354,7 +370,7 @@
                     // Gráfico: Servicios Solicitados
                     const ctxServicios = document.getElementById('chart-servicios-solicitados');
                     if (ctxServicios) {
-                        new Chart(ctxServicios, {
+                        ctxServicios.chart = new Chart(ctxServicios, {
                             type: 'line',
                             data: data.servicios_solicitados,
                             options: chartOptions
@@ -365,7 +381,7 @@
                     // Gráfico: Órdenes de Trabajo
                     const ctxOrdenes = document.getElementById('chart-ordenes-trabajo');
                     if (ctxOrdenes) {
-                        new Chart(ctxOrdenes, {
+                        ctxOrdenes.chart = new Chart(ctxOrdenes, {
                             type: 'line',
                             data: data.ordenes_trabajo,
                             options: chartOptions
@@ -389,6 +405,35 @@
                     console.warn('Error al cargar datos de gráficos, usando datos dummy:', error);
                     initializeCharts(defaultData);
                 });
-        });
+        }
+
+        // Inicializar en carga inicial
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDashboardCharts);
+        } else {
+            initDashboardCharts();
+        }
+
+        // Reinicializar después de navegación de Livewire
+        if (typeof Livewire !== 'undefined') {
+            // Evento cuando Livewire completa una navegación
+            document.addEventListener('livewire:navigated', function() {
+                // Verificar si estamos en la página del dashboard
+                if (document.getElementById('chart-usuarios-registrados')) {
+                    setTimeout(initDashboardCharts, 150);
+                }
+            });
+
+            // Evento cuando Livewire se inicializa
+            document.addEventListener('livewire:init', function() {
+                // Hook para cuando Livewire actualiza el DOM
+                Livewire.hook('morph.updated', ({ el }) => {
+                    // Verificar si el elemento actualizado contiene los gráficos del dashboard
+                    if (el.querySelector && (el.querySelector('#chart-usuarios-registrados') || el.id === 'chart-usuarios-registrados')) {
+                        setTimeout(initDashboardCharts, 150);
+                    }
+                });
+            });
+        }
     </script>
 </x-layouts::app>

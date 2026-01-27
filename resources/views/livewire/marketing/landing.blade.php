@@ -94,7 +94,7 @@
                 <div class="rounded-2xl border border-app-border bg-app-surface-2 p-3 shadow-lg sm:rounded-3xl sm:p-4 lg:p-6 xl:p-8">
                     <div class="aspect-video w-full overflow-hidden rounded-xl bg-app-surface sm:rounded-2xl">
                         <img
-                            src="{{ asset('images/dashboard-reference.png') }}"
+                            src="{{ asset('images/dashboard.png') }}"
                             alt="{{ __('Dashboard de Integral Service Tech - Vista previa de la plataforma') }}"
                             class="h-full w-full object-contain object-center"
                             loading="lazy"

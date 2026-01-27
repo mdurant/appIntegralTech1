@@ -77,18 +77,23 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Esperar a que Chart.js esté disponible
-            function waitForChart() {
-                if (typeof Chart === 'undefined') {
-                    setTimeout(waitForChart, 100);
-                    return;
-                }
-                initializeCharts();
-            }
-
-            function initializeCharts() {
+        // Función para inicializar gráficos (definida en scope global)
+        function initializeCharts() {
                 try {
+                    // Destruir gráficos existentes primero
+                    if (window.statusChartInstance) {
+                        window.statusChartInstance.destroy();
+                        window.statusChartInstance = null;
+                    }
+                    if (window.monthChartInstance) {
+                        window.monthChartInstance.destroy();
+                        window.monthChartInstance = null;
+                    }
+                    if (window.statusBarChartInstance) {
+                        window.statusBarChartInstance.destroy();
+                        window.statusBarChartInstance = null;
+                    }
+
                     // Datos del gráfico
                     const chartData = @json($this->chartData);
                     
@@ -100,10 +105,6 @@
                     // Gráfico de Estado (Doughnut)
                     const statusCtx = document.getElementById('statusChart');
                     if (statusCtx && chartData.status && chartData.status.labels && chartData.status.data) {
-                    // Destruir instancia anterior si existe
-                    if (window.statusChartInstance) {
-                        window.statusChartInstance.destroy();
-                    }
                     
                     window.statusChartInstance = new Chart(statusCtx, {
                         type: 'doughnut',
@@ -413,19 +414,49 @@
                 } catch (error) {
                     console.error('Error al inicializar gráficos:', error);
                 }
-            }
+        }
 
-            // Inicializar
+        // Función para esperar Chart.js y inicializar
+        function waitForChart() {
+            if (typeof Chart === 'undefined') {
+                setTimeout(waitForChart, 100);
+                return;
+            }
+            initializeCharts();
+        }
+
+        // Función de inicialización principal
+        function initWorkOrdersCharts() {
             waitForChart();
+        }
 
-            // Reinicializar después de actualizaciones de Livewire
-            if (typeof Livewire !== 'undefined') {
-                document.addEventListener('livewire:init', function() {
-                    Livewire.hook('morph.updated', () => {
-                        setTimeout(waitForChart, 300);
-                    });
+        // Inicializar en carga inicial
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initWorkOrdersCharts);
+        } else {
+            initWorkOrdersCharts();
+        }
+
+        // Reinicializar después de navegación de Livewire
+        if (typeof Livewire !== 'undefined') {
+            // Evento cuando Livewire completa una navegación
+            document.addEventListener('livewire:navigated', function() {
+                // Verificar si estamos en la página de gráficos
+                if (document.getElementById('statusChart')) {
+                    setTimeout(initWorkOrdersCharts, 150);
+                }
+            });
+
+            // Evento cuando Livewire se inicializa
+            document.addEventListener('livewire:init', function() {
+                // Hook para cuando Livewire actualiza el DOM
+                Livewire.hook('morph.updated', ({ el }) => {
+                    // Verificar si el elemento actualizado contiene los gráficos
+                    if (el.querySelector && (el.querySelector('#statusChart') || el.id === 'statusChart')) {
+                        setTimeout(initWorkOrdersCharts, 150);
+                    }
                 });
-            }
-        });
+            });
+        }
     </script>
 </section>
