@@ -106,7 +106,7 @@
                             @elseif ($field->type->value === 'number')
                                 <flux:input wire:model="{{ $name }}" :label="$field->label" type="number" inputmode="numeric" />
                             @elseif ($field->type->value === 'date')
-                                <flux:input wire:model="{{ $name }}" class="date-picker" :label="$field->label" type="text" />
+                                <flux:input wire:model="{{ $name }}" class="date-picker" :label="$field->label" type="text" data-date-picker="true" />
                             @elseif ($field->type->value === 'textarea')
                                 <flux:textarea wire:model="{{ $name }}" :label="$field->label" rows="3" />
                             @else

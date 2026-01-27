@@ -229,10 +229,66 @@
                 return;
             }
 
-            // Cargar datos JSON
-            fetch('/data/dashboard-charts.json')
-                .then(response => response.json())
-                .then(data => {
+            // Datos dummy por defecto
+            const defaultData = {
+                usuarios_registrados: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    datasets: [{
+                        label: 'Usuarios Registrados',
+                        data: [120, 145, 180, 210, 250, 290, 340, 380, 420, 470, 520, 580],
+                        borderColor: 'rgb(139, 92, 246)',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: 'rgb(139, 92, 246)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }],
+                    total: 1247
+                },
+                servicios_solicitados: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    datasets: [{
+                        label: 'Servicios Solicitados',
+                        data: [45, 62, 78, 95, 110, 125, 145, 160, 180, 200, 220, 245],
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: 'rgb(59, 130, 246)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }],
+                    total: 892
+                },
+                ordenes_trabajo: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    datasets: [{
+                        label: 'Órdenes de Trabajo',
+                        data: [25, 32, 38, 45, 52, 58, 65, 72, 80, 88, 95, 105],
+                        borderColor: 'rgb(34, 197, 94)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: 'rgb(34, 197, 94)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }],
+                    total: 456
+                }
+            };
+
+            // Función para inicializar gráficos
+            function initializeCharts(data) {
                     // Configuración común para todos los gráficos
                     const chartOptions = {
                         responsive: true,
@@ -316,9 +372,22 @@
                         });
                         document.getElementById('total-ordenes').textContent = data.ordenes_trabajo.total.toLocaleString('es-CL');
                     }
+            }
+
+            // Intentar cargar datos JSON, usar datos dummy si falla
+            fetch('/data/dashboard-charts.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('No se pudo cargar el archivo JSON');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    initializeCharts(data);
                 })
                 .catch(error => {
-                    console.error('Error al cargar datos de gráficos:', error);
+                    console.warn('Error al cargar datos de gráficos, usando datos dummy:', error);
+                    initializeCharts(defaultData);
                 });
         });
     </script>

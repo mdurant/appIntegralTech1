@@ -10,6 +10,7 @@ use App\Models\ServiceCategory;
 use App\Rules\ChileanRut;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
