@@ -73,4 +73,21 @@ class ServiceBidService
 
         return $bid;
     }
+
+    /**
+     * Genera un PDF de la cotización
+     * Requiere barryvdh/laravel-dompdf instalado
+     */
+    public function generatePdf(ServiceBid $bid)
+    {
+        if (! class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
+            throw new \RuntimeException('Laravel DomPDF no está instalado. Ejecuta: composer require barryvdh/laravel-dompdf');
+        }
+
+        $bid->load(['user', 'serviceRequest.category', 'serviceRequest.tenant']);
+
+        return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.quote', [
+            'bid' => $bid,
+        ])->setPaper('a4', 'portrait');
+    }
 }

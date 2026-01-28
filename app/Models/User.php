@@ -18,6 +18,24 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
+    // Spatie Permissions - descomentar cuando el paquete esté instalado
+    // use \Spatie\Permission\Traits\HasRoles;
+
+    // Spatie Media Library - descomentar cuando el paquete esté instalado
+    // use \Spatie\MediaLibrary\HasMedia;
+    // use \Spatie\MediaLibrary\InteractsWithMedia;
+
+    /**
+     * Configuración de Media Library para el logo del profesional
+     * Descomentar y agregar al modelo cuando Spatie Media Library esté instalado
+     */
+    // public function registerMediaCollections(): void
+    // {
+    //     $this->addMediaCollection('logo')
+    //         ->singleFile()
+    //         ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp']);
+    // }
+
     /**
      * The attributes that are mass assignable.
      *

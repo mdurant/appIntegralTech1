@@ -13,6 +13,11 @@ class ServiceRequestPolicy
      */
     public function viewAny(User $user): bool
     {
+        // Si Spatie Permissions está disponible, usar permisos
+        if (method_exists($user, 'hasPermissionTo')) {
+            return $user->hasPermissionTo('view-published-requests') || $user->hasPermissionTo('view-own-requests');
+        }
+
         return true;
     }
 
@@ -37,6 +42,11 @@ class ServiceRequestPolicy
      */
     public function create(User $user): bool
     {
+        // Si Spatie Permissions está disponible, usar permisos
+        if (method_exists($user, 'hasPermissionTo')) {
+            return $user->hasPermissionTo('create-requests');
+        }
+
         return $user->isClient();
     }
 
@@ -45,8 +55,15 @@ class ServiceRequestPolicy
      */
     public function update(User $user, ServiceRequest $serviceRequest): bool
     {
-        if (! $user->isClient()) {
-            return false;
+        // Si Spatie Permissions está disponible, usar permisos
+        if (method_exists($user, 'hasPermissionTo')) {
+            if (! $user->hasPermissionTo('manage-own-requests')) {
+                return false;
+            }
+        } else {
+            if (! $user->isClient()) {
+                return false;
+            }
         }
 
         if (! $user->belongsToTenant($serviceRequest->tenant)) {

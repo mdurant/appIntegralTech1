@@ -14,9 +14,16 @@ class RatingPolicy
      */
     public function create(User $user, WorkOrder $workOrder): bool
     {
-        // Solo clientes del tenant pueden valorar
-        if (! $user->isClient()) {
-            return false;
+        // Si Spatie Permissions está disponible, usar permisos
+        if (method_exists($user, 'hasPermissionTo')) {
+            if (! $user->hasPermissionTo('create-ratings')) {
+                return false;
+            }
+        } else {
+            // Solo clientes del tenant pueden valorar
+            if (! $user->isClient()) {
+                return false;
+            }
         }
 
         if (! $user->belongsToTenant($workOrder->tenant)) {

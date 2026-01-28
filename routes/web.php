@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ServiceBidPdfController;
 use App\Http\Controllers\ServiceRequestAttachmentController;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\ServiceBids as AdminServiceBids;
@@ -33,6 +34,11 @@ Route::middleware(['auth', 'email.code'])->group(function () {
 
     Route::get('attachments/{attachment}', ServiceRequestAttachmentController::class)
         ->name('attachments.show');
+
+    Route::get('bids/{serviceBid}/pdf', [ServiceBidPdfController::class, 'download'])
+        ->name('bids.pdf.download');
+    Route::get('bids/{serviceBid}/pdf/view', [ServiceBidPdfController::class, 'show'])
+        ->name('bids.pdf.view');
 
     Route::livewire('client/requests', ClientServiceRequestsIndex::class)->name('client.requests.index');
     Route::livewire('client/requests/{serviceRequest}', ClientServiceRequestsShow::class)->name('client.requests.show');

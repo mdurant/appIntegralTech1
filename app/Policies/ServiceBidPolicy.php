@@ -40,6 +40,11 @@ class ServiceBidPolicy
      */
     public function create(User $user): bool
     {
+        // Si Spatie Permissions está disponible, usar permisos
+        if (method_exists($user, 'hasPermissionTo')) {
+            return $user->hasPermissionTo('create-bids');
+        }
+
         return ! $user->isGuest() && ! $user->isClient();
     }
 
@@ -50,6 +55,13 @@ class ServiceBidPolicy
     {
         if ($serviceBid->user_id !== $user->id) {
             return false;
+        }
+
+        // Si Spatie Permissions está disponible, usar permisos
+        if (method_exists($user, 'hasPermissionTo')) {
+            if (! $user->hasPermissionTo('manage-own-bids')) {
+                return false;
+            }
         }
 
         return $serviceBid->status === ServiceBidStatus::Submitted;
