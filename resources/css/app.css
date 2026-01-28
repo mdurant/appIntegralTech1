@@ -27,6 +27,16 @@
     border-radius: 1px 1px 0 0;
 }
 
+/* Disclaimer Box Styling */
+.disclaimer-box {
+    border-color: var(--color-disclaimer-border);
+    background-color: var(--color-disclaimer-bg);
+}
+
+.disclaimer-text {
+    color: var(--color-disclaimer-text);
+}
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
@@ -92,6 +102,16 @@
     --color-warning: oklch(0.77 0.16 80);
     --color-danger: oklch(0.63 0.22 25);
     --color-info: oklch(0.68 0.12 230);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Disclaimer colors (based on #f53003)
+    |--------------------------------------------------------------------------
+    */
+
+    --color-disclaimer-border: #f53003;
+    --color-disclaimer-bg: oklch(0.98 0.015 18);
+    --color-disclaimer-text: oklch(0.38 0.14 18);
 
     /*
     |--------------------------------------------------------------------------

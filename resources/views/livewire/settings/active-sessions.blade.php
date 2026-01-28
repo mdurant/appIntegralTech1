@@ -112,8 +112,8 @@
         @endif
 
         {{-- Disclaimer --}}
-        <div class="rounded-xl border border-amber-200 bg-amber-50/50 p-4 dark:border-amber-800 dark:bg-amber-900/10">
-            <flux:text class="text-sm text-amber-800 dark:text-amber-200">
+        <div class="disclaimer-box rounded-xl border p-4">
+            <flux:text class="text-sm disclaimer-text">
                 <strong>{{ __('Importante:') }}</strong> {{ __('Los datos borrados temporalmente pero almacenados y custodiados con altos estándares de seguridad exclusivamente para fines Forenses o legales que estime alguna autoridad en Chile por IntegralTech Solutions.') }}
             </flux:text>
         </div>
