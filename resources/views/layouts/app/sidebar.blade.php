@@ -35,8 +35,8 @@
                                 class="size-8"
                             />
                             <div class="hidden text-left text-sm xl:block">
-                                <flux:heading class="truncate text-sm">{{ auth()->user()->name }}</flux:heading>
-                                <flux:text class="truncate text-xs text-app-muted">{{ auth()->user()->email }}</flux:text>
+                                <flux:heading class="truncate text-sm">Hola: {{ auth()->user()->name }}</flux:heading>
+                                
                             </div>
                             <svg class="size-4 text-app-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -50,7 +50,7 @@
                                 />
                                 <div class="grid flex-1 text-start text-sm leading-tight">
                                     <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
-                                    <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
+                                    
                                 </div>
                             </div>
                             <flux:menu.separator />
