@@ -5,7 +5,7 @@
 @php
     $user = auth()->user();
     $showFantasyName = $user && $user->shouldShowFantasyName();
-    $displayName = $showFantasyName ? $user->fantasy_name : 'Integral Service Tech';
+    $displayName = $showFantasyName ? $user->fantasy_name : 'Dashboard Técnico de Trabajo Inteligente';
     $showLogo = $showFantasyName && $user->avatarUrl();
 @endphp
 
@@ -23,7 +23,7 @@
     @else
         {{-- Ocultar para roles guest y client --}}
         @if (!$user || (!$user->isGuest() && !$user->isClient()))
-            <flux:sidebar.brand name="Integral Service Tech" {{ $attributes }}>
+            <flux:sidebar.brand name="Integral Tech Services" {{ $attributes }}>
                 <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
                     <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
                 </x-slot>
@@ -44,7 +44,7 @@
     @else
         {{-- Ocultar para roles guest y client --}}
         @if (!$user || (!$user->isGuest() && !$user->isClient()))
-            <flux:brand name="Integral Service Tech" {{ $attributes }}>
+            <flux:brand name="Dashboard Técnico de Trabajo Inteligente" {{ $attributes }}>
                 <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
                     <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
                 </x-slot>

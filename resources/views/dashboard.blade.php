@@ -6,8 +6,8 @@
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex-1 space-y-2">
                 <flux:heading size="lg">{{ __('Hola, :name', ['name' => $user->name]) }}</flux:heading>
-                <flux:text class="max-w-2xl text-sm text-app-muted">
-                    {{ __('Bienvenido a IntegralTech. Ajusta tu perfil, fortalece tu seguridad y comienza a operar en la plataforma.') }}
+                <flux:text class="max-w-6xl text-sm text-app-muted">
+                    {{ __('Bienvenido al Dashboard Técnico de Trabajo Inteligente. Ajusta tu perfil, fortalece tu seguridad y comienza a operar en la plataforma.') }}
                 </flux:text>
                 
             </div>
