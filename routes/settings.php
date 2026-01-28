@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Settings\ActiveSessions;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -27,4 +28,6 @@ Route::middleware(['auth', 'email.code'])->group(function () {
             ),
         )
         ->name('two-factor.show');
+
+    Route::livewire('settings/active-sessions', ActiveSessions::class)->name('active-sessions.show');
 });

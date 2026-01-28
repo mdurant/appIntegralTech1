@@ -99,6 +99,11 @@ class User extends Authenticatable
             ->orderBy('service_categories.name');
     }
 
+    public function activeSessions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserActiveSession::class);
+    }
+
     public function isAdministrator(): bool
     {
         return $this->system_role === SystemRole::Admin;

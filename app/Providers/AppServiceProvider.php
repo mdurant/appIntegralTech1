@@ -2,14 +2,17 @@
 
 namespace App\Providers;
 
+use App\Listeners\RegisterUserSession;
 use App\Models\PaymentSimulation;
 use App\Models\Rating;
 use App\Policies\PaymentSimulationPolicy;
 use App\Policies\RatingPolicy;
 use App\Support\TenantContext;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -32,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->registerPolicies();
         $this->configureDefaults();
         $this->configureAuthorization();
+        $this->registerEventListeners();
     }
 
     /**
@@ -71,5 +75,10 @@ class AppServiceProvider extends ServiceProvider
 
             return null;
         });
+    }
+
+    protected function registerEventListeners(): void
+    {
+        Event::listen(Login::class, RegisterUserSession::class);
     }
 }
