@@ -6,6 +6,9 @@
     <body class="min-h-screen bg-app-bg text-app-text antialiased">
         {{ $slot }}
 
+        {{-- Cookie Consent Modal --}}
+        <livewire:cookie-consent-modal />
+
         @fluxScripts
     </body>
 </html>

@@ -317,5 +317,8 @@
                 });
             }
         </script>
+
+        {{-- Cookie Consent Modal --}}
+        <livewire:cookie-consent-modal />
     </body>
 </html>

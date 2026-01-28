@@ -547,6 +547,88 @@ Después del pago aprobado, el proveedor puede ver:
 
 ---
 
+## Sistema de Consentimiento de Cookies
+
+El sistema implementa un modal de consentimiento de cookies que aparece automáticamente cuando un usuario visita el sitio por primera vez (tanto en la landing page como en los dashboards autenticados).
+
+### Funcionalidad
+
+El modal de cookies permite a los usuarios:
+- **Aceptar todas las cookies**: Habilita cookies de Marketing y Experiencia de Usuario
+- **Rechazar todas**: Solo permite cookies esenciales (necesarias para el funcionamiento del sitio)
+- **Configuración de cookies**: Permite personalizar qué tipos de cookies aceptar
+
+### Tipos de Cookies
+
+#### Cookies de Marketing
+Se activan cuando el usuario acepta las cookies de marketing. Almacenan:
+- `marketing_visitor_id`: ID único del visitante
+- `marketing_session_id`: ID de sesión actual
+- `marketing_last_visit`: Fecha/hora de última visita
+- `marketing_preferences`: Preferencias genéricas del usuario (fuente, user agent, fecha de aceptación)
+
+**Propósito**: Mejorar la navegación del sitio, analizar el uso del mismo y apoyar iniciativas de marketing.
+
+#### Cookies de Experiencia de Usuario
+Se activan cuando el usuario acepta las cookies de experiencia de usuario. Almacenan:
+- `ux_language`: Idioma preferido del usuario
+- `ux_theme`: Tema preferido (light/dark)
+- `ux_preferences`: Preferencias de navegación (JSON)
+- `ux_last_activity`: Última actividad registrada
+
+**Propósito**: Conocer al usuario visitante y entregar mejor experiencia personalizada.
+
+#### Cookies Esenciales
+Siempre activas, no requieren consentimiento:
+- Cookies de sesión de Laravel
+- Cookies de autenticación
+- Cookies de CSRF
+
+### Implementación Técnica
+
+#### Componentes
+- **`App\Services\CookieConsentService`**: Servicio para gestionar cookies y preferencias
+- **`App\Livewire\CookieConsentModal`**: Componente Livewire del modal
+- **`resources/views/livewire/cookie-consent-modal.blade.php`**: Vista del modal
+
+#### JavaScript
+Funciones en `resources/js/app.js`:
+- `setCookie(name, value, days)`: Establece una cookie
+- `getCookie(name)`: Lee una cookie
+- `hasCookieConsent()`: Verifica si existe consentimiento
+- `setCookieConsent(preferences)`: Guarda preferencias y crea cookies según tipo
+- `createMarketingCookies()`: Crea cookies de marketing
+- `createUserExperienceCookies()`: Crea cookies de UX
+- `removeMarketingCookies()`: Elimina cookies de marketing
+- `removeUserExperienceCookies()`: Elimina cookies de UX
+
+#### Persistencia
+- Las preferencias se guardan en cookies del navegador (no en base de datos)
+- Duración: 365 días
+- El modal solo aparece si no existe la cookie `cookie_consent_given`
+
+#### Integración
+El modal está integrado en:
+- `resources/views/layouts/marketing.blade.php` (Landing page)
+- `resources/views/layouts/app/sidebar.blade.php` (Dashboards autenticados)
+
+### Texto del Modal
+
+El modal muestra el siguiente texto en español:
+
+> "Al hacer clic en «Aceptar todas las cookies», usted acepta el almacenamiento de cookies en su dispositivo para mejorar la navegación del sitio, analizar el uso del mismo y ayudarnos en nuestras iniciativas de marketing."
+
+### Cumplimiento y Privacidad
+
+El sistema está diseñado para cumplir con:
+- Regulaciones de privacidad (Ley de Protección de Datos Personales de Chile)
+- Buenas prácticas de consentimiento de cookies
+- Transparencia sobre el uso de cookies
+
+Los usuarios pueden cambiar sus preferencias en cualquier momento eliminando las cookies y recargando la página.
+
+---
+
 ## Notas
 - Zona horaria usada localmente: `America/Santiago` (según tu config actual).
 - Para cambios en UI (Vite), asegúrate de tener `npm run dev` ejecutándose.

@@ -540,3 +540,18 @@ footer a.footer-link:hover {
 .select2-results__message {
     @apply text-app-muted px-3 py-2;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Cookie Consent Modal Styles
+|--------------------------------------------------------------------------
+*/
+
+/* Asegurar que el modal esté por encima de otros elementos */
+.cookie-consent-modal {
+    z-index: 9999;
+}
+
+/* Nota: Los estilos de los toggles con 'peer' se aplican directamente 
+   en las clases de Tailwind en el HTML, ya que 'peer' no funciona 
+   con @apply en Tailwind CSS 4 */
