@@ -9,13 +9,13 @@
 
         <form wire:submit="create" class="mt-4 space-y-4">
             <div class="grid gap-4 md:grid-cols-2">
-                <flux:select wire:model.live="topCategoryId" :label="__('Categoría')" placeholder="{{ __('Selecciona...') }}">
+                <flux:select wire:model.live="topCategoryId" class="select2" :label="__('Categoría')" placeholder="{{ __('Selecciona...') }}">
                     @foreach ($this->topCategories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </flux:select>
 
-                <flux:select wire:model.live="subcategoryId" :label="__('Subcategoría')" placeholder="{{ __('Selecciona...') }}">
+                <flux:select wire:model.live="subcategoryId" class="select2" :label="__('Subcategoría')" placeholder="{{ __('Selecciona...') }}">
                     @foreach ($this->subcategories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach

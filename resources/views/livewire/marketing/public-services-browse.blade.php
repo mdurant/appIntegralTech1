@@ -23,7 +23,7 @@
                 <div class="sm:w-[260px]">
                     <select
                         name="categoryId"
-                        class="w-full rounded-xl border border-app-border bg-app-surface px-4 py-3 text-sm shadow-sm outline-hidden"
+                        class="select2 w-full rounded-xl border border-app-border bg-app-surface px-4 py-3 text-sm shadow-sm outline-hidden"
                     >
                         <option value="">{{ __('Todas las categorías') }}</option>
                         @foreach ($this->categories as $category)

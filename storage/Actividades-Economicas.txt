@@ -1,0 +1,1440 @@
+ACTIVIDADES ECONÓMICAS Y SUBCATEGORÍAS (INTEGRAL TECH SERVICES)
+Servicios Profesionales de Salud
+
+Kinesiología y Rehabilitación
+
+Telemedicina General
+
+Enfermería Domiciliaria
+
+Nutrición y Dietética Clínica
+
+Psicología Organizacional
+
+Odontología General
+
+Fonoaudiología
+
+Terapia Ocupacional
+
+Matronería y Cuidados Postnatales
+
+Psicología Clínica Adultos
+
+Psicología Infantil
+
+Medicina General
+
+Podología Clínica
+
+Asistencia en Cuidados Paliativos
+
+Laboratorio Clínico Domiciliario
+
+Servicios Profesionales de Educación
+
+Relatoría Técnica
+
+Tutorías Académicas
+
+Diseño Curricular
+
+Capacitación Corporativa
+
+E-learning y Gestión LMS
+
+Psicopedagogía
+
+Enseñanza de Idiomas
+
+Coaching Ejecutivo
+
+Educación Diferencial
+
+Consultoría en Acreditación Escolar
+
+Preparación de Exámenes (PAES)
+
+Talleres Artísticos
+
+Educación Física y Personal Training
+
+Mediación Escolar
+
+Orientación Vocacional
+
+Servicios Profesionales de Tecnología
+
+Desarrollo Fullstack (Web)
+
+Ciberseguridad y Pentesting
+
+QA Testing y Calidad
+
+Arquitectura Cloud
+
+Administración de Redes
+
+Soporte Técnico TI
+
+Análisis de Datos y BI
+
+Desarrollo Móvil (iOS/Android)
+
+DevOps e Infraestructura
+
+Gestión de Proyectos Ágiles
+
+Inteligencia Artificial y ML
+
+Integración de API
+
+Diseño UX/UI
+
+Mantenimiento de Servidores
+
+Consultoría de Transformación Digital
+
+Servicios Profesionales de Consultoría
+
+Consultoría de Gestión Estratégica
+
+Asesoría en Sustentabilidad
+
+Consultoría en Procesos Operativos
+
+Gestión del Cambio Organizacional
+
+Auditoría de Riesgos
+
+Consultoría en Comercio Exterior
+
+Asesoría en Compliance
+
+Gestión de Activos Fijos
+
+Consultoría de Relaciones Públicas
+
+Asesoría en Responsabilidad Social
+
+Planificación de Negocios
+
+Consultoría en Innovación
+
+Asesoría en Franquicias
+
+Evaluación de Proyectos de Inversión
+
+Consultoría en Lean Management
+
+Servicios Profesionales de Marketing
+
+Estrategia de Marketing Digital
+
+Gestión de Redes Sociales (RRSS)
+
+SEO y Posicionamiento Web
+
+Publicidad Pagada (SEM)
+
+Marketing de Contenidos
+
+Branding e Identidad de Marca
+
+Email Marketing
+
+Análisis de Métricas y Conversión
+
+Marketing de Influencers
+
+Relaciones Públicas Digitales
+
+Investigación de Mercado
+
+Growth Hacking
+
+Marketing Automatizado
+
+Publicidad Programática
+
+Trade Marketing
+
+Servicios Profesionales de Finanzas
+
+Planificación Financiera
+
+Gestión de Inversiones
+
+Análisis de Riesgo Crediticio
+
+Tesorería Corporativa
+
+Valorización de Empresas
+
+Finanzas Corporativas
+
+Asesoría en Mercado de Capitales
+
+Gestión de Cartera
+
+Análisis de Factibilidad Financiera
+
+Consultoría en M&A (Fusiones)
+
+Modelamiento Financiero
+
+Control de Gestión (FP&A)
+
+Asesoría en Financiamiento (Leasing)
+
+Auditoría Financiera Interna
+
+Gestión de Patrimonio Personal
+
+Servicios Profesionales de Derecho
+
+Derecho Laboral
+
+Derecho Civil y Contratos
+
+Propiedad Intelectual e Industrial
+
+Derecho Tributario
+
+Defensa Corporativa
+
+Litigación Civil
+
+Derecho de Familia
+
+Asesoría en Constitución de Empresas
+
+Derecho Ambiental
+
+Derecho Administrativo
+
+Mediación y Arbitraje
+
+Derecho Inmobiliario
+
+Protección de Datos Personales
+
+Derecho Comercial Internacional
+
+Cumplimiento Normativo (Compliance)
+
+Servicios Profesionales de Ingeniería
+
+Cálculo Estructural
+
+Ingeniería de Procesos
+
+Gestión de Proyectos de Ingeniería
+
+Ingeniería Hidráulica
+
+Ingeniería Mecánica Industrial
+
+Diseño Eléctrico de Potencia
+
+Ingeniería en Telecomunicaciones
+
+Ingeniería Ambiental y Residuos
+
+Ingeniería de Transporte y Tránsito
+
+Ingeniería Térmica
+
+Simulación de Procesos
+
+Ingeniería Química
+
+Gestión de Mantenimiento Industrial
+
+Ingeniería de Seguridad Industrial
+
+Ingeniería en Automatización
+
+Servicios Profesionales de Arquitectura
+
+Diseño de Interiores y Mobiliario
+
+Modelado BIM (Building Information)
+
+Paisajismo Urbano
+
+Restauración de Edificios Patrimoniales
+
+Urbanismo y Planificación Territorial
+
+Regularizaciones de Edificación (Ley del Mono)
+
+Diseño de Vivienda Unifamiliar
+
+Arquitectura Comercial y Retail
+
+Inspección Técnica de Obras (ITO)
+
+Eficiencia Energética en Edificios
+
+Arquitectura Hospitalaria
+
+Arquitectura Industrial
+
+Renderizado y Visualización 3D
+
+Diseño Sustentable y Certificación LEED
+
+Consultoría de Normas Urbanísticas
+
+Servicios Profesionales de Diseño
+
+Diseño Gráfico Corporativo
+
+Ilustración Digital
+
+Diseño de Producto (Industrial)
+
+Diseño Editorial
+
+Motion Graphics y Animación
+
+Diseño de Empaques (Packaging)
+
+Diseño Textil y de Vestuario
+
+Diseño de Experiencia de Usuario (UX)
+
+Diseño de Interfaz de Usuario (UI)
+
+Fotografía Publicitaria
+
+Diseño de Stands y Ferias
+
+Tipografía y Rotulación
+
+Diseño Multimedial
+
+Dirección de Arte
+
+Infografía y Visualización de Datos
+
+Servicios Profesionales de Contabilidad
+
+Contabilidad General Mensual
+
+Declaraciones de Impuestos (IVA/Renta)
+
+Auditoría Contable Externa
+
+Gestión de Remuneraciones
+
+Contabilidad de Costos
+
+Preparación de Estados Financieros
+
+Outsourcing Contable
+
+Consultoría Tributaria
+
+Control de Inventarios
+
+Contabilidad Agrícola
+
+Contabilidad de Construcción
+
+Reconstrucción Contable
+
+Auditoría de Procesos Administrativos
+
+Contabilidad para ONGs
+
+Informes de Gestión Económica
+
+Servicios Profesionales de Recursos Humanos
+
+Reclutamiento y Selección
+
+Evaluación de Clima Laboral
+
+Gestión del Desempeño
+
+Desarrollo de Talentos
+
+Outsourcing de Nóminas (Payroll)
+
+Consultoría en Legislación Laboral
+
+Headhunting Ejecutivo
+
+Diseño de Planes de Beneficios
+
+Capacitación y Entrenamiento (DNC)
+
+Prevención de Riesgos Psicosociales
+
+Mediación de Conflictos Laborales
+
+Gestión de Sindicatos
+
+Onboarding de Personal
+
+Diseño de Organigramas
+
+Auditoría de RRHH
+
+Servicios Profesionales de Publicidad
+
+Redacción Creativa (Copywriting)
+
+Planificación de Medios
+
+Creatividad Publicitaria
+
+Dirección Creativa
+
+Producción de Campañas
+
+Publicidad Exterior (OOH)
+
+Publicidad en Punto de Venta
+
+Gestión de Cuentas Publicitarias
+
+Estrategia de Campañas ATL/BTL
+
+Marketing Directo
+
+Publicidad Nativa
+
+Análisis de Competencia Publicitaria
+
+Branding Estratégico
+
+Publicidad Radial y Podcasts
+
+Social Ads Management
+
+Servicios Profesionales de Investigación
+
+Investigación de Mercados
+
+Encuestas y Sondeos de Opinión
+
+Análisis Estadístico de Datos
+
+Investigación Científica Social
+
+Estudios de Impacto Socioeconómico
+
+Focus Groups y Pruebas de Usuario
+
+Etnografía de Consumo
+
+Vigilancia Tecnológica
+
+Análisis de Tendencias (Coolhunting)
+
+Investigación de Benchmarking
+
+Redacción de Artículos Científicos
+
+Consultoría en Metodología
+
+Análisis de Big Data
+
+Investigación Documental y Archivo
+
+Evaluación de Programas Públicos
+
+Servicios Profesionales de Traducción
+
+Traducción Técnica y Científica
+
+Traducción Jurídica y Legal
+
+Traducción de Software (Localización)
+
+Interpretación Simultánea (Congresos)
+
+Interpretación Consecutiva (Reuniones)
+
+Traducción Audiovisual (Subtitulaje)
+
+Traducción Literaria
+
+Doblaje y Locución Internacional
+
+Transcreación (Traducción Creativa)
+
+Revisión y Corrección de Estilo
+
+Traducción de Páginas Web
+
+Traducción para Comercio Exterior
+
+Interpretación de Lengua de Señas
+
+Terminología y Glosarios Técnicos
+
+Traducción Médica
+
+Servicios Profesionales de Fotografía
+
+Fotografía de Bodas y Eventos
+
+Retrato Corporativo
+
+Fotografía de Arquitectura e Inmobiliaria
+
+Fotografía de Alimentos (Gastronómica)
+
+Fotografía de Moda y Editorial
+
+Fotografía de Productos (E-commerce)
+
+Fotografía Industrial y Corporativa
+
+Retoque Fotográfico Digital
+
+Fotografía con Drones (Aérea)
+
+Fotografía Documental
+
+Fotografía Artística
+
+Fotografía Periodística
+
+Restauración de Fotografías Antiguas
+
+Fotografía de Interiores
+
+Fotografía de Paisajes
+
+Servicios Profesionales de Producción Audiovisual
+
+Edición y Montaje de Video
+
+Postproducción de Color
+
+Diseño Sonoro y Mezcla de Audio
+
+Animación 2D y 3D
+
+Grabación de Video Corporativo
+
+Producción de Comerciales (TV/Web)
+
+Guionismo para Video
+
+Transmisión en Vivo (Streaming)
+
+Operación de Cámara y Luces
+
+Producción de Documentales
+
+Grabación de Eventos en Vivo
+
+Efectos Especiales (VFX)
+
+Producción de Podcasts de Video
+
+Dirección de Fotografía Cinematográfica
+
+Gestión de Locaciones Audiovisuales
+
+Servicios Profesionales de Limpieza
+
+Limpieza de Oficinas y Empresas
+
+Sanitización y Desinfección Ambiental
+
+Limpieza Final de Obra (Post-construcción)
+
+Limpieza de Vidrios en Altura
+
+Lavado Industrial de Alfombras
+
+Limpieza de Plantas Industriales
+
+Limpieza de Fachadas y Grafitis
+
+Gestión de Residuos de Oficina
+
+Limpieza de Centros Médicos (Grado Clínico)
+
+Lavado de Tapicería de Vehículos
+
+Limpieza de Ductos de Ventilación
+
+Pulido y Vitrificado de Pisos
+
+Limpieza de Paneles Solares
+
+Servicios de Mucamas para Hotelería
+
+Limpieza de Tanques de Agua
+
+Servicios Profesionales de Seguridad
+
+Instalación de CCTV y Monitoreo
+
+Sistemas de Alarma de Intrusión
+
+Control de Acceso Biométrico
+
+Guardias de Seguridad Privada
+
+Seguridad Perimetral Eléctrica
+
+Escolta de Carga y Valores
+
+Ciberseguridad Física (Servidores)
+
+Consultoría en Planes de Emergencia
+
+Blindaje Arquitectónico
+
+Cerrajería de Seguridad
+
+Seguridad Electrónica de Incendios
+
+Monitoreo de Flotas por GPS
+
+Análisis de Vulnerabilidad Física
+
+Seguridad para Eventos Masivos
+
+Protección de Personas Importantes (PPI)
+
+Servicios Profesionales de Mantenimiento
+
+Mantenimiento Eléctrico Preventivo
+
+Reparaciones de Gasfitería General
+
+Mantenimiento de Ascensores y Montacargas
+
+Reparación de Aires Acondicionados
+
+Mantenimiento de Piscinas y Riego
+
+Reparación de Maquinaria de Oficina
+
+Mantenimiento de Infraestructura Edilicia
+
+Servicios de Pintura y Restauración
+
+Mantenimiento de Sistemas de Incendio
+
+Reparación de Mobiliario Corporativo
+
+Mantenimiento de Techumbres y Canales
+
+Servicio Técnico de Equipos Médicos
+
+Mantenimiento de Generadores Eléctricos
+
+Reparación de Puertas Automáticas
+
+Servicios de Carpintería de Mantención
+
+Actividad Comercial
+
+Venta de Insumos Médicos
+
+Comercio de Equipos Tecnológicos
+
+Venta de Materiales de Construcción
+
+Comercio de Repuestos Automotrices
+
+Venta de Productos de Limpieza Industrial
+
+Distribución de Equipos de Seguridad
+
+Comercio de Muebles de Oficina
+
+Venta de EPP (Protección Personal)
+
+Distribución de Herramientas Eléctricas
+
+Venta de Software y Licencias
+
+Comercio de Equipos de Climatización
+
+Venta de Productos Químicos Industriales
+
+Distribución de Equipos Fotovoltaicos
+
+Comercio de Maquinaria Liviana
+
+Venta de Insumos Agrícolas
+
+Actividad de Servicios
+
+Servicios de Mensajería y Courier
+
+Gestión de Estacionamientos
+
+Servicios de Lavandería Industrial
+
+Servicios de Banquetería (Catering)
+
+Gestión de Residuos Domiciliarios
+
+Servicios de Mudanzas Locales
+
+Gestión de Trámites Administrativos
+
+Servicios de Recepción y Conserjería
+
+Gestión de Comedores Institucionales
+
+Servicios de Traducción e Intérprete
+
+Gestión de Viajes Corporativos
+
+Servicios de Impresión y Plotter
+
+Gestión de Archivo y Digitalización
+
+Servicios de Alquiler de Maquinaria
+
+Gestión de Propiedades (Corretaje)
+
+Actividad Industrial
+
+Fabricación de Estructuras Metálicas
+
+Producción de Hormigón Elaborado
+
+Manufactura de Productos de Goma
+
+Procesamiento de Alimentos Industriales
+
+Fabricación de Envases y Embalajes
+
+Producción de Productos Químicos
+
+Metalmecánica de Precisión
+
+Manufactura de Muebles Modulares
+
+Fabricación de Conductores Eléctricos
+
+Procesamiento de Áridos
+
+Producción de Pinturas y Revestimientos
+
+Manufactura de Textiles Técnicos
+
+Ensamblaje de Equipos Electrónicos
+
+Producción de Maquinaria Agrícola
+
+Fabricación de Materiales Aislantes
+
+Actividad Agrícola
+
+Cultivo de Hortalizas y Verduras
+
+Producción de Frutas de Exportación
+
+Servicios de Cosecha Mecanizada
+
+Gestión de Riego Tecnificado
+
+Control de Plagas Agrícolas
+
+Preparación y Arado de Suelos
+
+Producción de Semillas Certificadas
+
+Gestión de Viveros y Plantaciones
+
+Asesoría Agronómica en Terreno
+
+Administración de Campos Agrícolas
+
+Servicio de Siembra de Precisión
+
+Gestión de Fertilización Orgánica
+
+Cultivo de Flores (Floricultura)
+
+Producción de Forraje para Animales
+
+Servicios de Análisis de Suelo
+
+Actividad Ganadera
+
+Crianza de Ganado Bovino
+
+Producción de Leche y Derivados
+
+Gestión de Plantas Faenadoras
+
+Servicios Veterinarios para Ganado
+
+Crianza de Porcinos
+
+Producción Avícola (Huevo/Carne)
+
+Crianza de Ovinos y Caprinos
+
+Gestión de Inseminación Artificial
+
+Producción de Lana y Fibras
+
+Distribución de Alimento Animal
+
+Gestión de Bienestar Animal
+
+Control Sanitario Ganadero
+
+Apicultura (Producción de Miel)
+
+Crianza de Equinos (Caballares)
+
+Servicios de Esquila
+
+Actividad Forestal
+
+Plantación de Árboles (Reforestación)
+
+Gestión de Tala y Cosecha Forestal
+
+Manejo Sustentable de Bosques
+
+Control de Incendios Forestales
+
+Servicios de Aserradero de Madera
+
+Producción de Celulosa y Papel
+
+Viveros de Especies Nativas
+
+Transporte de Rollizos de Madera
+
+Consultoría en Certificación Forestal
+
+Inventario de Recursos Forestales
+
+Producción de Biomasa y Leña
+
+Tratamiento Químico de Maderas
+
+Manufactura de Paneles de Madera
+
+Caminos y Puentes Forestales
+
+Servicios de Poda y Raleo
+
+Actividad Pesquera
+
+Pesca Industrial de Altura
+
+Acuicultura de Salmónidos
+
+Procesamiento de Productos del Mar
+
+Servicios de Buceo Comercial e Industrial
+
+Recolección de Algas Marinas
+
+Cultivo de Moluscos (Choritos/Ostiones)
+
+Fabricación de Redes de Pesca
+
+Mantenimiento de Embarcaciones Pesqueras
+
+Gestión de Plantas de Harina de Pescado
+
+Distribución de Pescados y Mariscos
+
+Consultoría en Biología Marina
+
+Control de Calidad Pesquera
+
+Servicios de Frío para Productos del Mar
+
+Logística de Exportación Pesquera
+
+Acuicultura de Agua Dulce
+
+Actividad Minera
+
+Extracción de Cobre y Molibdeno
+
+Minería de Oro y Plata
+
+Servicios de Sondaje Diamantino
+
+Voladura y Tronadura Controlada
+
+Transporte de Carga Minera Pesada
+
+Mantención de Maquinaria Minera
+
+Gestión de Relaves y Medio Ambiente
+
+Servicios de Alimentación en Faena
+
+Seguridad e Higiene Minera
+
+Consultoría Geológica y de Reservas
+
+Operación de Plantas de Chancado
+
+Mantenimiento de Correas Transportadoras
+
+Ingeniería de Túneles Mineros
+
+Servicios de Ventilación de Minas
+
+Gestión de Energías para Minería
+
+Actividad de Construcción
+
+Edificación de Viviendas en Altura
+
+Construcción de Casas Unifamiliares
+
+Instalación de Faenas y Campamentos
+
+Obras de Urbanización (Alcantarillado)
+
+Montaje Industrial y de Maquinaria
+
+Remodelación y Ampliación de Locales
+
+Movimiento de Tierras Masivo
+
+Construcción de Galpones Metálicos
+
+Instalación de Ascensores en Obras
+
+Servicios de Enfierradura y Moldajes
+
+Hormigonado y Pavimentación Interna
+
+Terminaciones y Revestimientos Finos
+
+Impermeabilización de Estructuras
+
+Instalación de Redes de Climatización
+
+Inspección Técnica de Obras (ITO)
+
+Actividad de Transporte
+
+Transporte de Carga por Carretera
+
+Servicios de Logística de Almacenaje
+
+Transporte Ferroviario de Carga
+
+Transporte Marítimo y Cabotaje
+
+Servicios de Courier Internacional
+
+Gestión de Flotas de Vehículos
+
+Transporte de Pasajeros Interurbano
+
+Servicios de Grúas y Asistencia
+
+Transporte de Materiales de Construcción
+
+Logística de Distribución de Alimentos
+
+Transporte de Residuos Peligrosos
+
+Servicios de Embalaje para Exportación
+
+Gestión de Aduanas y Despacho
+
+Transporte Escolar y Privado
+
+Alquiler de Camiones y Camionetas
+
+Servicios Profesionales de Paisajismo
+
+Diseño de Áreas Verdes Residenciales
+
+Mantenimiento de Parques y Jardines
+
+Instalación de Sistemas de Riego
+
+Arboricultura y Cuidado de Árboles
+
+Diseño de Jardines Verticales
+
+Paisajismo para Espacios Públicos
+
+Control de Plagas en Áreas Verdes
+
+Suministro de Plantas Ornamentales
+
+Iluminación Paisajística de Jardines
+
+Restauración de Paisajes Naturales
+
+Paisajismo de Terrazas y Balcones
+
+Consultoría en Xeripaisajismo (Bajo Riego)
+
+Instalación de Césped Sintético y Natural
+
+Diseño de Patios y Entornos Corporativos
+
+Arquitectura del Paisaje
+
+Actividad de Telecomunicaciones
+
+Instalación de Redes de Fibra Óptica
+
+Mantenimiento de Torres de Comunicación
+
+Servicios de Internet Corporativo
+
+Instalación de Sistemas de Satélite
+
+Servicios de Telefonía IP (VoIP)
+
+Configuración de Redes Inalámbricas (WiFi)
+
+Mantenimiento de Estaciones Base
+
+Consultoría en Espectro Radioeléctrico
+
+Instalación de Cableado Estructurado
+
+Servicios de Videoconferencia Profesional
+
+Gestión de Centros de Datos
+
+Auditoría de Redes de Comunicación
+
+Instalación de Antenas de Recepción
+
+Servicios de Enlaces de Microondas
+
+Ingeniería de Sistemas Radiofónicos
+
+Servicios de Instalaciones Eléctricas
+
+Montaje de Tableros Eléctricos
+
+Instalaciones de Baja Tensión Residencial
+
+Sistemas Eléctricos Industriales
+
+Certificación y Planos Eléctricos (TE1)
+
+Instalación de Grupos Electrógenos
+
+Mantenimiento de Transformadores
+
+Instalación de Iluminación Industrial
+
+Sistemas de Puesta a Tierra y Pararrayos
+
+Montaje de Canalizaciones Eléctricas
+
+Reparación de Fallas y Cortocircuitos
+
+Instalación de Domótica Eléctrica
+
+Servicios de Eficiencia Eléctrica
+
+Instalación de Cargadores de Autos Eléctricos
+
+Redes de Corrientes Débiles
+
+Automatización de Tableros de Control
+
+Servicios de Climatización y Aire Acondicionado
+
+Instalación de Equipos Split y Multi-split
+
+Mantenimiento de Sistemas HVAC Centrales
+
+Reparación de Equipos de Refrigeración
+
+Instalación de Calderas y Calefacción
+
+Limpieza Química de Ductos de Aire
+
+Sistemas de Ventilación Mecánica
+
+Recarga de Gas Refrigerante
+
+Diseño de Proyectos Térmicos
+
+Instalación de Termostatos Inteligentes
+
+Mantenimiento de Unidades Manejadoras
+
+Reparación de Bombas de Calor
+
+Instalación de Chillers Industriales
+
+Filtración y Purificación de Aire
+
+Aislamiento Térmico de Tuberías
+
+Balanceo de Caudal de Aire
+
+Actividad de Gasfitería y Fontanería
+
+Reparación de Filtraciones de Agua
+
+Instalación y Mantención de Cálifonts
+
+Destape de Alcantarillado y Cañerías
+
+Instalación de Redes de Gas (TC6)
+
+Montaje de Sanitarios y Grifería
+
+Detección Digital de Fugas
+
+Instalación de Bombas de Agua
+
+Reparación de Redes de Incendio
+
+Mantención de Tanques y Pozos Sépticos
+
+Instalación de Termos Eléctricos
+
+Reparación de Colectores de Agua
+
+Instalación de Filtros de Agua
+
+Soldadura de Tuberías de Cobre y PPR
+
+Limpieza de Desagües Pluviales
+
+Certificación de Instalaciones de Gas
+
+Servicios de Revestimientos y Pintura
+
+Pintura de Fachadas en Altura
+
+Aplicación de Pintura Epóxica en Pisos
+
+Revestimientos de Piedra y Ladrillo
+
+Instalación de Papel Mural
+
+Barnizado de Puertas y Ventanas
+
+Revestimientos de Pisos Flotantes
+
+Instalación de Cerámicos y Porcelanatos
+
+Aplicación de Yeso y Pasta Muro
+
+Pintura Industrial Anticorrosiva
+
+Revestimientos de Pisos de Vinilo
+
+Tratamiento de Humedad en Paredes
+
+Pintura de Interiores Residenciales
+
+Aplicación de Texturados y Granulados
+
+Pulido de Mármol y Granito
+
+Instalación de Molduras y Zócalos
+
+Actividad de Carpintería y Ebanistería
+
+Fabricación de Muebles de Cocina
+
+Carpintería Estructural (Techumbres)
+
+Instalación de Puertas y Marcos
+
+Fabricación de Closets y Armarios
+
+Reparación de Muebles de Madera
+
+Construcción de Terrazas de Madera
+
+Instalación de Escaleras de Madera
+
+Fabricación de Ventanas de Madera
+
+Carpintería para Terminaciones Finas
+
+Instalación de Revestimientos de Madera
+
+Tallado Artesanal de Madera
+
+Barnizado y Restauración de Muebles
+
+Construcción de Cobertizos y Pérgolas
+
+Reparación de Pisos de Parquet
+
+Fabricación de Bibliotecas a Medida
+
+Servicios de Estructuras Metálicas y Soldadura
+
+Fabricación de Rejas y Portones
+
+Soldadura de Estructuras Pesadas
+
+Fabricación de Escalas Metálicas
+
+Montaje de Galpones Modulares
+
+Soldadura en Acero Inoxidable
+
+Fabricación de Protecciones de Ventana
+
+Reparación de Maquinaria por Soldadura
+
+Montaje de Vigas y Columnas
+
+Soldadura de Tuberías Industriales
+
+Fabricación de Tanques de Acero
+
+Corte y Plegado de Planchas Metálicas
+
+Soldadura por Arco y MIG/TIG
+
+Fabricación de Cerchas Metálicas
+
+Instalación de Cercos Perimetrales
+
+Reparación de Carrocerías Metálicas
+
+Servicios Profesionales de Topografía
+
+Levantamientos Topográficos Digitales
+
+Loteos y Subdivisiones de Terrenos
+
+Replanteo de Obras de Construcción
+
+Nivelación de Terrenos Industriales
+
+Topografía con Drones (Fotogrametría)
+
+Batimetría (Topografía Submarina)
+
+Catastro de Infraestructura Existente
+
+Cubicaciones de Movimiento de Tierra
+
+Georreferenciación de Puntos (GNSS)
+
+Topografía para Obras Viales
+
+Escaneo Láser 3D de Terrenos
+
+Informes de Deslindes y Cabidas
+
+Topografía para Redes Eléctricas
+
+Marcación de Ejes de Construcción
+
+Levantamiento de Curvas de Nivel
+
+Actividad de Movimiento de Tierras y Excavación
+
+Excavación para Fundaciones y Zanjas
+
+Relleno y Compactación de Terrenos
+
+Nivelación Masiva de Sitios
+
+Transporte de Escombros y Áridos
+
+Excavación para Piscinas
+
+Construcción de Caminos de Acceso
+
+Despeje y Limpieza de Sitios
+
+Excavación para Redes Subterráneas
+
+Estabilización de Taludes
+
+Alquiler de Retroexcavadoras y Bulldozers
+
+Excavación en Roca (con Perforación)
+
+Terraplenado y Cunetas
+
+Preparación de Bases para Pavimento
+
+Movimiento de Tierras para Minería
+
+Demoliciones Menores de Estructuras
+
+Servicios de Prevención de Riesgos Laborales
+
+Elaboración de Matrices de Riesgo
+
+Capacitación en Uso de EPP
+
+Inspección de Seguridad en Obra
+
+Planificación de Emergencias y Evacuación
+
+Investigación de Accidentes Laborales
+
+Auditoría de Sistemas de Gestión (ISO)
+
+Capacitación en Primeros Auxilios
+
+Control de Higiene Industrial (Ruido/Polvo)
+
+Implementación de Comités Paritarios
+
+Asesoría en Ley de Accidentes (16.744)
+
+Seguridad en Trabajos en Altura
+
+Ergonomía de Puestos de Trabajo
+
+Prevención de Incendios y Extintores
+
+Charla de Inducción de Seguridad
+
+Asesoría en Protocolos Minsal (Psicosocial)
+
+Actividad de Gestión de Residuos y Reciclaje
+
+Recolección de Residuos Industriales
+
+Clasificación de Materiales Reciclables
+
+Retiro de Escombros de Construcción
+
+Gestión de Residuos Peligrosos (RESPEL)
+
+Trituración de Madera y Plásticos
+
+Reciclaje de Papel y Cartón
+
+Compostaje de Residuos Orgánicos
+
+Gestión de Centros de Acopio
+
+Retiro de Aceites Usados
+
+Reciclaje de Residuos Electrónicos (RAEE)
+
+Consultoría en Economía Circular
+
+Gestión de Residuos Hospitalarios
+
+Compactación de Chatarra Metálica
+
+Servicios de Contenedores y Tolvas
+
+Auditoría de Huella de Carbono
+
+Servicios de Automatización y Domótica
+
+Instalación de Casas Inteligentes
+
+Automatización de Portones y Persianas
+
+Control de Iluminación Automatizado
+
+Sistemas de Audio Multi-habitación
+
+Integración de Asistentes de Voz
+
+Configuración de Redes Smart Home
+
+Instalación de Cerraduras Inteligentes
+
+Programación de Escenas de Seguridad
+
+Control de Clima vía Smartphone
+
+Automatización de Piscinas y Riego
+
+Sensores de Movimiento y Presencia
+
+Instalación de Pantallas Táctiles de Control
+
+Monitoreo de Consumo Energético
+
+Seguridad Domótica contra Inundación/Humo
+
+Mantenimiento de Sistemas Inteligentes
+
+Actividad de Obras Civiles y Viales
+
+Pavimentación de Calles y Caminos
+
+Construcción de Puentes Menores
+
+Instalación de Colectores de Aguas Lluvia
+
+Señalética Vial y Demarcación
+
+Construcción de Veredas y Soleras
+
+Obras de Defensas Fluviales
+
+Movimiento de Tierras Vial
+
+Mantenimiento de Carreteras
+
+Construcción de Ciclovías
+
+Instalación de Barreras de Seguridad
+
+Obras de Urbanización Rural
+
+Construcción de Muros de Contención
+
+Obras Civiles para Telecomunicaciones
+
+Instalación de Redes de Agua Potable
+
+Reparación de Baches y Socavones
+
+Servicios Profesionales de Geotecnia
+
+Ensayos de Mecánica de Suelos
+
+Perforaciones y Sondajes Geotécnicos
+
+Análisis de Estabilidad de Taludes
+
+Clasificación de Suelos (USCS/AASHTO)
+
+Diseño de Fundaciones Especiales
+
+Ensayos de Compactación (Proctor)
+
+Medición de Densidad en Terreno
+
+Informe Geotécnico de Edificación
+
+Control de Asentamientos
+
+Análisis Sísmico de Suelos
+
+Estudio de Napas Freáticas
+
+Inyecciones de Consolidación de Suelo
+
+Instrumentación Geotécnica
+
+Muestreo de Suelos de Fundaciones
+
+Consultoría en Ingeniería de Suelos

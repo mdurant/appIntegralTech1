@@ -19,6 +19,8 @@ class ServiceCategory extends Model
         'parent_id',
         'key',
         'name',
+        'slug',
+        'reference_code',
         'sort_order',
     ];
 

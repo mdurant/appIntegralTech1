@@ -43,7 +43,7 @@ function initializeSelect2(container = document) {
         }
         
         if (typeof $ !== 'undefined' && $.fn.select2) {
-            $(select).select2({
+            const config = {
                 theme: 'default',
                 width: '100%',
                 language: {
@@ -54,15 +54,44 @@ function initializeSelect2(container = document) {
                         return 'Buscando...';
                     },
                 },
-            });
+            };
+
+            // Si tiene data-ajax, configurar AJAX
+            const ajaxUrl = select.getAttribute('data-ajax-url');
+            if (ajaxUrl) {
+                config.ajax = {
+                    url: ajaxUrl,
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1,
+                            parent_only: select.getAttribute('data-parent-only') === 'true' ? 1 : 0,
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results || [],
+                        };
+                    },
+                    cache: true,
+                };
+                config.minimumInputLength = 0;
+            }
+
+            $(select).select2(config);
             
             // Manejar cambios de Livewire
             $(select).on('change', function() {
                 const wireModel = select.getAttribute('wire:model');
-                if (wireModel && typeof Livewire !== 'undefined') {
+                const wireModelLive = select.getAttribute('wire:model.live');
+                const model = wireModel || wireModelLive;
+                
+                if (model && typeof Livewire !== 'undefined') {
                     const component = Livewire.find(select.closest('[wire\\:id]')?.getAttribute('wire:id'));
                     if (component) {
-                        component.set(wireModel, select.value);
+                        component.set(model.replace('.live', ''), select.value);
                     }
                 }
             });

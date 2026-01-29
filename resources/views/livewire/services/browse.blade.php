@@ -7,7 +7,7 @@
         </div>
 
         <div class="w-full sm:min-h-[44px] md:max-w-sm">
-            <flux:select wire:model.live="categoryId" :label="__('Categoría')" placeholder="{{ __('Todas') }}">
+            <flux:select wire:model.live="categoryId" class="select2" :label="__('Categoría')" placeholder="{{ __('Todas') }}">
                 @foreach ($this->categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach

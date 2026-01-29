@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\ServiceCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ServiceCategory>
@@ -23,9 +25,14 @@ class ServiceCategoryFactory extends Factory
 
         $selected = $choices[array_rand($choices)];
 
+        $name = $selected['name'];
+        $key = $selected['key'].'-'.fake()->unique()->randomNumber(4);
+
         return [
-            'key' => $selected['key'].'-'.fake()->unique()->randomNumber(4),
-            'name' => $selected['name'],
+            'key' => $key,
+            'name' => $name,
+            'slug' => Str::slug($name).'-'.fake()->unique()->randomNumber(4),
+            'reference_code' => ServiceCategory::query()->max('reference_code') + 1,
         ];
     }
 }
