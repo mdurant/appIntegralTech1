@@ -1,6 +1,8 @@
 <?php
 
 use App\Livewire\Client\ServiceRequests\Index as ClientRequestsIndex;
+use App\Models\Commune;
+use App\Models\Region;
 use App\Models\ServiceCategory;
 use App\Models\ServiceRequest;
 use App\Models\ServiceRequestAttachment;
@@ -15,6 +17,9 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('client puede adjuntar hasta 4 imágenes al crear solicitud', function () {
     Storage::fake('public');
+
+    $region = Region::create(['name' => 'Metropolitana', 'code' => 'RM', 'sort_order' => 1, 'is_active' => true]);
+    $commune = Commune::create(['region_id' => $region->id, 'name' => 'Santiago', 'code' => 'STG', 'sort_order' => 1, 'is_active' => true]);
 
     $top = ServiceCategory::create(['key' => 'construccion', 'name' => 'Construcción', 'parent_id' => null, 'sort_order' => 0]);
     $subcategory = ServiceCategory::create(['key' => 'construccion-casa', 'name' => 'Construcción Casa', 'parent_id' => $top->id, 'sort_order' => 0]);
@@ -33,8 +38,10 @@ test('client puede adjuntar hasta 4 imágenes al crear solicitud', function () {
         ->set('description', 'Incluye 4 imágenes.')
         ->set('contact_name', 'Mauricio')
         ->set('contact_email', 'mauricio@example.com')
-        ->set('contact_phone', '+56999999999')
-        ->set('location_text', 'Santiago')
+        ->set('contact_phone_country', '+56')
+        ->set('contact_phone_number', '999999999')
+        ->set('regionId', $region->id)
+        ->set('communeId', $commune->id)
         ->set('address', 'Santiago')
         ->set('photos', [
             UploadedFile::fake()->image('1.jpg'),
@@ -105,4 +112,3 @@ test('adjuntos se sirven por ruta y respetan autorización', function () {
     $this->get(route('attachments.show', $attachment))
         ->assertForbidden();
 });
-

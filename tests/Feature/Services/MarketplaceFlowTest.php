@@ -2,6 +2,8 @@
 
 use App\Livewire\Client\ServiceRequests\Index as ClientRequestsIndex;
 use App\Livewire\Services\Show as ServicesShow;
+use App\Models\Commune;
+use App\Models\Region;
 use App\Models\ServiceCategory;
 use App\Models\ServiceRequest;
 use App\Models\Tenant;
@@ -13,6 +15,9 @@ use Livewire\Livewire;
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('client puede crear y publicar solicitud; user puede ofertar', function () {
+    $region = Region::create(['name' => 'Metropolitana', 'code' => 'RM', 'sort_order' => 1, 'is_active' => true]);
+    $commune = Commune::create(['region_id' => $region->id, 'name' => 'La Cisterna', 'code' => 'LC', 'sort_order' => 1, 'is_active' => true]);
+
     $top = ServiceCategory::create(['key' => 'construccion', 'name' => 'Construcción', 'parent_id' => null, 'sort_order' => 0]);
     $subcategory = ServiceCategory::create(['key' => 'construccion-casa', 'name' => 'Construcción Casa', 'parent_id' => $top->id, 'sort_order' => 0]);
 
@@ -32,8 +37,10 @@ test('client puede crear y publicar solicitud; user puede ofertar', function () 
         ->set('description', 'Instalación completa en oficina pequeña.')
         ->set('contact_name', 'Juan Perez')
         ->set('contact_email', 'juan@example.com')
-        ->set('contact_phone', '+56911112222')
-        ->set('location_text', 'La Cisterna, Santiago')
+        ->set('contact_phone_country', '+56')
+        ->set('contact_phone_number', '911112222')
+        ->set('regionId', $region->id)
+        ->set('communeId', $commune->id)
         ->set('address', 'Av. Siempre Viva 123')
         ->call('create')
         ->assertHasNoErrors();

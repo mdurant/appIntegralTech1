@@ -2,21 +2,57 @@
 
 namespace App\Livewire\Client\ServiceRequests;
 
+use App\Models\Commune;
+use App\Models\Region;
 use App\Models\ServiceCategory;
 use App\Models\ServiceFormField;
 use App\Models\ServiceRequest;
 use App\Models\ServiceRequestAttachment;
+use App\Services\ServiceRequestPdfService;
 use App\Services\ServiceRequestService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
     use WithFileUploads;
+    use WithPagination;
 
     public string $title = '';
+
+    /** Búsqueda y orden para DataTable Mis Solicitudes */
+    public string $search = '';
+
+    public string $sortField = 'id';
+
+    public string $sortDirection = 'desc';
+
+    /** Modal eliminar */
+    public ?int $deletingId = null;
+
+    public string $deletingTitle = '';
+
+    /** Modal solicitud creada */
+    public bool $showCreatedModal = false;
+
+    /** Modal Ver solicitud */
+    public ?int $viewingId = null;
+
+    /** Modal confirmar Editar */
+    public ?int $editConfirmId = null;
+
+    public string $editConfirmTitle = '';
+
+    /** Modal confirmar Publicar */
+    public ?int $publishConfirmId = null;
+
+    public string $publishConfirmTitle = '';
+
+    protected $paginationTheme = 'tailwind';
 
     public string $description = '';
 
@@ -33,9 +69,13 @@ class Index extends Component
 
     public string $contact_email = '';
 
-    public string $contact_phone = '';
+    public string $contact_phone_country = '+56';
 
-    public string $location_text = '';
+    public string $contact_phone_number = '';
+
+    public int|string|null $regionId = null;
+
+    public int|string|null $communeId = null;
 
     public string $address = '';
 
@@ -52,6 +92,49 @@ class Index extends Component
 
         unset($this->photos[$index]);
         $this->photos = array_values($this->photos);
+    }
+
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function applySearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy(string $field): void
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    }
+
+    #[Computed]
+    public function serviceRequestsPaginated(): LengthAwarePaginator
+    {
+        return ServiceRequest::query()
+            ->where('tenant_id', auth()->user()->current_tenant_id)
+            ->with(['category', 'category.parent'])
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('title', 'like', '%'.$this->search.'%')
+                        ->orWhere('contact_name', 'like', '%'.$this->search.'%')
+                        ->orWhereHas('category', fn ($c) => $c->where('name', 'like', '%'.$this->search.'%'));
+                });
+            })
+            ->when($this->sortField === 'category', function ($query) {
+                $query->leftJoin('service_categories as sort_cat', 'service_requests.category_id', '=', 'sort_cat.id')
+                    ->orderBy('sort_cat.name', $this->sortDirection)
+                    ->select('service_requests.*');
+            }, function ($query) {
+                $query->orderBy($this->sortField, $this->sortDirection);
+            })
+            ->paginate(15);
     }
 
     #[Computed]
@@ -103,6 +186,94 @@ class Index extends Component
             ->get();
     }
 
+    public function confirmDelete(int $serviceRequestId): void
+    {
+        $request = ServiceRequest::query()
+            ->where('tenant_id', auth()->user()->current_tenant_id)
+            ->findOrFail($serviceRequestId);
+
+        $this->deletingId = $request->id;
+        $this->deletingTitle = $request->title;
+    }
+
+    public function closeDeleteModal(): void
+    {
+        $this->reset('deletingId', 'deletingTitle');
+    }
+
+    public function closeCreatedModal(): void
+    {
+        $this->reset('showCreatedModal');
+    }
+
+    public function openViewModal(int $id): void
+    {
+        $request = ServiceRequest::query()
+            ->where('tenant_id', auth()->user()->current_tenant_id)
+            ->with(['category', 'category.parent'])
+            ->findOrFail($id);
+        $this->viewingId = $request->id;
+    }
+
+    public function closeViewModal(): void
+    {
+        $this->reset('viewingId');
+    }
+
+    public function openEditConfirmModal(int $id, string $title): void
+    {
+        $this->editConfirmId = $id;
+        $this->editConfirmTitle = $title;
+    }
+
+    public function closeEditConfirmModal(): void
+    {
+        $this->reset('editConfirmId', 'editConfirmTitle');
+    }
+
+    public function goToEdit(): void
+    {
+        $id = $this->editConfirmId;
+        $this->closeEditConfirmModal();
+        if ($id) {
+            $this->redirect(route('client.requests.edit', ['serviceRequest' => $id]), navigate: true);
+        }
+    }
+
+    public function openPublishConfirmModal(int $id, string $title): void
+    {
+        $this->publishConfirmId = $id;
+        $this->publishConfirmTitle = $title;
+    }
+
+    public function closePublishConfirmModal(): void
+    {
+        $this->reset('publishConfirmId', 'publishConfirmTitle');
+    }
+
+    public function confirmPublish(ServiceRequestService $serviceRequestService): void
+    {
+        if (! $this->publishConfirmId) {
+            return;
+        }
+        $id = $this->publishConfirmId;
+        $this->closePublishConfirmModal();
+        $this->publish($id, $serviceRequestService);
+    }
+
+    #[Computed]
+    public function viewRequest(): ?ServiceRequest
+    {
+        if (! $this->viewingId) {
+            return null;
+        }
+
+        return ServiceRequest::query()
+            ->where('tenant_id', auth()->user()->current_tenant_id)
+            ->with(['category', 'category.parent'])
+            ->find($this->viewingId);
+    }
+
     public function mount(): void
     {
         abort_unless(auth()->user()->isClient(), 403);
@@ -119,7 +290,37 @@ class Index extends Component
         $this->reset('answers');
     }
 
-    public function create(ServiceRequestService $serviceRequestService): void
+    public function updatedRegionId(): void
+    {
+        $this->reset('communeId');
+    }
+
+    #[Computed]
+    public function regions(): Collection
+    {
+        return Region::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+    }
+
+    #[Computed]
+    public function communes(): Collection
+    {
+        if (! $this->regionId) {
+            return new Collection([]);
+        }
+
+        return Commune::query()
+            ->where('region_id', (int) $this->regionId)
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+    }
+
+    public function create(ServiceRequestService $serviceRequestService, ServiceRequestPdfService $pdfService): void
     {
         $this->authorize('create', ServiceRequest::class);
 
@@ -130,11 +331,18 @@ class Index extends Component
             'description' => ['required', 'string', 'max:5000'],
             'contact_name' => ['required', 'string', 'max:255'],
             'contact_email' => ['required', 'email', 'max:255'],
-            'contact_phone' => ['required', 'string', 'max:50'],
-            'location_text' => ['required', 'string', 'max:255'],
+            'contact_phone_country' => ['required', 'string', 'in:+56,+54,+1,+57,+58,+51,+52,+593,+595,+598'],
+            'contact_phone_number' => ['required', 'string', 'regex:/^\d{8,9}$/', 'max:9'],
+            'regionId' => ['required', 'integer', 'exists:regions,id'],
+            'communeId' => ['required', 'integer', 'exists:communes,id'],
             'address' => ['required', 'string', 'max:255'],
             'photos' => ['array', 'max:4'],
             'photos.*' => ['image', 'max:2048'],
+        ], [
+            'contact_phone_number.required' => __('El número de teléfono es obligatorio.'),
+            'contact_phone_number.regex' => __('El número debe tener 8 o 9 dígitos (formato celular Chile).'),
+            'regionId.required' => __('Debe seleccionar una región.'),
+            'communeId.required' => __('Debe seleccionar una comuna.'),
         ]);
 
         $subcategory = ServiceCategory::query()
@@ -179,13 +387,22 @@ class Index extends Component
             title: $validated['title'],
             description: $validated['description'],
             answers: $this->answers,
+            regionId: (int) $validated['regionId'],
+            communeId: (int) $validated['communeId'],
         );
+
+        $contactPhone = $validated['contact_phone_country'].$validated['contact_phone_number'];
+        $region = Region::find($validated['regionId']);
+        $commune = Commune::find($validated['communeId']);
+        $locationText = $commune?->name && $region?->name
+            ? $commune->name.', '.$region->name
+            : ($commune?->name ?? $region?->name ?? '');
 
         $serviceRequest->update([
             'contact_name' => $validated['contact_name'],
             'contact_email' => $validated['contact_email'],
-            'contact_phone' => $validated['contact_phone'],
-            'location_text' => $validated['location_text'],
+            'contact_phone' => $contactPhone,
+            'location_text' => $locationText,
             'address' => $validated['address'],
             'notes' => $validated['description'],
         ]);
@@ -202,6 +419,11 @@ class Index extends Component
             ]);
         }
 
+        $pdfPath = $pdfService->generate($serviceRequest);
+        if ($pdfPath !== null) {
+            $serviceRequest->update(['pdf_path' => $pdfPath]);
+        }
+
         $this->reset(
             'topCategoryId',
             'subcategoryId',
@@ -210,11 +432,15 @@ class Index extends Component
             'description',
             'contact_name',
             'contact_email',
-            'contact_phone',
-            'location_text',
+            'contact_phone_country',
+            'contact_phone_number',
+            'regionId',
+            'communeId',
             'address',
             'photos',
         );
+
+        $this->showCreatedModal = true;
     }
 
     public function publish(int $serviceRequestId, ServiceRequestService $serviceRequestService): void
@@ -228,15 +454,20 @@ class Index extends Component
         $serviceRequestService->publish($serviceRequest);
     }
 
-    public function delete(int $serviceRequestId): void
+    public function delete(): void
     {
+        if (! $this->deletingId) {
+            return;
+        }
+
         $serviceRequest = ServiceRequest::query()
             ->where('tenant_id', auth()->user()->current_tenant_id)
-            ->findOrFail($serviceRequestId);
+            ->findOrFail($this->deletingId);
 
         $this->authorize('delete', $serviceRequest);
 
         $serviceRequest->delete();
+        $this->closeDeleteModal();
     }
 
     public function render()
@@ -245,4 +476,3 @@ class Index extends Component
             ->layout('layouts.app', ['title' => __('Mis solicitudes')]);
     }
 }
-

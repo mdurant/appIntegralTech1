@@ -16,9 +16,11 @@
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
 
-                    <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
-                        {{ __('Servicios') }}
-                    </flux:sidebar.item>
+                    @if (!auth()->user()->isClient())
+                        <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
+                            {{ __('Servicios') }}
+                        </flux:sidebar.item>
+                    @endif
 
                     @if (auth()->user()->isClient())
                         <flux:sidebar.item icon="folder-git-2" :href="route('client.requests.index')" :current="request()->routeIs('client.requests.*')" wire:navigate>
