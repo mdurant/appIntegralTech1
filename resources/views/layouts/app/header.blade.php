@@ -14,24 +14,28 @@
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
 
-                <flux:navbar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
-                    {{ __('Servicios') }}
-                </flux:navbar.item>
+                @if (!auth()->user()->isClient())
+                    <flux:navbar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
+                        {{ __('Servicios') }}
+                    </flux:navbar.item>
+                @endif
             </flux:navbar>
 
             <flux:spacer />
 
-            <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-                <flux:tooltip :content="__('Explorar servicios')" position="bottom">
-                    <flux:navbar.item
-                        class="h-10 max-lg:hidden [&>div>svg]:size-5"
-                        icon="magnifying-glass"
-                        :href="route('services.browse')"
-                        :label="__('Explorar')"
-                        wire:navigate
-                    />
-                </flux:tooltip>
-            </flux:navbar>
+            @if (!auth()->user()->isClient())
+                <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
+                    <flux:tooltip :content="__('Explorar servicios')" position="bottom">
+                        <flux:navbar.item
+                            class="h-10 max-lg:hidden [&>div>svg]:size-5"
+                            icon="magnifying-glass"
+                            :href="route('services.browse')"
+                            :label="__('Explorar')"
+                            wire:navigate
+                        />
+                    </flux:tooltip>
+                </flux:navbar>
+            @endif
 
             <x-desktop-user-menu />
         </flux:header>
@@ -49,9 +53,11 @@
                         {{ __('Dashboard')  }}
                     </flux:sidebar.item>
 
-                    <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
-                        {{ __('Servicios')  }}
-                    </flux:sidebar.item>
+                    @if (!auth()->user()->isClient())
+                        <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
+                            {{ __('Servicios')  }}
+                        </flux:sidebar.item>
+                    @endif
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

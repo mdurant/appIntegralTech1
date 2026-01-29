@@ -9,6 +9,7 @@
     ],
     "license": "MIT",
     "require": {
+        "barryvdh/laravel-dompdf": "^3.0",
         "php": "^8.2",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",

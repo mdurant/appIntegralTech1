@@ -36,6 +36,7 @@ class ServiceRequest extends Model
         'published_at',
         'expires_at',
         'awarded_bid_id',
+        'pdf_path',
     ];
 
     /**
@@ -129,6 +130,16 @@ class ServiceRequest extends Model
                 ? DataObfuscationHelper::obfuscateEmail($this->contact_email)
                 : 'xxx@xxxxxx.xxx',
         );
+    }
+
+    /**
+     * Indica si la solicitud publicada está vencida (expires_at ya pasó).
+     */
+    public function isExpired(): bool
+    {
+        return $this->status === ServiceRequestStatus::Published
+            && $this->expires_at
+            && $this->expires_at->isPast();
     }
 
     /**

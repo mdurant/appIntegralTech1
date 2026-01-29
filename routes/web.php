@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\ServiceRequestPdfController;
 use App\Http\Controllers\ServiceBidPdfController;
 use App\Http\Controllers\ServiceRequestAttachmentController;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
@@ -10,6 +11,7 @@ use App\Livewire\Admin\ServiceRequests as AdminServiceRequests;
 use App\Livewire\Admin\Tenants as AdminTenants;
 use App\Livewire\Admin\Users as AdminUsers;
 use App\Livewire\Auth\VerifyCode;
+use App\Livewire\Client\ServiceRequests\Edit as ClientServiceRequestsEdit;
 use App\Livewire\Client\ServiceRequests\Index as ClientServiceRequestsIndex;
 use App\Livewire\Client\ServiceRequests\Show as ClientServiceRequestsShow;
 use App\Livewire\Marketing\Landing;
@@ -27,10 +29,12 @@ Route::livewire('verify-code', VerifyCode::class)
     ->name('verify-code');
 
 Route::middleware(['auth', 'email.code'])->group(function () {
-    Route::livewire('services', ServicesBrowse::class)->name('services.browse');
-    Route::livewire('services/{serviceRequest}', ServicesShow::class)->name('services.show');
-    Route::livewire('services/{serviceRequest}/payment', \App\Livewire\Services\Payment::class)->name('services.payment');
-    Route::livewire('services/{serviceRequest}/contact', \App\Livewire\Services\ContactDetails::class)->name('services.contact');
+    Route::middleware(['not.client'])->group(function () {
+        Route::livewire('services', ServicesBrowse::class)->name('services.browse');
+        Route::livewire('services/{serviceRequest}', ServicesShow::class)->name('services.show');
+        Route::livewire('services/{serviceRequest}/payment', \App\Livewire\Services\Payment::class)->name('services.payment');
+        Route::livewire('services/{serviceRequest}/contact', \App\Livewire\Services\ContactDetails::class)->name('services.contact');
+    });
 
     Route::get('attachments/{attachment}', ServiceRequestAttachmentController::class)
         ->name('attachments.show');
@@ -41,7 +45,9 @@ Route::middleware(['auth', 'email.code'])->group(function () {
         ->name('bids.pdf.view');
 
     Route::livewire('client/requests', ClientServiceRequestsIndex::class)->name('client.requests.index');
+    Route::livewire('client/requests/{serviceRequest}/edit', ClientServiceRequestsEdit::class)->name('client.requests.edit');
     Route::livewire('client/requests/{serviceRequest}', ClientServiceRequestsShow::class)->name('client.requests.show');
+    Route::get('client/requests/{serviceRequest}/pdf', ServiceRequestPdfController::class)->name('client.requests.pdf');
     Route::livewire('client/dashboard', \App\Livewire\Client\Dashboard::class)->name('client.dashboard');
 
     Route::livewire('provider/dashboard', \App\Livewire\Provider\Dashboard::class)->name('provider.dashboard');

@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureEmailCodeVerified;
+use App\Http\Middleware\EnsureNotClient;
 use App\Http\Middleware\ResolveTenantContext;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => EnsureAdmin::class,
             'email.code' => EnsureEmailCodeVerified::class,
+            'not.client' => EnsureNotClient::class,
             'tenant' => ResolveTenantContext::class,
         ]);
     })
