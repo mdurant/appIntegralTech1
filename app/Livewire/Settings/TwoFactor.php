@@ -160,6 +160,18 @@ class TwoFactor extends Component
     }
 
     /**
+     * Evita MethodNotFoundException cuando el frontend (p. ej. modal Flux al cerrar)
+     * envía una llamada a toJSON durante la serialización del evento.
+     * No modifica estado; solo retorna un valor seguro para la petición.
+     *
+     * @return array<string, mixed>
+     */
+    public function toJSON(): array
+    {
+        return [];
+    }
+
+    /**
      * Get the current modal configuration state.
      */
     public function getModalConfigProperty(): array
