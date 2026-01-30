@@ -27,7 +27,7 @@
 
         <div class="grid gap-4 sm:grid-cols-2">
             <div>
-                <flux:text class="text-xs font-medium text-app-muted mb-1">{{ __('Nombre Completo') }}</flux:text>
+                <flux:text class="text-xs font-medium text-app-muted mb-1">{{ __('Nombre de Fantasía') }}</flux:text>
                 <flux:text class="text-base font-medium">{{ $serviceRequest->contact_name }}</flux:text>
             </div>
             <div>

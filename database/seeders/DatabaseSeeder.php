@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             AccountTypeSeeder::class,
             SystemSettingSeeder::class,
             UserSeeder::class,
+            BillingDemoSeeder::class,
+            SubscriptionSeeder::class,
             TenantSeeder::class,
             ServiceCategorySeeder::class,
             ServiceFormFieldSeeder::class,

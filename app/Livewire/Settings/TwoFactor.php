@@ -81,7 +81,7 @@ class TwoFactor extends Component
             $this->qrCodeSvg = $user?->twoFactorQrCodeSvg();
             $this->manualSetupKey = decrypt($user->two_factor_secret);
         } catch (Exception) {
-            $this->addError('setupData', 'Failed to fetch setup data.');
+            $this->addError('setupData', __('No se pudo cargar la información de configuración.'));
 
             $this->reset('qrCodeSvg', 'manualSetupKey');
         }
@@ -178,24 +178,24 @@ class TwoFactor extends Component
     {
         if ($this->twoFactorEnabled) {
             return [
-                'title' => __('Two-Factor Authentication Enabled'),
-                'description' => __('Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.'),
-                'buttonText' => __('Close'),
+                'title' => __('Autenticación de dos factores activada'),
+                'description' => __('La autenticación de dos factores está activada. Escanea el código QR o ingresa la clave de configuración en tu aplicación de autenticación.'),
+                'buttonText' => __('Cerrar'),
             ];
         }
 
         if ($this->showVerificationStep) {
             return [
-                'title' => __('Verify Authentication Code'),
-                'description' => __('Enter the 6-digit code from your authenticator app.'),
-                'buttonText' => __('Continue'),
+                'title' => __('Verificar código de autenticación'),
+                'description' => __('Ingresa el código de 6 dígitos que muestra tu aplicación de autenticación.'),
+                'buttonText' => __('Continuar'),
             ];
         }
 
         return [
-            'title' => __('Enable Two-Factor Authentication'),
-            'description' => __('To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app.'),
-            'buttonText' => __('Continue'),
+            'title' => __('Activar autenticación de dos factores'),
+            'description' => __('Para terminar de activar la autenticación de dos factores, escanea el código QR o ingresa la clave de configuración en tu aplicación de autenticación.'),
+            'buttonText' => __('Continuar'),
         ];
     }
 }

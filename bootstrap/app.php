@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckApiAccess;
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureEmailCodeVerified;
 use App\Http\Middleware\EnsureNotClient;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
+            'api.access' => CheckApiAccess::class,
             'admin' => EnsureAdmin::class,
             'email.code' => EnsureEmailCodeVerified::class,
             'not.client' => EnsureNotClient::class,

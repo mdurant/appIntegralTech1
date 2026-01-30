@@ -5,21 +5,21 @@
         <form method="POST" wire:submit="updatePassword" class="mt-6 space-y-6">
             <flux:input
                 wire:model="current_password"
-                :label="__('Contraseña actual')"
+                label="{{ __('Contraseña actual') }}"
                 type="password"
                 required
                 autocomplete="current-password"
             />
             <flux:input
                 wire:model="password"
-                :label="__('Nueva contraseña')"
+                label="{{ __('Nueva contraseña') }}"
                 type="password"
                 required
                 autocomplete="new-password"
             />
             <flux:input
                 wire:model="password_confirmation"
-                :label="__('Confirmar contraseña')"
+                label="{{ __('Confirmar contraseña') }}"
                 type="password"
                 required
                 autocomplete="new-password"

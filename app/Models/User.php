@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\SubscriptionTier;
 use App\SystemRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,11 +13,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     // Spatie Permissions - descomentar cuando el paquete esté instalado
     // use \Spatie\Permission\Traits\HasRoles;
@@ -58,6 +60,8 @@ class User extends Authenticatable
         'economic_activity',
         'region_id',
         'commune_id',
+        'subscription_tier',
+        'subscription_ends_at',
     ];
 
     /**
@@ -84,6 +88,8 @@ class User extends Authenticatable
             'password' => 'hashed',
             'system_role' => SystemRole::class,
             'birth_date' => 'date',
+            'subscription_ends_at' => 'date',
+            'subscription_tier' => SubscriptionTier::class,
         ];
     }
 
@@ -120,6 +126,16 @@ class User extends Authenticatable
     public function activeSessions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(UserActiveSession::class);
+    }
+
+    public function bids(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ServiceBid::class);
+    }
+
+    public function subscriptions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Subscription::class)->orderByDesc('starts_at');
     }
 
     public function isAdministrator(): bool
@@ -206,5 +222,29 @@ class User extends Authenticatable
     public function shouldShowFantasyName(): bool
     {
         return $this->isProvider() && ! empty($this->fantasy_name);
+    }
+
+    /**
+     * Resolve subscription tier (never null)
+     */
+    public function resolveSubscriptionTier(): SubscriptionTier
+    {
+        return $this->subscription_tier ?? SubscriptionTier::Independent;
+    }
+
+    /**
+     * Whether the user has API access (tier is not Independent)
+     */
+    public function hasApiAccess(): bool
+    {
+        return $this->resolveSubscriptionTier()->hasApiAccess();
+    }
+
+    /**
+     * API rate limit (requests per minute) for the user's tier
+     */
+    public function apiRateLimit(): int
+    {
+        return $this->resolveSubscriptionTier()->apiRateLimit();
     }
 }

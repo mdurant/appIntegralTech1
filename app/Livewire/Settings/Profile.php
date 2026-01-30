@@ -129,6 +129,10 @@ class Profile extends Component
     {
         $user = Auth::user();
 
+        if (count($this->service_category_ids) > 10) {
+            $this->service_category_ids = array_slice($this->service_category_ids, 0, 10);
+        }
+
         $validated = $this->validate($this->profileRules($user->id));
 
         // Parse birth_date from DD-MM-YYYY to YYYY-MM-DD
@@ -141,19 +145,15 @@ class Profile extends Component
             }
         }
 
-        $user->fill($validated);
+        if (array_key_exists('email', $validated) && $user->email !== $validated['email']) {
+            $user->email_verified_at = null;
+        }
+
+        $categoryIds = array_map('intval', array_values($validated['service_category_ids'] ?? []));
+        $user->fill(collect($validated)->except(['service_category_ids'])->all());
         $user->save();
 
-        // Sync service categories (max 10)
-        if (count($this->service_category_ids) > 10) {
-            $this->service_category_ids = array_slice($this->service_category_ids, 0, 10);
-        }
-        $user->serviceCategories()->sync($this->service_category_ids);
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-            $user->save();
-        }
+        $user->serviceCategories()->sync($categoryIds);
 
         if ($this->avatar) {
             $this->validate([

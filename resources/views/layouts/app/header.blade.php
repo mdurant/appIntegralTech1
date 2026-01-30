@@ -30,7 +30,7 @@
                             class="h-10 max-lg:hidden [&>div>svg]:size-5"
                             icon="magnifying-glass"
                             :href="route('services.browse')"
-                            :label="__('Explorar')"
+                            label="{{ __('Explorar') }}"
                             wire:navigate
                         />
                     </flux:tooltip>

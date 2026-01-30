@@ -1,0 +1,180 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API v1",
+        "description": "API de oportunidades y cotizaciones. Requiere plan Pro o Enterprise. Autenticación: Bearer token (API Key). Límites: Pro 60 req/min, Enterprise 500 req/min.",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "API base"
+        }
+    ],
+    "paths": {
+        "/api/v1/opportunities": {
+            "get": {
+                "tags": [
+                    "Oportunidades"
+                ],
+                "summary": "Listar oportunidades",
+                "description": "Lista oportunidades (solicitudes de servicio) publicadas y vigentes. Solo planes Pro y Enterprise. Filtros opcionales: category_id, region_id. Paginación: per_page (1-100, default 15).",
+                "operationId": "a79bfa4c27ff1cb8a7b7f05ad9684e14",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "region_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de oportunidades"
+                    },
+                    "403": {
+                        "description": "Acceso a API requiere plan Pro o Enterprise"
+                    },
+                    "429": {
+                        "description": "Límite de solicitudes excedido (rate limit)"
+                    }
+                }
+            }
+        },
+        "/api/v1/quotes": {
+            "get": {
+                "tags": [
+                    "Cotizaciones"
+                ],
+                "summary": "Listar mis cotizaciones",
+                "description": "Lista las cotizaciones enviadas por el usuario autenticado. Paginación: per_page (1-100, default 15).",
+                "operationId": "cae67fa237456bf3f16c7d0aea828dfd",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de cotizaciones"
+                    },
+                    "403": {
+                        "description": "Acceso a API requiere plan Pro o Enterprise"
+                    },
+                    "429": {
+                        "description": "Límite de solicitudes excedido (rate limit)"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cotizaciones"
+                ],
+                "summary": "Crear cotización",
+                "description": "Crea una cotización para una oportunidad. Requiere token con capacidad full_access (no read_only).",
+                "operationId": "9be023005abd4df83f99c2d46afa8061",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "service_request_id",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "service_request_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "example": 150000
+                                    },
+                                    "currency": {
+                                        "type": "string",
+                                        "example": "CLP"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "valid_until": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cotización creada"
+                    },
+                    "403": {
+                        "description": "Acceso denegado o token solo lectura"
+                    },
+                    "422": {
+                        "description": "Validación fallida o oportunidad no disponible"
+                    },
+                    "429": {
+                        "description": "Límite de solicitudes excedido (rate limit)"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Header: Authorization: Bearer {token}. El token es la API Key creada en Configuración > Pagos y Planes.",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "Token",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "Oportunidades",
+            "description": "Listar oportunidades publicadas"
+        },
+        {
+            "name": "Cotizaciones",
+            "description": "Crear y listar cotizaciones"
+        }
+    ]
+}

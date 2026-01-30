@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
  */
 class ServiceCategoryFactory extends Factory
 {
+    private static int $referenceCodeSequence = 0;
+
     /**
      * Define the model's default state.
      *
@@ -28,11 +30,15 @@ class ServiceCategoryFactory extends Factory
         $name = $selected['name'];
         $key = $selected['key'].'-'.fake()->unique()->randomNumber(4);
 
+        $maxCode = ServiceCategory::query()->max('reference_code') ?? 0;
+        self::$referenceCodeSequence++;
+        $referenceCode = max($maxCode, self::$referenceCodeSequence) + 1;
+
         return [
             'key' => $key,
             'name' => $name,
             'slug' => Str::slug($name).'-'.fake()->unique()->randomNumber(4),
-            'reference_code' => ServiceCategory::query()->max('reference_code') + 1,
+            'reference_code' => $referenceCode,
         ];
     }
 }

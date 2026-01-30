@@ -1,6 +1,6 @@
 # App Servicios - Integraltech
 
-**Documentación v0.1 (2026-01-24)**
+**Documentación técnica v0.2 (2026-01-30)**
 
 **Líder de Desarrollo**: Mauricio Durán  
 **Contacto**: `mauriciodurant@gmail.com`  
@@ -15,8 +15,9 @@ Este repositorio implementa una **POC/MVP tipo Habitissimo**, orientada a:
 - **Clientes** que publican solicitudes de servicios/obras (con formulario dinámico, contacto, ubicación e imágenes).
 - **Usuarios/Proveedores** que visualizan solicitudes publicadas y envían **cotizaciones (presupuestos)** con vigencia.
 - **Administración** (rol admin) con panel “light” para monitoreo y mantenedores básicos.
+- **Suscripciones y API**: planes Freemium / Pro / Enterprise con acceso a API v1 (oportunidades, cotizaciones) y gestión de API Keys.
 
-La aplicación usa autenticación con **Laravel Fortify** y UI con **Livewire v4 + Flux UI + Tailwind v4**.
+La aplicación usa autenticación con **Laravel Fortify** (web) y **Laravel Sanctum** (API), y UI con **Livewire v4 + Flux UI + Tailwind v4**.
 
 ---
 
@@ -24,14 +25,16 @@ La aplicación usa autenticación con **Laravel Fortify** y UI con **Livewire v4
 
 - **PHP**: 8.4.x  
 - **Laravel**: 12.x  
-- **Auth**: Fortify (login/register/reset password/2FA)
+- **Auth web**: Fortify (login/register/reset password/2FA)
+- **Auth API**: Laravel Sanctum (tokens Bearer, API Keys)
 - **UI**: Livewire 4, Flux UI, Tailwind 4
 - **DB**: SQLite (por defecto)
 - **Queue**: database (por defecto)
 - **Tests**: Pest
+- **PDF**: DomPDF (barryvdh/laravel-dompdf)
+- **API docs**: L5-Swagger (OpenAPI)
 - **Permisos**: Spatie Laravel Permission (pendiente instalación)
 - **Media**: Spatie Laravel Media Library (pendiente instalación)
-- **PDF**: DomPDF (pendiente instalación)
 
 ---
 
@@ -82,19 +85,24 @@ php artisan test --compact
 
 ## Credenciales para Login (seed)
 
-El seeding crea usuarios base en `Database\\Seeders\\UserSeeder`:
+**Contraseña común para todos los usuarios de prueba:** `password`
 
-- **Admin**
-  - Email: `admin@integraltech.cl`
-  - Password: `password`
+### Usuarios base (UserSeeder)
 
-- **Guest**
-  - Email: `invitado@integraltech.cl`
-  - Password: `password`
+- **Admin**: `admin@integraltech.cl`
+- **Guest**: `invitado@integraltech.cl`
+- **Providers (users)**: 20 usuarios con nombres/emails chilenos
+- **Clients**: 3 usuarios con nombres/emails chilenos
 
-Además se crean:
-- **Providers (users)**: 20 usuarios con nombres chilenos, emails chilenos y password `password`
-- **Clients**: 3 usuarios con nombres chilenos, emails chilenos y password `password`
+### Usuarios de demostración Billing/API (BillingDemoSeeder)
+
+| Perfil     | Email                     | Tier        | Uso |
+|------------|---------------------------|-------------|-----|
+| Freemium   | `freemium@integraltech.cl` | independent | Solo web; sin acceso API. En Pagos y Planes verás mensaje para actualizar. |
+| Pro        | `pro@integraltech.cl`      | pyme        | API 60 req/min. Crear API keys, oportunidades, cotizaciones. |
+| Enterprise | `enterprise@integraltech.cl` | enterprise  | API 500 req/min. Mismo acceso que Pro con mayor límite. |
+
+Detalle de qué probar por perfil (suscripciones, payment placeholder, API, Swagger): **`docs/DATOS_PRUEBA_BILLING_API.md`**.
 
 ---
 
@@ -131,6 +139,12 @@ Además se crean:
   - Se crea una **OT (Orden de Trabajo)**.
   - La solicitud pasa a estado `awarded`.
 
+### 5) Suscripciones y API (Pro / Enterprise)
+- **Configuración → Pagos y Planes**: ver plan actual, historial de suscripciones, cambiar de plan (Upgrade/Cancelar), gestionar API Keys.
+- **API Keys**: crear clave (Full Access o Solo lectura), copiar token (solo una vez), listar y revocar claves.
+- **API v1** (con Bearer token): `GET /api/v1/opportunities`, `GET /api/v1/quotes`, `POST /api/v1/quotes`. Límites: Pro 60 req/min, Enterprise 500 req/min.
+- **Documentación**: `/api/documentation` (Swagger).
+
 ---
 
 ## Casos de uso reales (ejemplo Habitissimo)
@@ -152,13 +166,17 @@ Para la subcategoría **Construcción Casa**, la solicitud puede incluir:
 
 ## Esquema de BD (resumen) y relaciones
 
-### Autenticación / Tenancy
+### Autenticación / Tenancy / Suscripciones
 - `users`
   - `system_role`: `admin | user | guest | client`
   - `current_tenant_id`: tenant activo (nullable)
+  - `subscription_tier`: `independent | pyme | enterprise` (por defecto `independent`)
+  - `subscription_ends_at`: fecha fin del plan (nullable)
   - 2FA: `two_factor_*`
 - `tenants` (organización/cliente)
 - `tenant_user` (pivot tenant-user con `role`)
+- `personal_access_tokens` (Sanctum): API Keys por usuario (nombre, abilities: full_access / read_only)
+- `subscriptions`: historial de suscripciones (user_id, subscription_tier, starts_at, ends_at, amount, currency, payment_method, external_id, metadata)
 
 Relaciones:
 - `Tenant` **hasMany** `User` (many-to-many via `tenant_user`)
@@ -234,7 +252,12 @@ Tres cápsulas con íconos descriptivos SVG:
   - `verify-code` (validación 6 dígitos)
 - **Dashboard**
   - `dashboard` - Dashboard principal con gráficos y estadísticas
-  - `settings/*` (perfil/password/2FA)
+  - `settings/profile` - Ficha personal
+  - `settings/password` - Contraseña
+  - `settings/billing` - Pagos y Planes (plan actual, historial de suscripciones, API Keys)
+  - `settings/two-factor` - 2FA
+  - `settings/active-sessions` - Sesiones activas
+  - `settings/appearance` - Apariencia
 - **Cliente**
   - `client/requests`
   - `client/requests/{serviceRequest}`
@@ -458,13 +481,33 @@ Este comando se ejecuta automáticamente diariamente vía scheduler. Marca como 
 
 ## API Endpoints
 
-### Búsqueda de Categorías (Select2)
+### Búsqueda de Categorías (Select2) — público
 
 ```
 GET /api/service-categories/search?q=texto
 ```
 
 Retorna JSON compatible con Select2 para autocompletado de categorías en formularios.
+
+### API v1 (Sanctum, solo planes Pro y Enterprise)
+
+Autenticación: `Authorization: Bearer {token}`. El token es una API Key creada en **Configuración → Pagos y Planes**.
+
+| Método | Ruta | Descripción | Rate limit |
+|--------|------|--------------|------------|
+| GET | `/api/v1/opportunities` | Listar oportunidades publicadas (filtros: category_id, region_id, per_page) | Pro 60/min, Enterprise 500/min |
+| GET | `/api/v1/quotes` | Listar mis cotizaciones | idem |
+| POST | `/api/v1/quotes` | Crear cotización (body: service_request_id, amount, currency, message, valid_until) | idem |
+
+- **Freemium**: responde **403** (requiere plan Pro o Enterprise).
+- **Pro**: 60 solicitudes/minuto; **Enterprise**: 500 solicitudes/minuto. Superar el límite devuelve **429**.
+
+### Documentación OpenAPI (Swagger)
+
+- **Ruta**: `/api/documentation`
+- **URL local** (con `php artisan serve`): **http://127.0.0.1:8000/api/documentation**
+- **URL local** (puerto 80): **http://localhost/api/documentation**
+- Regenerar docs tras cambiar anotaciones: `php artisan l5-swagger:generate`
 
 ---
 
@@ -626,6 +669,42 @@ El sistema está diseñado para cumplir con:
 - Transparencia sobre el uso de cookies
 
 Los usuarios pueden cambiar sus preferencias en cualquier momento eliminando las cookies y recargando la página.
+
+---
+
+## Suscripciones, Pagos y Planes y API Keys
+
+### Planes (tiers)
+
+| Tier (DB)   | Plan (UX)              | API              | Rate limit   |
+|-------------|------------------------|------------------|--------------|
+| independent | Freemium (solo web)    | Sin acceso (403) | —            |
+| pyme        | Pro                    | Lectura + cotizaciones | 60 req/min  |
+| enterprise  | Enterprise             | Igual que Pro    | 500 req/min  |
+
+### Configuración → Pagos y Planes (`settings/billing`)
+
+- **Plan actual**: texto según tier (Freemium / Pro / Enterprise), fecha de caducidad si aplica, botones Upgrade / Cancelar suscripción.
+- **Métodos de pago**: placeholder "Próximamente" (sin lógica de pago real).
+- **Historial de suscripciones**: tabla con plan, inicio, fin, monto, método de pago.
+- **API Keys** (solo Pro/Enterprise): crear clave (tipo Full Access / Solo lectura, nombre), listar claves (nombre, tipo, fecha), revocar. El valor del token **solo se muestra una vez** al crear.
+
+### Cambio de plan (MVP)
+
+- Upgrade: elegir Pro o Enterprise → confirmar → se actualiza `users.subscription_tier` y `subscription_ends_at`, y se crea registro en `subscriptions` (sin pasarela real).
+- Cancelar suscripción: vuelve a Freemium (independent) y limpia `subscription_ends_at`.
+
+---
+
+## Aspectos importantes a considerar
+
+- **Verificación por código**: Tras registrarse, el usuario debe validar con un código de 6 dígitos enviado por correo (en dev se loguea en `storage/logs/email-codes-*.log`).
+- **API**: Solo usuarios con plan Pro o Enterprise pueden usar la API v1; Freemium recibe 403. Los rate limits son por usuario/token.
+- **API Keys**: El token en texto plano solo se devuelve una vez al crear la clave; después no es recuperable. Usar tipo Full Access para enviar cotizaciones (POST); Solo lectura solo permite GET.
+- **Pago real**: El flujo de "Pagos y Planes" y métodos de pago es placeholder; la monetización de la API (Pro/Enterprise) está preparada para integrar pasarela (Stripe, Mercado Pago, etc.) más adelante.
+- **PDF de solicitudes**: Si la solicitud no tiene `pdf_path`, el controlador genera el PDF on-the-fly con DomPDF y lo guarda.
+- **Datos chilenos**: Seeders y helpers generan datos realistas chilenos (RUT, regiones/comunas, nombres, etc.). Zona horaria por defecto: `America/Santiago`.
+- **Tests**: Ejecutar `php artisan test --compact` antes de integrar cambios. Los tests de Billing, API y suscripciones están en `tests/Feature/BillingSettingsTest.php` y relacionados.
 
 ---
 

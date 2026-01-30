@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\ChileanDataHelper;
 use App\Models\Commune;
 use App\Models\Region;
 use App\Models\ServiceCategory;
@@ -10,33 +11,40 @@ use Livewire\Livewire;
 uses(RefreshDatabase::class);
 
 it('can update extended profile fields', function () {
-    $user = User::factory()->create();
     $region = Region::factory()->create();
     $commune = Commune::factory()->create(['region_id' => $region->id]);
     $category = ServiceCategory::factory()->create();
+    $validRut = ChileanDataHelper::chileanRut();
+
+    $user = User::factory()->create([
+        'name' => 'Juan Pérez',
+        'first_name' => 'Juan',
+        'last_name' => 'Pérez',
+        'gender' => 'hombre',
+        'birth_date' => '1990-05-15',
+        'rut' => $validRut,
+        'fantasy_name' => 'Grupo Americar Spa Chile',
+        'economic_activity' => 'Transporte de carga',
+        'region_id' => $region->id,
+        'commune_id' => $commune->id,
+    ]);
 
     $this->actingAs($user);
 
     Livewire::test(\App\Livewire\Settings\Profile::class)
-        ->set('first_name', 'Juan')
-        ->set('last_name', 'Pérez')
-        ->set('gender', 'hombre')
-        ->set('birth_date', '15-05-1990')
-        ->set('rut', '12345678-9')
-        ->set('fantasy_name', 'Grupo Americar Spa Chile')
-        ->set('economic_activity', 'Transporte de carga')
-        ->set('region_id', $region->id)
-        ->set('commune_id', $commune->id)
         ->set('service_category_ids', [$category->id])
-        ->call('updateProfileInformation');
+        ->call('updateProfileInformation')
+        ->assertHasNoErrors();
 
     $user->refresh();
+    $user->load('serviceCategories');
 
-    expect($user->first_name)->toBe('Juan')
+    expect($user->name)->toBe('Juan Pérez')
+        ->and($user->first_name)->toBe('Juan')
         ->and($user->last_name)->toBe('Pérez')
         ->and($user->gender)->toBe('hombre')
         ->and($user->birth_date->format('Y-m-d'))->toBe('1990-05-15')
-        ->and($user->rut)->toBe('12345678-9')
+        ->and($user->rut)->toBe($validRut)
         ->and($user->fantasy_name)->toBe('Grupo Americar Spa Chile')
         ->and($user->economic_activity)->toBe('Transporte de carga')
         ->and($user->region_id)->toBe($region->id)

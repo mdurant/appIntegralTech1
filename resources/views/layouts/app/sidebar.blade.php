@@ -30,12 +30,12 @@
                     <flux:dropdown position="bottom" align="end">
                         <button class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-app-hover">
                             <flux:avatar
-                                :name="auth()->user()->name"
+                                :name="auth()->user()->display_name"
                                 :initials="auth()->user()->initials()"
                                 class="size-8"
                             />
                             <div class="hidden text-left text-sm xl:block">
-                                <flux:heading class="truncate text-sm">Hola: {{ auth()->user()->name }}</flux:heading>
+                                <flux:heading class="truncate text-sm">Hola: {{ auth()->user()->display_name }}</flux:heading>
                                 
                             </div>
                             <svg class="size-4 text-app-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,11 +45,11 @@
                         <flux:menu>
                             <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
                                 <flux:avatar
-                                    :name="auth()->user()->name"
+                                    :name="auth()->user()->display_name"
                                     :initials="auth()->user()->initials()"
                                 />
                                 <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
+                                    <flux:heading class="truncate">{{ auth()->user()->display_name }}</flux:heading>
                                     
                                 </div>
                             </div>
@@ -145,12 +145,12 @@
                         <div class="p-0 text-sm font-normal">
                             <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
                                 <flux:avatar
-                                    :name="auth()->user()->name"
+                                    :name="auth()->user()->display_name"
                                     :initials="auth()->user()->initials()"
                                 />
 
                                 <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
+                                    <flux:heading class="truncate">{{ auth()->user()->display_name }}</flux:heading>
                                     <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
                                 </div>
                             </div>

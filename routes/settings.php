@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Settings\ApiKeyController;
 use App\Livewire\Settings\ActiveSessions;
 use App\Livewire\Settings\Appearance;
+use App\Livewire\Settings\Billing;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
@@ -12,6 +14,11 @@ Route::middleware(['auth', 'email.code'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Route::livewire('settings/profile', Profile::class)->name('profile.edit');
+    Route::livewire('settings/billing', Billing::class)->name('billing.show');
+
+    Route::get('settings/api-keys', [ApiKeyController::class, 'index'])->name('api-keys.index');
+    Route::post('settings/api-keys', [ApiKeyController::class, 'store'])->name('api-keys.store');
+    Route::delete('settings/api-keys/{id}', [ApiKeyController::class, 'destroy'])->name('api-keys.destroy');
 });
 
 Route::middleware(['auth', 'email.code'])->group(function () {

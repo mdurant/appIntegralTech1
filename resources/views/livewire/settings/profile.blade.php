@@ -44,15 +44,15 @@
             <div class="space-y-4 rounded-xl border border-app-border bg-app-surface-2 p-6">
                 <flux:heading size="sm">{{ __('Información Personal') }}</flux:heading>
 
-                <flux:input wire:model="name" :label="__('Nombre completo')" type="text" required autofocus autocomplete="name" />
+                <flux:input wire:model="name" label="{{ __('Nombre de Fantasía') }}" type="text" required autofocus autocomplete="name" />
 
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <flux:input wire:model="first_name" :label="__('Nombres')" type="text" autocomplete="given-name" />
-                    <flux:input wire:model="last_name" :label="__('Apellidos')" type="text" autocomplete="family-name" />
+                    <flux:input wire:model="first_name" label="{{ __('Nombres') }}" type="text" autocomplete="given-name" />
+                    <flux:input wire:model="last_name" label="{{ __('Apellidos') }}" type="text" autocomplete="family-name" />
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <flux:select wire:model="gender" class="select2" :label="__('Sexo')">
+                    <flux:select wire:model="gender" class="select2" label="{{ __('Sexo') }}">
                         <option value="">{{ __('Seleccionar') }}</option>
                         <option value="hombre">{{ __('Hombre') }}</option>
                         <option value="mujer">{{ __('Mujer') }}</option>
@@ -61,10 +61,10 @@
                         <flux:text class="mt-1 text-sm !text-danger">{{ $message }}</flux:text>
                     @enderror
 
-                    <flux:input wire:model="birth_date" class="date-picker" :label="__('Fecha de Nacimiento')" type="text" placeholder="DD-MM-YYYY" hint="{{ __('Formato: DD-MM-YYYY') }}" data-date-picker="true" />
+                    <flux:input wire:model="birth_date" class="date-picker" label="{{ __('Fecha de Nacimiento') }}" type="text" placeholder="DD-MM-YYYY" hint="{{ __('Formato: DD-MM-YYYY') }}" data-date-picker="true" />
                 </div>
 
-                <flux:input wire:model="email" :label="__('Correo electrónico')" type="email" required autocomplete="email" />
+                <flux:input wire:model="email" label="{{ __('Correo electrónico') }}" type="email" required autocomplete="email" />
 
                 @if ($this->hasUnverifiedEmail)
                     <div>
@@ -90,18 +90,18 @@
                 <div class="space-y-4 rounded-xl border border-app-border bg-app-surface-2 p-6">
                     <flux:heading size="sm">{{ __('Información Profesional') }}</flux:heading>
 
-                    <flux:input wire:model.live="rut" class="rut-input" :label="__('RUT')" type="text" placeholder="12.345.678-9" />
+                    <flux:input wire:model.live="rut" class="rut-input" label="{{ __('RUT') }}" type="text" placeholder="12.345.678-9" />
                     <p class="mt-1 text-xs text-app-muted">{{ __('Ingresa tu RUT chileno (formato: 12.345.678-9)') }}</p>
                     @error('rut')
                         <flux:text class="text-sm !text-danger">{{ $message }}</flux:text>
                     @enderror
 
-                    <flux:input wire:model="fantasy_name" :label="__('Nombre de Fantasía para Banner')" type="text" hint="{{ __('Este nombre aparecerá en el dashboard en lugar de "Integral Service Tech"') }}" />
+                    <flux:input wire:model="fantasy_name" label="{{ __('Nombre de Fantasía para Banner') }}" type="text" hint="{{ __('Este nombre aparecerá en el dashboard en lugar de "Integral Service Tech"') }}" />
 
-                    <flux:input wire:model="economic_activity" :label="__('Actividad económica')" type="text" />
+                    <flux:input wire:model="economic_activity" label="{{ __('Actividad económica') }}" type="text" />
 
                     <div class="grid gap-4 sm:grid-cols-2">
-                        <flux:select wire:model.live="region_id" class="select2" :label="__('Región')">
+                        <flux:select wire:model.live="region_id" class="select2" label="{{ __('Región') }}">
                             <option value="">{{ __('Seleccionar región') }}</option>
                             @foreach ($this->regions as $region)
                                 <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -111,7 +111,7 @@
                             <flux:text class="mt-1 text-sm !text-danger">{{ $message }}</flux:text>
                         @enderror
 
-                        <flux:select wire:model="commune_id" class="select2" :label="__('Comuna')" :disabled="!$region_id">
+                        <flux:select wire:model="commune_id" class="select2" label="{{ __('Comuna') }}" :disabled="!$region_id">
                             <option value="">{{ __('Seleccionar comuna') }}</option>
                             @if ($region_id)
                                 @foreach ($this->communes as $commune)

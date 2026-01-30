@@ -10,10 +10,13 @@ use App\Policies\RatingPolicy;
 use App\Support\TenantContext;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -36,6 +39,23 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
         $this->configureAuthorization();
         $this->registerEventListeners();
+        $this->configureApiRateLimiting();
+    }
+
+    protected function configureApiRateLimiting(): void
+    {
+        RateLimiter::for('api:v1', function (Request $request) {
+            $user = $request->user();
+            $limit = $user?->apiRateLimit() ?? 0;
+
+            return Limit::perMinute(max(1, $limit))
+                ->by($user?->id ?? $request->ip())
+                ->response(function () {
+                    return response()->json([
+                        'message' => __('Demasiadas peticiones. Por favor, inténtalo de nuevo en un minuto.'),
+                    ], 429);
+                });
+        });
     }
 
     /**

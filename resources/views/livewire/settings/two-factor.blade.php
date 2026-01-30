@@ -39,6 +39,14 @@
                         {{ __('Cuando actives la autenticación de dos factores, se te solicitará un código PIN seguro durante el inicio de sesión. Este código puede obtenerse de una aplicación compatible con TOTP en tu teléfono.') }}
                     </flux:text>
 
+                    <flux:text variant="subtle">
+                        {{ __('Dónde puedes instalar aplicaciones para activar el 2FA:') }}
+                        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=es_CL" target="_blank" rel="noopener noreferrer" class="font-medium text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">Google Authenticator</a>,
+                        <a href="https://2fas.com/download/" target="_blank" rel="noopener noreferrer" class="font-medium text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">2FAS Authenticator</a>,
+                        <a href="https://www.microsoft.com/es-cl/security/mobile-authenticator-app" target="_blank" rel="noopener noreferrer" class="font-medium text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">Microsoft Authenticator</a>,
+                        <a href="https://www.authy.com/" target="_blank" rel="noopener noreferrer" class="font-medium text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">Authy</a>.
+                    </flux:text>
+
                     <flux:button
                         variant="primary"
                         icon="shield-check"
@@ -84,6 +92,59 @@
                 </div>
             </div>
 
+            @if (! $showVerificationStep)
+                <div class="rounded-lg border border-stone-200 bg-stone-50 p-4 dark:border-stone-700 dark:bg-stone-800/50">
+                    <flux:text class="font-medium text-stone-700 dark:text-stone-300">
+                        {{ __('Te recomendamos tener instalada en tu celular una aplicación de autenticación, por ejemplo:') }}
+                    </flux:text>
+                    <ul class="mt-3 flex flex-wrap gap-2">
+                        <li>
+                            <a
+                                href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=es_CL"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-sm font-medium text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+                            >
+                                Google Authenticator
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="https://2fas.com/download/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-sm font-medium text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+                            >
+                                2FAS Authenticator
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.microsoft.com/es-cl/security/mobile-authenticator-app"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-sm font-medium text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+                            >
+                                Microsoft Authenticator
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.authy.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-sm font-medium text-primary-600 underline hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+                            >
+                                Authy
+                            </a>
+                        </li>
+                    </ul>
+                    <flux:text variant="subtle" class="mt-2 text-xs">
+                        {{ __('Cada enlace se abre en una nueva pestaña para que puedas descargar la app.') }}
+                    </flux:text>
+                </div>
+            @endif
+
             @if ($showVerificationStep)
                 <div class="space-y-6">
                     <div class="flex flex-col items-center space-y-3 justify-center">
@@ -91,7 +152,7 @@
                             name="code"
                             wire:model="code"
                             length="6"
-                            label="OTP Code"
+                            label="{{ __('Código de verificación') }}"
                             label:sr-only
                             class="mx-auto"
                         />
@@ -194,7 +255,7 @@
                                     <flux:icon.document-duplicate x-show="!copied" variant="outline"></flux:icon>
                                     <flux:icon.check
                                         x-show="copied"
-                                        variant="solid"
+                                        variant="outline"
                                         class="text-green-500"
                                     ></flux:icon>
                                 </button>
@@ -204,9 +265,5 @@
                 </div>
             @endif
         </div>
-    </x-settings.layout>
-
-    <flux:modal
-        name="two-factor-setup-modal"
-        class="max-w-md md:min-w-md"
-        @close="closeModal"
+    </flux:modal>
+</section>
