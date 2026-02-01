@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Cookie;
+
 class CookieConsentService
 {
     /**
@@ -23,7 +25,9 @@ class CookieConsentService
      * Tipos de cookies disponibles
      */
     public const COOKIE_TYPE_MARKETING = 'marketing';
+
     public const COOKIE_TYPE_USER_EXPERIENCE = 'user_experience';
+
     public const COOKIE_TYPE_ESSENTIAL = 'essential'; // Siempre activas
 
     /**
@@ -35,13 +39,50 @@ class CookieConsentService
     }
 
     /**
+     * Persiste el consentimiento en la respuesta (Set-Cookie) para que la siguiente petición ya lo tenga.
+     * Evita que el modal reaparezca en cada navegación cuando la cookie se establecía solo por JS (p. ej. Secure en HTTP).
+     *
+     * @param  array{marketing: bool, user_experience: bool}  $preferences
+     */
+    public function setConsentInResponse(array $preferences): void
+    {
+        $minutes = self::CONSENT_COOKIE_DURATION * 24 * 60;
+        $secure = request()->secure();
+        $sameSite = 'lax';
+
+        Cookie::queue(Cookie::make(
+            self::CONSENT_COOKIE_NAME,
+            'true',
+            $minutes,
+            '/',
+            null,
+            $secure,
+            true,
+            false,
+            $sameSite
+        ));
+
+        Cookie::queue(Cookie::make(
+            self::PREFERENCES_COOKIE_NAME,
+            json_encode($preferences),
+            $minutes,
+            '/',
+            null,
+            $secure,
+            true,
+            false,
+            $sameSite
+        ));
+    }
+
+    /**
      * Obtiene las preferencias de cookies del usuario
      *
      * @return array{marketing: bool, user_experience: bool}
      */
     public function getPreferences(): array
     {
-        if (!isset($_COOKIE[self::PREFERENCES_COOKIE_NAME])) {
+        if (! isset($_COOKIE[self::PREFERENCES_COOKIE_NAME])) {
             return [
                 'marketing' => false,
                 'user_experience' => false,
@@ -75,7 +116,7 @@ class CookieConsentService
      */
     public function setMarketingCookies(): void
     {
-        if (!$this->isAllowed(self::COOKIE_TYPE_MARKETING)) {
+        if (! $this->isAllowed(self::COOKIE_TYPE_MARKETING)) {
             return;
         }
 
@@ -139,7 +180,7 @@ class CookieConsentService
      */
     public function setUserExperienceCookies(): void
     {
-        if (!$this->isAllowed(self::COOKIE_TYPE_USER_EXPERIENCE)) {
+        if (! $this->isAllowed(self::COOKIE_TYPE_USER_EXPERIENCE)) {
             return;
         }
 
@@ -243,6 +284,6 @@ class CookieConsentService
         }
 
         // Generar un ID único
-        return uniqid('visitor_', true) . '_' . time();
+        return uniqid('visitor_', true).'_'.time();
     }
 }

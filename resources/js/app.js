@@ -77,12 +77,14 @@ function initializeSelect2(container = document) {
 */
 
 /**
- * Establece una cookie en el navegador
+ * Establece una cookie en el navegador.
+ * Secure solo en HTTPS para que en HTTP (localhost/dev) la cookie se guarde y se envíe en la siguiente petición.
  */
 function setCookie(name, value, days) {
     const expires = new Date();
     expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
+    const secure = window.location.protocol === 'https:' ? ';Secure' : '';
+    document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;SameSite=Lax${secure}`;
 }
 
 /**

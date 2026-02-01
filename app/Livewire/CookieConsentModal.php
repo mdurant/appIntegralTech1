@@ -25,7 +25,7 @@ class CookieConsentModal extends Component
     public function mount(): void
     {
         // Solo mostrar el modal si el usuario no ha dado su consentimiento
-        $this->show = !$this->cookieService->hasConsent();
+        $this->show = ! $this->cookieService->hasConsent();
 
         // Si ya hay preferencias guardadas, cargarlas
         if ($this->cookieService->hasConsent()) {
@@ -67,12 +67,12 @@ class CookieConsentModal extends Component
 
     private function savePreferences(): void
     {
-        // Las preferencias se guardarán mediante JavaScript en el frontend
-        // Este método dispara el evento para que JavaScript maneje las cookies
         $preferences = [
             'marketing' => $this->marketingEnabled,
             'user_experience' => $this->userExperienceEnabled,
         ];
+
+        $this->cookieService->setConsentInResponse($preferences);
 
         $this->dispatch('cookie-consent-saved', $preferences);
 
