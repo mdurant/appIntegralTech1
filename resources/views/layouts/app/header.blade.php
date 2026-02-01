@@ -15,8 +15,11 @@
                 </flux:navbar.item>
 
                 @if (!auth()->user()->isClient())
-                    <flux:navbar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
+                    <flux:navbar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.browse')" wire:navigate>
                         {{ __('Servicios') }}
+                    </flux:navbar.item>
+                    <flux:navbar.item icon="user-group" :href="route('services.paid-contacts')" :current="request()->routeIs('services.paid-contacts')" wire:navigate>
+                        {{ __('Contactos comprados') }}
                     </flux:navbar.item>
                 @endif
             </flux:navbar>
@@ -54,8 +57,11 @@
                     </flux:sidebar.item>
 
                     @if (!auth()->user()->isClient())
-                        <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
-                            {{ __('Servicios')  }}
+                        <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.browse')" wire:navigate>
+                            {{ __('Servicios') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="user-group" :href="route('services.paid-contacts')" :current="request()->routeIs('services.paid-contacts')" wire:navigate>
+                            {{ __('Contactos comprados') }}
                         </flux:sidebar.item>
                     @endif
                 </flux:sidebar.group>

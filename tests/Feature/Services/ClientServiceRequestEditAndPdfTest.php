@@ -95,7 +95,7 @@ test('cliente no puede editar solicitud que no es draft', function () {
         ->assertForbidden();
 });
 
-test('ruta PDF devuelve 404 cuando solicitud no tiene pdf_path', function () {
+test('ruta PDF genera y devuelve PDF cuando la solicitud no tiene pdf_path', function () {
     $top = ServiceCategory::create(['key' => 'cat', 'name' => 'Cat', 'parent_id' => null, 'sort_order' => 0]);
     $sub = ServiceCategory::create(['key' => 'sub', 'name' => 'Sub', 'parent_id' => $top->id, 'sort_order' => 0]);
 
@@ -121,8 +121,9 @@ test('ruta PDF devuelve 404 cuando solicitud no tiene pdf_path', function () {
 
     $this->actingAs($client);
 
-    $this->get(route('client.requests.pdf', $request))
-        ->assertNotFound();
+    $response = $this->get(route('client.requests.pdf', $request));
+    $response->assertSuccessful();
+    $response->assertHeader('content-type', 'application/pdf');
 });
 
 test('cliente ajeno no puede acceder al PDF de otra solicitud', function () {

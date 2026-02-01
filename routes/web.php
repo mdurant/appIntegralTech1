@@ -7,6 +7,7 @@ use App\Livewire\Admin\ServiceBids as AdminServiceBids;
 use App\Livewire\Admin\ServiceCategories as AdminServiceCategories;
 use App\Livewire\Admin\ServiceFormFields as AdminServiceFormFields;
 use App\Livewire\Admin\ServiceRequests as AdminServiceRequests;
+use App\Livewire\Admin\SupportTickets as AdminSupportTickets;
 use App\Livewire\Admin\Tenants as AdminTenants;
 use App\Livewire\Admin\Users as AdminUsers;
 use App\Livewire\Auth\VerifyCode;
@@ -16,6 +17,7 @@ use App\Livewire\Client\ServiceRequests\Show as ClientServiceRequestsShow;
 use App\Livewire\Marketing\Landing;
 use App\Livewire\Marketing\PublicServicesBrowse;
 use App\Livewire\Services\Browse as ServicesBrowse;
+use App\Livewire\Services\PaidContacts as ServicesPaidContacts;
 use App\Livewire\Services\Show as ServicesShow;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,7 @@ Route::livewire('verify-code', VerifyCode::class)
 Route::middleware(['auth', 'email.code'])->group(function () {
     Route::middleware(['not.client'])->group(function () {
         Route::livewire('services', ServicesBrowse::class)->name('services.browse');
+        Route::livewire('services/mis-contactos-comprados', ServicesPaidContacts::class)->name('services.paid-contacts');
         Route::livewire('services/{serviceRequest}', ServicesShow::class)->name('services.show');
         Route::livewire('services/{serviceRequest}/payment', \App\Livewire\Services\Payment::class)->name('services.payment');
         Route::livewire('services/{serviceRequest}/contact', \App\Livewire\Services\ContactDetails::class)->name('services.contact');
@@ -65,6 +68,7 @@ Route::middleware(['auth', 'email.code', 'admin'])
         Route::livewire('service-bids', AdminServiceBids::class)->name('service-bids');
         Route::livewire('service-categories', AdminServiceCategories::class)->name('service-categories');
         Route::livewire('service-form', AdminServiceFormFields::class)->name('service-form');
+        Route::livewire('support-tickets', AdminSupportTickets::class)->name('support-tickets');
     });
 
 Route::view('dashboard', 'dashboard')

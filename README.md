@@ -92,8 +92,12 @@ El seeding crea usuarios base en `Database\\Seeders\\UserSeeder`:
   - Email: `invitado@integraltech.cl`
   - Password: `password`
 
+- **Proveedor (sesión como proveedor para explorar servicios, recargar Wallet, pagar contactos)**
+  - Email: `proveedor@integraltech.cl`
+  - Password: `password`
+
 Además se crean:
-- **Providers (users)**: 20 usuarios con nombres chilenos, emails chilenos y password `password`
+- **Providers (users)**: 20 usuarios más con nombres chilenos, emails chilenos y password `password`
 - **Clients**: 3 usuarios con nombres chilenos, emails chilenos y password `password`
 
 ---

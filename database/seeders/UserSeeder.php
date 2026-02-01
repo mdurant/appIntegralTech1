@@ -26,6 +26,11 @@ class UserSeeder extends Seeder
             'email' => 'invitado@integraltech.cl',
         ]);
 
+        User::factory()->provider()->create([
+            'name' => 'Proveedor Demo',
+            'email' => 'proveedor@integraltech.cl',
+        ]);
+
         $providers = User::factory()->provider()->count(20)->create();
 
         User::factory()->client()->count(3)->create()->each(function (User $client) use ($admin, $providers): void {

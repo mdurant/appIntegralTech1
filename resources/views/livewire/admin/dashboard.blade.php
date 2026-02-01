@@ -26,7 +26,7 @@
         </a>
     </div>
 
-    <div class="grid gap-4 md:grid-cols-2">
+    <div class="grid gap-4 md:grid-cols-3">
         <a href="{{ route('admin.service-categories') }}" wire:navigate class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
             <flux:heading size="sm">{{ __('Categorías') }}</flux:heading>
             <flux:text class="mt-1">{{ __('Taxonomía (categoría/subcategoría).') }}</flux:text>
@@ -35,6 +35,12 @@
         <a href="{{ route('admin.service-form') }}" wire:navigate class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
             <flux:heading size="sm">{{ __('Formulario') }}</flux:heading>
             <flux:text class="mt-1">{{ __('Campos dinámicos por subcategoría.') }}</flux:text>
+        </a>
+
+        <a href="{{ route('admin.support-tickets') }}" wire:navigate class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+            <flux:heading size="sm">{{ __('Tickets reversa') }}</flux:heading>
+            <flux:text class="mt-2 text-2xl font-semibold">{{ $supportTicketsPendingCount }}</flux:text>
+            <flux:text class="mt-1">{{ __('Pendientes de aprobar/rechazar.') }}</flux:text>
         </a>
     </div>
 </section>

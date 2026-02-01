@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withSchedule(function ($schedule): void {
         $schedule->command('quotes:mark-expired')->daily();
+        $schedule->command('wallet:send-monthly-cartola')->monthlyOn(1, '02:00');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
