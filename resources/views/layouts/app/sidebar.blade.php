@@ -92,8 +92,11 @@
                     </flux:sidebar.item>
 
                     @if (!auth()->user()->isClient())
-                        <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.*')" wire:navigate>
+                        <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.browse')" wire:navigate>
                             {{ __('Servicios') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="user-group" :href="route('services.paid-contacts')" :current="request()->routeIs('services.paid-contacts')" wire:navigate>
+                            {{ __('Contactos comprados') }}
                         </flux:sidebar.item>
                     @endif
 

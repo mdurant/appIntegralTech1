@@ -50,7 +50,7 @@
         </a>
     </div>
 
-    <div class="grid gap-4 md:grid-cols-2">
+    <div class="grid gap-4 md:grid-cols-3">
         <a href="{{ route('admin.service-categories') }}" wire:navigate class="group rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900">
             <div class="mb-3 flex items-center justify-between">
                 <flux:heading size="sm">{{ __('Categorías') }}</flux:heading>
@@ -71,6 +71,19 @@
                 </div>
             </div>
             <flux:text class="mt-1">{{ __('Campos dinámicos por subcategoría.') }}</flux:text>
+        </a>
+
+        <a href="{{ route('admin.support-tickets') }}" wire:navigate class="group rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900">
+            <div class="mb-3 flex items-center justify-between">
+                <flux:heading size="sm">{{ __('Tickets reversa') }}</flux:heading>
+                <div class="grid size-10 place-items-center rounded-lg bg-slate-50 text-slate-700 group-hover:bg-slate-100 dark:bg-slate-900/20 dark:text-slate-400">
+                    <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+            </div>
+            <flux:text class="text-2xl font-semibold">{{ $supportTicketsPendingCount }}</flux:text>
+            <flux:text class="mt-1">{{ __('Pendientes de aprobar/rechazar.') }}</flux:text>
         </a>
     </div>
 </section>

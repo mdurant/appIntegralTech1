@@ -86,6 +86,11 @@ class ServiceRequest extends Model
         return $this->hasMany(ServiceRequestAttachment::class)->orderBy('sort_order');
     }
 
+    public function paymentSimulations(): HasMany
+    {
+        return $this->hasMany(PaymentSimulation::class);
+    }
+
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);

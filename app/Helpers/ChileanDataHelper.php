@@ -332,4 +332,24 @@ class ChileanDataHelper
 
         return fake()->randomElement($giros);
     }
+
+    /**
+     * Últimos 4 dígitos del RUT antes del dígito verificador (para código cartola PDF).
+     * Ej: 12.345.678-9 → 5678
+     */
+    public static function rutCartolaCode(?string $rut): ?string
+    {
+        if (! $rut || trim($rut) === '') {
+            return null;
+        }
+
+        $clean = preg_replace('/[^0-9kK]/', '', $rut);
+        if (strlen($clean) < 5) {
+            return null;
+        }
+
+        $numberPart = substr($clean, 0, -1);
+
+        return substr($numberPart, -4) ?: null;
+    }
 }

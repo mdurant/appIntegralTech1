@@ -22,7 +22,18 @@ class ServiceCategory extends Model
         'slug',
         'reference_code',
         'sort_order',
+        'fee_multiplier',
     ];
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function casts(): array
+    {
+        return [
+            'fee_multiplier' => 'decimal:2',
+        ];
+    }
 
     public function parent(): BelongsTo
     {
