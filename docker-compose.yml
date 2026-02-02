@@ -1,0 +1,31 @@
+# Docker Compose para desarrollo local y pruebas (imagen lista para Cloud Run)
+# Uso: docker compose up --build
+# La app escucha en http://localhost:8080 (PORT=8080 por defecto)
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_KEY=${APP_KEY:-base64:placeholder-generate-with-artisan-key-generate}
+      - APP_URL=http://localhost:8080
+      - LOG_CHANNEL=stderr
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/html/storage/database.sqlite
+      - SESSION_DRIVER=database
+      - CACHE_STORE=database
+      - QUEUE_CONNECTION=sync
+    volumes:
+      # Persistir SQLite y storage en local (opcional; en Cloud Run no se usa)
+      - app_storage:/var/www/html/storage
+      - app_bootstrap_cache:/var/www/html/bootstrap/cache
+    # En producción (Cloud Run) no montar volúmenes; usar Cloud SQL + GCS según necesidad
+
+volumes:
+  app_storage:
+  app_bootstrap_cache:
