@@ -129,6 +129,21 @@ $this->dispatch('toast', [['message' => __('Actualizado correctamente.'), 'type'
 
 ---
 
+## Docker y GCP (Cloud Run)
+
+La aplicación está contenedorizada para **GCP Cloud Run** y entornos compatibles con Docker:
+
+- **Dockerfile** multi-stage: Node (Vite/Tailwind), Composer, Nginx + PHP 8.4-FPM; escucha en **PORT** (por defecto 8080).
+- **docker-compose.yml** para construir y ejecutar en local (`docker compose up --build` → http://localhost:8080).
+- **docs/DOCKER-GCP.md**: construcción de la imagen, variables de entorno, despliegue en Cloud Run, Artifact Registry y Cloud Build.
+
+```bash
+docker build -t app-integraltech:latest .
+docker run --rm -p 8080:8080 -e APP_KEY=base64:... app-integraltech:latest
+```
+
+---
+
 ## Setup inicial (clonar y correr)
 
 ### Requisitos

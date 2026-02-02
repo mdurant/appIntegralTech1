@@ -1,0 +1,67 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE / Editor
+.idea
+.vscode
+.cursor
+*.swp
+*.swo
+.editorconfig
+
+# Dependencies (reinstalled in container)
+node_modules
+vendor
+
+# Build / cache (rebuilt in container)
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*
+!storage/framework/cache/.gitkeep
+!storage/framework/sessions/.gitkeep
+!storage/framework/views/.gitkeep
+!storage/logs/.gitkeep
+!bootstrap/cache/.gitkeep
+
+# Env and secrets (injected at runtime)
+.env
+.env.*
+!.env.example
+
+# Tests and dev tooling
+tests
+phpunit.xml
+.phpunit.result.cache
+pint.json
+*.md
+!README.md
+
+# Docs and misc
+docs
+.github
+.mcp.json
+boost.json
+.cursorignore
+CLAUDE.md
+INSTALL_SPATIE.md
+LICENSE
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker (avoid recursion)
+Dockerfile*
+docker-compose*
+.docker
+
+# Sail (local dev)
+docker
+
+# Storage uploads (ephemeral in Cloud Run; use GCS in prod)
+storage/app/public/*
+!storage/app/public/.gitkeep
