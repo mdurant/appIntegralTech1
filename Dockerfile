@@ -50,6 +50,7 @@ RUN apk add --no-cache \
     nginx \
     wget \
     sqlite-libs \
+    sqlite-dev \
     libzip \
     libzip-dev \
     libpng \
