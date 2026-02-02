@@ -49,11 +49,17 @@ RUN apk add --no-cache \
     wget \
     sqlite-libs \
     libzip \
+    libzip-dev \
     libpng \
+    libpng-dev \
     freetype \
+    freetype-dev \
     libjpeg-turbo \
+    libjpeg-turbo-dev \
     oniguruma \
+    oniguruma-dev \
     icu \
+    icu-dev \
     zlib \
     zlib-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
