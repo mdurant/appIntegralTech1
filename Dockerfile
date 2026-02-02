@@ -2,22 +2,10 @@
 # App IntegralTech - Docker multi-stage para GCP Cloud Run
 # PHP 8.4, Nginx, Laravel 12, Vite build
 # -----------------------------------------------------------------------------
+# Orden: 1) Composer (genera vendor), 2) Frontend (necesita vendor para flux.css), 3) Runtime
+# -----------------------------------------------------------------------------
 
-# ---- Stage 1: Frontend (Vite / Tailwind) ----
-FROM node:22-alpine AS frontend
-
-WORKDIR /app
-
-COPY package.json package-lock.json* ./
-RUN npm ci --ignore-scripts
-
-COPY vite.config.js ./
-COPY resources ./resources
-COPY public ./public
-
-RUN npm run build
-
-# ---- Stage 2: Composer dependencies ----
+# ---- Stage 1: Composer dependencies ----
 FROM composer:2 AS composer
 
 WORKDIR /app
@@ -34,9 +22,23 @@ RUN composer install \
     --ignore-platform-reqs
 
 COPY . .
-COPY --from=frontend /app/public/build ./public/build
-
 RUN composer dump-autoload --optimize --classmap-authoritative
+
+# ---- Stage 2: Frontend (Vite / Tailwind) ----
+# Necesita vendor (flux.css, @source) desde composer
+FROM node:22-alpine AS frontend
+
+WORKDIR /app
+
+COPY --from=composer /app/vendor ./vendor
+COPY package.json package-lock.json* ./
+RUN npm ci --ignore-scripts
+
+COPY vite.config.js ./
+COPY resources ./resources
+COPY public ./public
+
+RUN npm run build
 
 # ---- Stage 3: Runtime (Nginx + PHP-FPM) ----
 FROM php:8.4-fpm-alpine AS runtime
@@ -79,6 +81,7 @@ ENV NGINX_PORT=8080
 RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
 
 COPY --from=composer /app /var/www/html
+COPY --from=frontend /app/public/build /var/www/html/public/build
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf.template
 COPY docker/entrypoint.sh /entrypoint.sh
