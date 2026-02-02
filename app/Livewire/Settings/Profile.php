@@ -9,7 +9,6 @@ use App\Models\Region;
 use App\Models\ServiceCategory;
 use App\Rules\ChileanRut;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -183,6 +182,7 @@ class Profile extends Component
             SendEmailVerificationCodeJob::dispatch($user->id, force: true);
         }
 
+        $this->dispatch('toast', [['message' => __('Perfil actualizado correctamente.'), 'type' => 'success']]);
         $this->dispatch('profile-updated', name: $user->name);
     }
 
@@ -201,7 +201,7 @@ class Profile extends Component
 
         SendEmailVerificationCodeJob::dispatch($user->id, force: true);
 
-        Session::flash('status', 'verification-code-sent');
+        \App\Helpers\Toaster::info(__('Se ha enviado un nuevo código de verificación a tu correo.'));
     }
 
     #[Computed]

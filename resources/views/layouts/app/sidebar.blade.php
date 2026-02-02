@@ -92,7 +92,7 @@
                     </flux:sidebar.item>
 
                     @if (!auth()->user()->isClient())
-                        <flux:sidebar.item icon="layout-grid" :href="route('services.browse')" :current="request()->routeIs('services.browse')" wire:navigate>
+                        <flux:sidebar.item icon="rectangle-stack" :href="route('services.browse')" :current="request()->routeIs('services.browse')" wire:navigate>
                             {{ __('Servicios') }}
                         </flux:sidebar.item>
                         <flux:sidebar.item icon="user-group" :href="route('services.paid-contacts')" :current="request()->routeIs('services.paid-contacts')" wire:navigate>
@@ -101,7 +101,7 @@
                     @endif
 
                     @if (auth()->user()->isClient())
-                        <flux:sidebar.item icon="folder-git-2" :href="route('client.requests.index')" :current="request()->routeIs('client.requests.*')" wire:navigate>
+                        <flux:sidebar.item icon="folder" :href="route('client.requests.index')" :current="request()->routeIs('client.requests.*')" wire:navigate>
                             {{ __('Mis solicitudes') }}
                         </flux:sidebar.item>
                     @endif
@@ -113,7 +113,7 @@
                         <flux:sidebar.item icon="sparkles" :href="route('provider.work-orders.chart')" :current="request()->routeIs('provider.work-orders.chart')" wire:navigate>
                             {{ __('Gráficos de OTs') }}
                         </flux:sidebar.item>
-                        <flux:sidebar.item icon="folder-git-2" :href="route('provider.bids.index')" :current="request()->routeIs('provider.bids.*')" wire:navigate>
+                        <flux:sidebar.item icon="document-text" :href="route('provider.bids.index')" :current="request()->routeIs('provider.bids.*')" wire:navigate>
                             {{ __('Mis Cotizaciones') }}
                         </flux:sidebar.item>
                     @endif
@@ -188,6 +188,8 @@
         </flux:header>
 
         {{ $slot }}
+
+        <x-toaster />
 
         @fluxScripts
 

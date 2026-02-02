@@ -1,10 +1,4 @@
 <section class="mx-auto w-full max-w-4xl space-y-6 px-4 py-6 sm:px-6">
-    @if (session()->has('payment-success'))
-        <flux:callout variant="success" class="mb-4">
-            {{ session('payment-success') }}
-        </flux:callout>
-    @endif
-
     <div class="space-y-2">
         <flux:heading size="lg">{{ __('Datos de Contacto Completos') }}</flux:heading>
         <flux:text class="text-sm text-app-muted">

@@ -36,6 +36,7 @@ class Users extends Component
         User::query()->findOrFail($userId)->update([
             'system_role' => $roleEnum,
         ]);
+        $this->dispatch('toast', [['message' => __('Rol actualizado correctamente.'), 'type' => 'success']]);
     }
 
     public function updateTenant(int $userId, ?int $tenantId): void
@@ -44,6 +45,7 @@ class Users extends Component
 
         if ($tenantId === null) {
             $user->update(['current_tenant_id' => null]);
+            $this->dispatch('toast', [['message' => __('Organización del usuario actualizada.'), 'type' => 'success']]);
 
             return;
         }
@@ -51,11 +53,13 @@ class Users extends Component
         Tenant::query()->findOrFail($tenantId);
 
         $user->update(['current_tenant_id' => $tenantId]);
+        $this->dispatch('toast', [['message' => __('Organización del usuario actualizada.'), 'type' => 'success']]);
     }
 
     public function delete(int $userId): void
     {
         User::query()->findOrFail($userId)->delete();
+        $this->dispatch('toast', [['message' => __('Usuario eliminado correctamente.'), 'type' => 'success']]);
     }
 
     public function render()
@@ -65,4 +69,3 @@ class Users extends Component
         ])->layout('layouts.app', ['title' => __('Admin · Usuarios')]);
     }
 }
-

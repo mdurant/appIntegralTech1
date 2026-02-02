@@ -307,6 +307,8 @@ class Edit extends Component
             $sortOrder += 10;
         }
 
+        \App\Helpers\Toaster::success(__('Solicitud actualizada correctamente.'));
+
         $this->redirect(route('client.requests.index'), navigate: true);
     }
 

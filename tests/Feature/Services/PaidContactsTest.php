@@ -65,7 +65,8 @@ test('mis contactos comprados muestra solo servicios con pago aprobado', functio
         'user_id' => $provider->id,
         'service_request_id' => $paidRequest->id,
         'amount' => 5000,
-        'payment_method' => PaymentSimulation::PaymentMethodCard,
+        'card_last_four' => '4242',
+        'cardholder_name' => 'Test User',
         'status' => 'approved',
         'paid_at' => now(),
     ]);
@@ -98,55 +99,6 @@ test('mis contactos comprados muestra mensaje vacío cuando no hay compras', fun
     $response->assertSee('Servicios');
 });
 
-test('flujo completo: recargar wallet → pagar contacto → aparece en Contactos comprados', function () {
-    $region = Region::create(['name' => 'Metropolitana', 'code' => 'RM', 'sort_order' => 1, 'is_active' => true]);
-    $commune = Commune::create(['region_id' => $region->id, 'name' => 'Santiago', 'code' => 'STG', 'sort_order' => 1, 'is_active' => true]);
-    $cat = ServiceCategory::create(['key' => 'cat', 'name' => 'Categoría', 'parent_id' => null, 'sort_order' => 0]);
-
-    $client = User::factory()->client()->create();
-    $tenant = Tenant::factory()->create(['created_by_user_id' => null]);
-    $tenant->users()->attach($client->id, ['role' => TenantRole::Owner->value]);
-    $client->forceFill(['current_tenant_id' => $tenant->id])->save();
-
-    $serviceRequest = ServiceRequest::create([
-        'tenant_id' => $tenant->id,
-        'category_id' => $cat->id,
-        'created_by_user_id' => $client->id,
-        'title' => 'Servicio para flujo completo',
-        'description' => 'Descripción',
-        'contact_name' => 'María López',
-        'contact_email' => 'maria@ejemplo.cl',
-        'contact_phone' => '+56987654321',
-        'region_id' => $region->id,
-        'commune_id' => $commune->id,
-        'status' => ServiceRequestStatus::Published->value,
-        'published_at' => now(),
-    ]);
-
-    $provider = User::factory()->create(['system_role' => SystemRole::User->value]);
-    $provider->getOrCreateWallet();
-    $this->actingAs($provider);
-
-    Livewire::test(\App\Livewire\Settings\WalletTopUp::class)
-        ->set('amount', '100000')
-        ->set('payment_method', 'transfer')
-        ->call('topUp')
-        ->assertRedirect(route('settings.wallet.top-up'));
-
-    Livewire::test(\App\Livewire\Services\Payment::class, ['serviceRequest' => $serviceRequest])
-        ->set('payment_method', PaymentSimulation::PaymentMethodWallet)
-        ->call('processPayment')
-        ->assertHasNoErrors()
-        ->assertRedirect(route('services.contact', $serviceRequest));
-
-    $response = $this->get(route('services.paid-contacts'));
-    $response->assertOk();
-    $response->assertSee('Servicio para flujo completo');
-    $response->assertSee('María López');
-    $response->assertSee('maria@ejemplo.cl');
-    $response->assertSee('+56987654321');
-});
-
 test('flujo completo con pago con tarjeta: pagar contacto → aparece en Contactos comprados', function () {
     $region = Region::create(['name' => 'Metropolitana', 'code' => 'RM', 'sort_order' => 1, 'is_active' => true]);
     $commune = Commune::create(['region_id' => $region->id, 'name' => 'Santiago', 'code' => 'STG', 'sort_order' => 1, 'is_active' => true]);
@@ -176,7 +128,6 @@ test('flujo completo con pago con tarjeta: pagar contacto → aparece en Contact
     $this->actingAs($provider);
 
     Livewire::test(\App\Livewire\Services\Payment::class, ['serviceRequest' => $serviceRequest])
-        ->set('payment_method', PaymentSimulation::PaymentMethodCard)
         ->set('cardholder_name', 'Proveedor Demo')
         ->set('card_number', '4111111111111111')
         ->set('expiry_month', '12')

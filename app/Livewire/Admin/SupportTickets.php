@@ -38,7 +38,7 @@ class SupportTickets extends Component
                 __('Reembolso por reversa aprobada (compra: :title)', ['title' => $payment->serviceRequest?->title ?? '#'.$payment->service_request_id])
             );
         } catch (\RuntimeException $e) {
-            $this->dispatch('notify', type: 'error', message: $e->getMessage());
+            $this->dispatch('toast', [['message' => $e->getMessage(), 'type' => 'error']]);
 
             return;
         }
@@ -64,7 +64,7 @@ class SupportTickets extends Component
         });
 
         $this->admin_comment = '';
-        $this->dispatch('notify', type: 'success', message: __('Reversa aprobada y saldo acreditado.'));
+        $this->dispatch('toast', [['message' => __('Reversa aprobada y saldo acreditado.'), 'type' => 'success']]);
     }
 
     public function reject(int $ticketId): void
@@ -93,7 +93,7 @@ class SupportTickets extends Component
         });
 
         $this->admin_comment = '';
-        $this->dispatch('notify', type: 'success', message: __('Reversa rechazada.'));
+        $this->dispatch('toast', [['message' => __('Reversa rechazada.'), 'type' => 'success']]);
     }
 
     public function getTicketsProperty(): LengthAwarePaginator

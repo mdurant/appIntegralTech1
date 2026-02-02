@@ -53,7 +53,7 @@ class CreateRating extends Component
 
         $this->dispatch('rating-created');
 
-        session()->flash('message', __('Valoración creada exitosamente.'));
+        $this->dispatch('toast', [['message' => __('Valoración creada exitosamente.'), 'type' => 'success']]);
     }
 
     public function render()

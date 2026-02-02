@@ -26,6 +26,7 @@ class ServiceBids extends Component
     public function delete(int $bidId): void
     {
         ServiceBid::query()->findOrFail($bidId)->delete();
+        $this->dispatch('toast', [['message' => __('Presupuesto eliminado correctamente.'), 'type' => 'success']]);
     }
 
     public function render()
@@ -34,4 +35,3 @@ class ServiceBids extends Component
             ->layout('layouts.app', ['title' => __('Admin · Presupuestos')]);
     }
 }
-

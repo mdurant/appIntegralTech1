@@ -26,6 +26,7 @@ class ServiceRequests extends Component
     public function delete(int $serviceRequestId): void
     {
         ServiceRequest::query()->findOrFail($serviceRequestId)->delete();
+        $this->dispatch('toast', [['message' => __('Solicitud eliminada correctamente.'), 'type' => 'success']]);
     }
 
     public function render()
@@ -34,4 +35,3 @@ class ServiceRequests extends Component
             ->layout('layouts.app', ['title' => __('Admin · Solicitudes')]);
     }
 }
-

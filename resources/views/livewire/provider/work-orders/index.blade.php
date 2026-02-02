@@ -1,10 +1,4 @@
 <section class="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6">
-    @if (session()->has('message'))
-        <flux:callout variant="success" class="mb-4">
-            {{ session('message') }}
-        </flux:callout>
-    @endif
-
     <div class="space-y-2">
         <flux:heading size="lg">{{ __('Mis Órdenes de Trabajo') }}</flux:heading>
         <flux:text class="text-sm text-app-muted">

@@ -93,7 +93,7 @@ class Payment extends Component
             'paid_at' => now(),
         ]);
 
-        session()->flash('payment-success', __('Pago procesado exitosamente. Ahora puedes ver los datos de contacto.'));
+        \App\Helpers\Toaster::success(__('Pago procesado exitosamente. Ahora puedes ver los datos de contacto.'));
 
         $this->redirect(route('services.contact', $this->serviceRequest), navigate: true);
     }

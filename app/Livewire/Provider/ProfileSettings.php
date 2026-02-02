@@ -60,7 +60,7 @@ class ProfileSettings extends Component
             $user->update(['avatar_path' => $path]);
         }
 
-        session()->flash('message', __('Perfil actualizado exitosamente.'));
+        $this->dispatch('toast', [['message' => __('Perfil actualizado exitosamente.'), 'type' => 'success']]);
     }
 
     public function render()

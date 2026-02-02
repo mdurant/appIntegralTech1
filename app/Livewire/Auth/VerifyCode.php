@@ -34,6 +34,7 @@ class VerifyCode extends Component
         $result = $service->verify(auth()->user(), $this->code);
 
         if ($result === EmailCodeVerificationResult::Verified || $result === EmailCodeVerificationResult::AlreadyVerified) {
+            \App\Helpers\Toaster::success(__('Correo verificado correctamente.'));
             $this->redirectIntended(default: route('dashboard', absolute: false));
 
             return;
@@ -69,6 +70,7 @@ class VerifyCode extends Component
 
         SendEmailVerificationCodeJob::dispatch(auth()->id(), force: true);
 
+        $this->dispatch('toast', [['message' => __('Código enviado a tu correo.'), 'type' => 'info']]);
         $this->reset('code');
         $this->resetErrorBag();
     }
@@ -79,4 +81,3 @@ class VerifyCode extends Component
             ->layout('layouts.auth');
     }
 }
-

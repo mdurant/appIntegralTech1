@@ -39,6 +39,7 @@ class Password extends Component
 
         $this->reset('current_password', 'password', 'password_confirmation');
 
+        $this->dispatch('toast', [['message' => __('Contraseña actualizada correctamente.'), 'type' => 'success']]);
         $this->dispatch('password-updated');
     }
 }

@@ -42,7 +42,7 @@ class Show extends Component
 
         $this->workOrder->refresh();
 
-        session()->flash('message', __('Precio final actualizado exitosamente.'));
+        $this->dispatch('toast', [['message' => __('Precio final actualizado exitosamente.'), 'type' => 'success']]);
     }
 
     public function markAsStarted(): void
@@ -54,7 +54,7 @@ class Show extends Component
 
         $this->workOrder->refresh();
 
-        session()->flash('message', __('Orden de trabajo marcada como iniciada.'));
+        $this->dispatch('toast', [['message' => __('Orden de trabajo marcada como iniciada.'), 'type' => 'success']]);
     }
 
     public function markAsCompleted(): void
@@ -66,7 +66,7 @@ class Show extends Component
 
         $this->workOrder->refresh();
 
-        session()->flash('message', __('Orden de trabajo marcada como completada.'));
+        $this->dispatch('toast', [['message' => __('Orden de trabajo marcada como completada.'), 'type' => 'success']]);
     }
 
     public function render()

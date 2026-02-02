@@ -80,11 +80,13 @@ class ServiceFormFields extends Component
         ]);
 
         $this->reset('key', 'label', 'type', 'required', 'sortOrder');
+        $this->dispatch('toast', [['message' => __('Campo creado correctamente.'), 'type' => 'success']]);
     }
 
     public function deleteField(int $fieldId): void
     {
         ServiceFormField::query()->findOrFail($fieldId)->delete();
+        $this->dispatch('toast', [['message' => __('Campo eliminado correctamente.'), 'type' => 'success']]);
     }
 
     public function addOption(int $fieldId): void
@@ -106,11 +108,13 @@ class ServiceFormFields extends Component
         ]);
 
         $this->reset('optionValue', 'optionLabel');
+        $this->dispatch('toast', [['message' => __('Opción añadida correctamente.'), 'type' => 'success']]);
     }
 
     public function deleteOption(int $optionId): void
     {
         ServiceFormFieldOption::query()->findOrFail($optionId)->delete();
+        $this->dispatch('toast', [['message' => __('Opción eliminada correctamente.'), 'type' => 'success']]);
     }
 
     public function render()
@@ -120,4 +124,3 @@ class ServiceFormFields extends Component
         ])->layout('layouts.app', ['title' => __('Admin · Formulario')]);
     }
 }
-

@@ -440,6 +440,7 @@ class Index extends Component
             'photos',
         );
 
+        $this->dispatch('toast', [['message' => __('Solicitud creada correctamente. Puedes publicarla cuando esté lista.'), 'type' => 'success']]);
         $this->showCreatedModal = true;
     }
 
@@ -452,6 +453,7 @@ class Index extends Component
         $this->authorize('publish', $serviceRequest);
 
         $serviceRequestService->publish($serviceRequest);
+        $this->dispatch('toast', [['message' => __('Solicitud publicada correctamente.'), 'type' => 'success']]);
     }
 
     public function delete(): void
@@ -468,6 +470,7 @@ class Index extends Component
 
         $serviceRequest->delete();
         $this->closeDeleteModal();
+        $this->dispatch('toast', [['message' => __('Solicitud eliminada correctamente.'), 'type' => 'success']]);
     }
 
     public function render()

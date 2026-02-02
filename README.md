@@ -31,10 +31,101 @@ La aplicación usa autenticación con **Laravel Fortify** (web) y **Laravel Sanc
 - **DB**: SQLite (por defecto)
 - **Queue**: database (por defecto)
 - **Tests**: Pest
+- **Notificaciones**: Toaster (helper + componente Blade/Alpine; ver sección más abajo)
 - **PDF**: DomPDF (barryvdh/laravel-dompdf)
 - **API docs**: L5-Swagger (OpenAPI)
 - **Permisos**: Spatie Laravel Permission (pendiente instalación)
 - **Media**: Spatie Laravel Media Library (pendiente instalación)
+
+---
+
+## Theme / Design System (eco dashboard)
+
+La aplicación usa un tema visual customizado inspirado en dashboards tipo “eco” (morado, teal, naranja), aplicado en **Landing** y **Dashboard** para una experiencia consistente.
+
+### Paleta de colores
+
+| Uso | Variable / Clase | Descripción |
+|-----|------------------|-------------|
+| **Primario / Marca** | `brand-50` … `brand-900` | Morado/violeta (oklch hue 275). Sidebar, botones primarios, enlaces, gráficos, acento Flux. |
+| **Destacado / Activo** | `highlight-50` … `highlight-700` | Naranja/ámbar. Ítem activo del sidebar, CTAs secundarios, estados “activo”. |
+| **Éxito / Positivo** | `success` | Teal/verde (oklch ~165). Indicadores positivos (+%), estados success, toasts de éxito. |
+| **Advertencia** | `warning` | Ámbar. Alertas, toasts de advertencia. |
+| **Error / Peligro** | `danger` | Rojo. Errores, toasts de error, validación. |
+| **Informativo** | `info` | Azul. Mensajes informativos, toasts info. |
+
+### Superficies y texto (Dashboard / Landing)
+
+- **`app-bg`**: Fondo general (gris muy claro con tinte morado).
+- **`app-surface`** / **`app-surface-2`**: Fondos de tarjetas y paneles.
+- **`app-border`**: Bordes.
+- **`app-text`**: Texto principal.
+- **`app-muted`**: Texto secundario, hints.
+- **`app-sidebar`** / **`app-sidebar-hover`**: Sidebar (claro por defecto).
+
+### Tipografía
+
+- **Fuente sans**: `Instrument Sans` (fallback: system-ui, sans-serif). Definida en `resources/css/app.css` vía `@theme { --font-sans: ... }`.
+
+### Componentes
+
+- **Calendarios (Flatpickr)**  
+  Fechas seleccionadas: fondo `date-selected-bg`, borde `date-selected-border`, texto `date-selected-text` (tonos morado claro). Día actual: borde `brand-400` / `brand-600` si está seleccionado.
+
+- **Formularios (Flux + Tailwind)**  
+  Inputs, selects, textareas: borde `app-border`, focus con `ring-accent` (brand). Input groups (icono + campo): focus en grupo con `border-brand-500`. Select2: misma lógica de focus y opción resaltada con tonos `date-selected-*`.
+
+- **Botones y enlaces**  
+  Primarios: `variant="primary"` (accent = brand). Ghost/secondary: hover con `--color-hover-link` (brand-700). Footer: clase `footer-link` con hover morado.
+
+- **Sidebar (Dashboard)**  
+  Fondo claro (`app-sidebar`), colapsable solo en móvil. Ítem activo usa acento Flux (brand).
+
+- **Toasts (notificaciones)**  
+  Colores semánticos: success (teal), error (danger), warning (ámbar), info (azul). Posición: esquina superior derecha; componente `<x-toaster />` en el layout de app.
+
+### Dónde se define
+
+- **Variables y tema**: `resources/css/app.css` (bloque `@theme`).
+- **Estilos de calendario**: mismas variables + clases `.flatpickr-*`.
+- **Estilos de Select2**: `border-brand-*`, `date-selected-*` para opción seleccionada/resaltada.
+- **Sidebar activo**: reglas `[data-flux-sidebar] [data-flux-sidebar-item][data-current]` en `app.css`.
+
+Para cambios de marca (por ejemplo otro morado o otro naranja), basta con ajustar las variables `--color-brand-*` y `--color-highlight-*` en `@theme`.
+
+---
+
+## Toaster (notificaciones)
+
+La aplicación usa un sistema propio de notificaciones tipo **toast** (sin dependencia externa) para feedback en todas las operaciones CRUD, perfil, envíos de correo y mensajes informativos, tanto en **Landing** como en **Dashboard** y pantallas de **auth**.
+
+### Dónde está
+
+- **Helper PHP**: `App\Helpers\Toaster` — métodos estáticos `success()`, `error()`, `warning()`, `info()` que flashean un mensaje en sesión para mostrarlo en la siguiente petición (útil tras `redirect()`).
+- **Componente**: `<x-toaster />` — se incluye en el layout de app (`layouts/app/sidebar.blade.php`) y en el layout de auth (`layouts/auth.blade.php`). Renderiza toasts con Alpine.js (posición: esquina superior derecha; auto-cierre ~5 s).
+
+### Uso
+
+**Desde PHP (tras redirect):**
+
+```php
+use App\Helpers\Toaster;
+
+Toaster::success(__('Guardado correctamente.'));
+Toaster::error(__('No se pudo completar la acción.'));
+Toaster::warning(__('Revisa los datos.'));
+Toaster::info(__('Se ha enviado un correo a tu email.'));
+// luego redirect()
+```
+
+**Desde Livewire (misma página, sin redirect):**
+
+```php
+$this->dispatch('toast', [['message' => __('Actualizado correctamente.'), 'type' => 'success']]);
+// type: 'success' | 'error' | 'warning' | 'info'
+```
+
+**Convención:** En todo CRUD (admin, cliente, proveedor), perfil de usuario, cambio de contraseña, eliminación de cuenta, envíos de correo (verificación, etc.) y mensajes informativos se debe usar Toaster en lugar de `session()->flash('message')` o callouts inline, para una experiencia uniforme.
 
 ---
 

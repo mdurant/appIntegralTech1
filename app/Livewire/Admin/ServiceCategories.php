@@ -158,6 +158,7 @@ class ServiceCategories extends Component
         ]);
 
         $this->closeEditModal();
+        $this->dispatch('toast', [['message' => __('Categoría actualizada correctamente.'), 'type' => 'success']]);
         $this->dispatch('category-updated');
     }
 
@@ -179,6 +180,7 @@ class ServiceCategories extends Component
         if ($this->deletingId) {
             ServiceCategory::query()->findOrFail($this->deletingId)->delete();
             $this->closeDeleteModal();
+            $this->dispatch('toast', [['message' => __('Categoría eliminada correctamente.'), 'type' => 'success']]);
             $this->dispatch('category-deleted');
         }
     }

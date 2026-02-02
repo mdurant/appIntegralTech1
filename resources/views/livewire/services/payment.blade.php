@@ -17,20 +17,6 @@
 
     {{-- Formulario de pago --}}
     <form wire:submit="processPayment" class="space-y-6">
-        @if ($this->canPayWithWallet)
-            <div class="rounded-xl border border-app-border bg-app-surface p-6">
-                <flux:heading size="md" class="mb-4">{{ __('Método de pago') }}</flux:heading>
-                <flux:radio.group wire:model.live="payment_method" variant="segmented">
-                    <flux:radio value="card">{{ __('Tarjeta (simulado)') }}</flux:radio>
-                    <flux:radio value="wallet">{{ __('Pagar con Wallet') }} (${{ \App\Helpers\ChileanDataHelper::formatChileanCurrency($this->walletBalance) }})</flux:radio>
-                </flux:radio.group>
-                @error('payment_method')
-                    <flux:text class="mt-2 text-sm text-red-600">{{ $message }}</flux:text>
-                @enderror
-            </div>
-        @endif
-
-        @if ($payment_method === 'card')
         <div class="rounded-xl border border-app-border bg-app-surface p-6 space-y-6">
             <flux:heading size="md">{{ __('Datos de la Tarjeta') }}</flux:heading>
 
@@ -119,31 +105,15 @@
                 <flux:text class="text-sm text-red-600">{{ $message }}</flux:text>
             @enderror
         </div>
-        @endif
 
-        {{-- Monto a pagar (fee dinámico + IVA) --}}
+        {{-- Monto a pagar --}}
         <div class="rounded-xl border-2 border-brand-600 bg-brand-50 p-6 dark:bg-brand-950">
-            @if ($feeBreakdown)
-                <div class="space-y-1">
-                    <flux:text class="text-sm text-app-muted">
-                        {{ __('Fee de servicio') }}: ${{ \App\Helpers\ChileanDataHelper::formatChileanCurrency($feeBreakdown['fee_net']) }}
-                        + {{ __('IVA (19%)') }}: ${{ \App\Helpers\ChileanDataHelper::formatChileanCurrency($feeBreakdown['iva']) }}
-                    </flux:text>
-                    <div class="flex items-center justify-between">
-                        <flux:text class="text-sm font-medium">{{ __('Monto a pagar') }}</flux:text>
-                        <flux:text class="text-2xl font-bold text-brand-700">
-                            ${{ \App\Helpers\ChileanDataHelper::formatChileanCurrency($amount) }} CLP
-                        </flux:text>
-                    </div>
-                </div>
-            @else
-                <div class="flex items-center justify-between">
-                    <flux:text class="text-sm font-medium">{{ __('Monto a pagar') }}</flux:text>
-                    <flux:text class="text-2xl font-bold text-brand-700">
-                        ${{ \App\Helpers\ChileanDataHelper::formatChileanCurrency($amount) }} CLP
-                    </flux:text>
-                </div>
-            @endif
+            <div class="flex items-center justify-between">
+                <flux:text class="text-sm font-medium">{{ __('Monto a pagar') }}</flux:text>
+                <flux:text class="text-2xl font-bold text-brand-700">
+                    ${{ \App\Helpers\ChileanDataHelper::formatChileanCurrency($amount) }} CLP
+                </flux:text>
+            </div>
         </div>
 
         {{-- Botones --}}
@@ -152,11 +122,7 @@
                 <flux:button variant="ghost">{{ __('Cancelar') }}</flux:button>
             </a>
             <flux:button variant="primary" type="submit" class="min-h-[44px] px-6 py-2.5">
-                @if ($payment_method === 'wallet')
-                    {{ __('Pagar con Wallet') }}
-                @else
-                    {{ __('Pagar') }}
-                @endif
+                {{ __('Pagar') }}
             </flux:button>
         </div>
     </form>

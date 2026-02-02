@@ -23,6 +23,7 @@ class Tenants extends Component
     public function delete(int $tenantId): void
     {
         Tenant::query()->findOrFail($tenantId)->delete();
+        $this->dispatch('toast', [['message' => __('Organización eliminada correctamente.'), 'type' => 'success']]);
     }
 
     public function render()

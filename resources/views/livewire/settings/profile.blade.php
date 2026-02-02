@@ -76,11 +76,6 @@
                             </flux:link>
                         </flux:text>
 
-                        @if (session('status') === 'verification-code-sent')
-                            <flux:text class="mt-2 font-medium !text-success">
-                                {{ __('Se ha enviado un nuevo código de verificación a tu correo.') }}
-                            </flux:text>
-                        @endif
                     </div>
                 @endif
             </div>

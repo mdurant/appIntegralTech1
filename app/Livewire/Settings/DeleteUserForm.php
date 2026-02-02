@@ -24,6 +24,8 @@ class DeleteUserForm extends Component
 
         tap(Auth::user(), $logout(...))->delete();
 
+        \App\Helpers\Toaster::info(__('Tu cuenta ha sido eliminada correctamente.'));
+
         $this->redirect('/', navigate: true);
     }
 }
