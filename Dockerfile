@@ -44,7 +44,9 @@ RUN npm run build
 FROM php:8.4-fpm-alpine AS runtime
 
 # PHP extensions required by Laravel (+ SQLite, GD for DomPDF, etc.)
+# pkgconf + *-dev needed so PHP extension configure (gd, zip, intl) find libraries via pkg-config
 RUN apk add --no-cache \
+    pkgconf \
     nginx \
     wget \
     sqlite-libs \
