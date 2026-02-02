@@ -6,6 +6,8 @@ use App\Models\PaymentSimulation;
 use App\Models\ServiceRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Payment extends Component
@@ -24,7 +26,40 @@ class Payment extends Component
 
     public string $email = '';
 
-    public float $amount = 6105.0; // Monto fijo por ahora
+    public float $amount = 6105.0;
+
+    /**
+     * Meses 01-12 para combobox de expiración.
+     *
+     * @return array<int, string>
+     */
+    #[Computed]
+    public function monthOptions(): array
+    {
+        $options = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $options[$m] = str_pad((string) $m, 2, '0', STR_PAD_LEFT);
+        }
+
+        return $options;
+    }
+
+    /**
+     * Años desde el actual hasta actual + 20 (formato YYYY) para combobox.
+     *
+     * @return array<int, string>
+     */
+    #[Computed]
+    public function yearOptions(): array
+    {
+        $currentYear = (int) date('Y');
+        $options = [];
+        for ($y = $currentYear; $y <= $currentYear + 20; $y++) {
+            $options[$y] = (string) $y;
+        }
+
+        return $options;
+    }
 
     public function mount(ServiceRequest $serviceRequest): void
     {
@@ -49,8 +84,15 @@ class Payment extends Component
 
     public function updatedCardNumber(): void
     {
-        // Limpiar espacios y caracteres no numéricos
         $this->card_number = preg_replace('/\D/', '', $this->card_number);
+    }
+
+    public function updatedCvv(): void
+    {
+        $this->cvv = preg_replace('/\D/', '', $this->cvv);
+        if (strlen($this->cvv) > 3) {
+            $this->cvv = substr($this->cvv, 0, 3);
+        }
     }
 
     public function processPayment(): void
@@ -58,19 +100,23 @@ class Payment extends Component
         // Limpiar el número de tarjeta antes de validar
         $this->card_number = preg_replace('/\D/', '', $this->card_number);
 
+        $currentYear = (int) date('Y');
+        $validYears = array_map('strval', range($currentYear, $currentYear + 20));
+
         $this->validate([
             'cardholder_name' => ['required', 'string', 'min:3', 'max:255'],
             'card_number' => ['required', 'string', 'regex:/^\d{16}$/', 'size:16'],
             'expiry_month' => ['required', 'string', 'size:2', 'regex:/^(0[1-9]|1[0-2])$/'],
-            'expiry_year' => ['required', 'string', 'size:4'],
-            'cvv' => ['required', 'string', 'regex:/^\d{3,4}$/', 'min:3', 'max:4'],
+            'expiry_year' => ['required', 'string', 'size:4', Rule::in($validYears)],
+            'cvv' => ['required', 'string', 'regex:/^\d{3}$/', 'size:3'],
             'email' => ['required', 'email', 'max:255'],
         ], [
             'card_number.regex' => __('El número de tarjeta debe tener 16 dígitos.'),
             'card_number.size' => __('El número de tarjeta debe tener exactamente 16 dígitos.'),
             'expiry_month.regex' => __('El mes debe ser entre 01 y 12.'),
-            'expiry_year.size' => __('El año debe tener 4 dígitos.'),
-            'cvv.regex' => __('El CVV debe tener 3 o 4 dígitos.'),
+            'expiry_year.in' => __('El año de expiración no es válido.'),
+            'cvv.regex' => __('El CVV debe tener exactamente 3 dígitos.'),
+            'cvv.size' => __('El CVV debe tener exactamente 3 dígitos.'),
         ]);
 
         // Validar que la fecha no esté expirada

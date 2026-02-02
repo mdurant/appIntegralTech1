@@ -48,49 +48,43 @@
                 <flux:text class="mt-1 text-xs text-app-muted">{{ __('Ingresa 16 dígitos sin espacios') }}</flux:text>
             </div>
 
-            {{-- Fecha de expiración y CVV --}}
+            {{-- Fecha de expiración (combobox 01-12, año actual + 20) y CVV (3 dígitos) --}}
             <div class="grid gap-4 sm:grid-cols-3">
                 <div class="sm:col-span-1">
-                    <flux:input
-                        wire:model="expiry_month"
-                        label="{{ __('Mes') }}"
-                        placeholder="12"
-                        type="text"
-                        inputmode="numeric"
-                        maxlength="2"
-                        required
-                    />
+                    <flux:select wire:model="expiry_month" label="{{ __('Mes') }}" placeholder="{{ __('MM') }}" required>
+                        @foreach ($this->monthOptions as $num => $label)
+                            <option value="{{ $label }}">{{ $label }}</option>
+                        @endforeach
+                    </flux:select>
                     @error('expiry_month')
                         <flux:text class="text-sm text-red-600">{{ $message }}</flux:text>
                     @enderror
                 </div>
                 <div class="sm:col-span-1">
-                    <flux:input
-                        wire:model="expiry_year"
-                        label="{{ __('Año') }}"
-                        placeholder="2025"
-                        type="text"
-                        inputmode="numeric"
-                        maxlength="4"
-                        required
-                    />
+                    <flux:select wire:model="expiry_year" label="{{ __('Año') }}" placeholder="{{ __('AAAA') }}" required>
+                        @foreach ($this->yearOptions as $num => $label)
+                            <option value="{{ $label }}">{{ $label }}</option>
+                        @endforeach
+                    </flux:select>
                     @error('expiry_year')
                         <flux:text class="text-sm text-red-600">{{ $message }}</flux:text>
                     @enderror
                 </div>
                 <div class="sm:col-span-1">
                     <flux:input
-                        wire:model="cvv"
+                        wire:model.live="cvv"
                         label="{{ __('CVV') }}"
                         placeholder="123"
                         type="text"
                         inputmode="numeric"
-                        maxlength="4"
+                        maxlength="3"
+                        pattern="[0-9]{3}"
                         required
                     />
                     @error('cvv')
                         <flux:text class="text-sm text-red-600">{{ $message }}</flux:text>
                     @enderror
+                    <flux:text class="mt-1 text-xs text-app-muted">{{ __('3 dígitos') }}</flux:text>
                 </div>
             </div>
 
