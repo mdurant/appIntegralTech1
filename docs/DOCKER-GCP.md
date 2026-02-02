@@ -10,6 +10,7 @@ Este documento describe la contenedorización de la aplicación y su despliegue 
 
 - **Multi-stage**: construcción en 3 etapas (frontend Vite, Composer, runtime Nginx + PHP-FPM).
 - **Runtime**: PHP 8.4-FPM Alpine + Nginx; escucha en **PORT** (por defecto **8080**, requerido por Cloud Run).
+- **Base de datos**: **PostgreSQL** (extensiones `pdo_pgsql` y `pgsql`) para uso con **GCP Cloud SQL**.
 - **Seguridad**: workers de Nginx con usuario no root (`user app`).
 - **Tamaño**: Alpine y `composer install --no-dev` para reducir la imagen final.
 
@@ -19,14 +20,20 @@ Este documento describe la contenedorización de la aplicación y su despliegue 
 # Construir la imagen
 docker build -t app-integraltech:latest .
 
-# Ejecutar en local (puerto 8080)
+# Ejecutar en local (puerto 8080) con PostgreSQL
 docker run --rm -p 8080:8080 \
   -e APP_KEY="base64:..." \
   -e APP_ENV=production \
-  -e DB_CONNECTION=sqlite \
-  -e DB_DATABASE=/var/www/html/storage/database.sqlite \
+  -e DB_CONNECTION=pgsql \
+  -e DB_HOST=/cloudsql/INSTANCE_CONNECTION_NAME \
+  -e DB_PORT=5432 \
+  -e DB_DATABASE=laravel \
+  -e DB_USERNAME=app \
+  -e DB_PASSWORD=secret \
   app-integraltech:latest
 ```
+
+Para Cloud Run con Cloud SQL, usar `DB_HOST=/cloudsql/PROJECT:REGION:INSTANCE` y en el deploy añadir `--add-cloudsql-instances=PROJECT:REGION:INSTANCE`.
 
 **Importante**: Antes del primer arranque en un entorno nuevo, generar `APP_KEY` con `php artisan key:generate` (en un contenedor temporal o en CI) y configurar las variables de entorno necesarias (base de datos, sesión, etc.).
 
@@ -43,7 +50,7 @@ docker compose up --build
 # App en http://localhost:8080
 ```
 
-Los volúmenes `app_storage` y `app_bootstrap_cache` persisten SQLite y caché entre reinicios en local. En Cloud Run no se usan volúmenes; la app debe ser stateless.
+Los volúmenes `app_storage` y `app_bootstrap_cache` persisten caché entre reinicios en local. En Cloud Run no se usan volúmenes; la app debe ser stateless y la BD es PostgreSQL en Cloud SQL.
 
 ---
 
@@ -94,7 +101,16 @@ gcloud run deploy app-integraltech \
   --port 8080
 ```
 
-Ajustar `REGION`, `PROJECT_ID`, `--set-env-vars` y `--set-secrets` según tu entorno. Para BD en Cloud SQL, añadir flags como `--add-cloudsql-instances=INSTANCE_CONNECTION_NAME` y variables de conexión.
+Ajustar `REGION`, `PROJECT_ID`, `--set-env-vars` y `--set-secrets` según tu entorno.
+
+**PostgreSQL con Cloud SQL**: la imagen incluye `pdo_pgsql` y `pgsql`. Configurar:
+
+- `DB_CONNECTION=pgsql`
+- `DB_HOST=/cloudsql/PROJECT_ID:REGION:INSTANCE_NAME` (socket de Cloud SQL Proxy; Cloud Run lo inyecta si se usa el conector)
+- O bien `DB_HOST=<IP privada Cloud SQL>` si la red permite conexión directa.
+- `DB_PORT=5432`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` (estos últimos desde Secret Manager recomendado).
+
+En el deploy añadir: `--add-cloudsql-instances=PROJECT_ID:REGION:INSTANCE_NAME`.
 
 ### 2.4 Cloud Build (CI/CD)
 
@@ -135,7 +151,7 @@ Sustituir `REGION` y `PROJECT_ID` por los de tu proyecto.
 
 | Archivo | Uso |
 |--------|-----|
-| **Dockerfile** | Build multi-stage: Node (Vite), Composer, Nginx + PHP-FPM. |
+| **Dockerfile** | Build multi-stage: Node (Vite), Composer, Nginx + PHP-FPM. Incluye extensiones PostgreSQL (pdo_pgsql, pgsql) para Cloud SQL. |
 | **.dockerignore** | Excluye del contexto de build: `.git`, `node_modules`, `vendor`, tests, `.env`, etc. |
 | **docker/entrypoint.sh** | Sustituye `__PORT__` en la config de Nginx y arranca PHP-FPM + Nginx. |
 | **docker/nginx/nginx.conf** | Config principal de Nginx (user no root, include de http.d). |
@@ -144,13 +160,16 @@ Sustituir `REGION` y `PROJECT_ID` por los de tu proyecto.
 
 ---
 
-## 4. Variables de entorno típicas en producción
+## 4. Variables de entorno típicas en producción (PostgreSQL / Cloud SQL)
 
 Definir en Cloud Run (o Secret Manager) según necesidad:
 
 - `APP_KEY` (obligatorio; desde Secret Manager recomendado).
 - `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://tu-dominio.run.app`.
-- `DB_CONNECTION`, `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` (por ejemplo Cloud SQL).
+- **PostgreSQL (Cloud SQL)**:
+  - `DB_CONNECTION=pgsql`
+  - `DB_HOST=/cloudsql/PROJECT_ID:REGION:INSTANCE_NAME` (con `--add-cloudsql-instances` en el deploy) o IP privada de la instancia.
+  - `DB_PORT=5432`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` (credenciales desde Secret Manager recomendado).
 - `SESSION_DRIVER=database` (o `redis` si usas Memorystore).
 - `CACHE_STORE`, `QUEUE_CONNECTION` (redis/database según arquitectura).
 - `FILESYSTEM_DISK`, credenciales para GCS si usas almacenamiento en la nube.

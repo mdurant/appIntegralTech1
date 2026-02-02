@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # App IntegralTech - Docker multi-stage para GCP Cloud Run
-# PHP 8.4, Nginx, Laravel 12, Vite build
+# PHP 8.4, Nginx, Laravel 12, Vite build, PostgreSQL (Cloud SQL)
 # -----------------------------------------------------------------------------
 # Orden: 1) Composer (genera vendor), 2) Frontend (necesita vendor para flux.css), 3) Runtime
 # -----------------------------------------------------------------------------
@@ -43,14 +43,14 @@ RUN npm run build
 # ---- Stage 3: Runtime (Nginx + PHP-FPM) ----
 FROM php:8.4-fpm-alpine AS runtime
 
-# PHP extensions required by Laravel (+ SQLite, GD for DomPDF, etc.)
-# pkgconf + *-dev needed so PHP extension configure (gd, zip, intl) find libraries via pkg-config
+# PHP extensions required by Laravel + PostgreSQL (GCP Cloud SQL) + GD for DomPDF
+# pkgconf + *-dev needed so PHP extension configure (gd, zip, intl, pdo_pgsql) find libraries
 RUN apk add --no-cache \
     pkgconf \
     nginx \
     wget \
-    sqlite-libs \
-    sqlite-dev \
+    postgresql-libs \
+    postgresql-dev \
     libzip \
     libzip-dev \
     libpng \
@@ -69,7 +69,8 @@ RUN apk add --no-cache \
     && docker-php-ext-install -j$(nproc) \
         bcmath \
         pdo \
-        pdo_sqlite \
+        pdo_pgsql \
+        pgsql \
         mbstring \
         exif \
         pcntl \
