@@ -11,7 +11,7 @@
             <!-- Email Address -->
             <flux:input
                 name="email"
-                :label="__('Email Address')"
+                :label="__('Correo electrónico')"
                 type="email"
                 required
                 autofocus
@@ -25,7 +25,7 @@
 
         <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-400">
             <span>{{ __('O bien, volver a') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('login') }}</flux:link>
+            <flux:link :href="route('login')" wire:navigate>{{ __('Ingresar') }}</flux:link>
         </div>
     </div>
 </x-layouts::auth>
