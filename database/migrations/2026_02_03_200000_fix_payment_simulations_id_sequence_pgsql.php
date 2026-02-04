@@ -25,16 +25,17 @@ return new class extends Migration
         $seq = $table . '_id_seq';
 
         // Asegurar que la secuencia exista y esté vinculada a la columna id
+        // Sin placeholders: PostgreSQL no admite bindings dentro de DO $$.
         DB::statement("
             DO $$
             BEGIN
                 IF NOT EXISTS (
-                    SELECT 1 FROM pg_sequences WHERE schemaname = 'public' AND sequencename = ?
+                    SELECT 1 FROM pg_sequences WHERE schemaname = 'public' AND sequencename = '{$seq}'
                 ) THEN
                     CREATE SEQUENCE public.{$seq} OWNED BY public.{$table}.id;
                 END IF;
             END $$;
-        ", [$seq]);
+        ");
 
         // Establecer DEFAULT para id si no lo tiene
         DB::statement("
