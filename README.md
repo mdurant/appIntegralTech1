@@ -400,6 +400,34 @@ EMAIL_CODE_LOG_PLAINTEXT=true
 
 Luego reinicia `php artisan serve` (y `queue:work` si aplica).
 
+### Correo y registro en Laravel Cloud (error 500 al crear cuenta)
+
+Si en Laravel Cloud tienes error **500** al registrar un usuario, el fallo suele estar en el envío del correo de verificación (Resend, cola o variables). Sigue estos pasos:
+
+1. **Variables obligatorias en Laravel Cloud (Settings → Custom environment variables)**  
+   Asegúrate de tener **todas** estas (una por línea, `KEY=value`):
+   - `APP_NAME=IntegralTech` (o el nombre de tu app; evita depender solo de `${APP_NAME}` si no está definido).
+   - `APP_KEY=base64:...` (tu clave de aplicación).
+   - `MAIL_MAILER=resend`
+   - `MAIL_FROM_ADDRESS=noreply@integraltech.cl` (sin comillas dobles; o el dominio verificado en Resend).
+   - `MAIL_FROM_NAME=IntegralTech` (o `${APP_NAME}` si `APP_NAME` está definido).
+   - `RESEND_API_KEY=re_xxxx...` (API key de Resend, con permisos de envío).
+
+2. **Dominio en Resend**  
+   En [resend.com](https://resend.com) → Domains: el dominio de `MAIL_FROM_ADDRESS` (ej. `integraltech.cl`) debe estar **verificado**. Si no, Resend rechaza el envío y puede provocar error en el job.
+
+3. **Cola en Laravel Cloud**  
+   El correo de verificación se envía con un **job en cola**. En Laravel Cloud debe haber **queue workers** activos (Queue Cluster o workers en el app cluster). Si no hay workers, el job se encola pero no se ejecuta; si la cola falla al encolar (ej. tabla `jobs` inexistente o sin permisos), el registro puede fallar.  
+   - En el proyecto, el registro ya está protegido: el job se despacha con `afterResponse()` y un `try/catch`, de modo que un fallo al encolar no devuelve 500 al usuario (solo se registra un warning en logs).
+
+4. **Revisar logs en Laravel Cloud**  
+   En Laravel Cloud → **Logs**: busca líneas con `No se pudo encolar el correo de verificación` (fallo al encolar) o excepciones de Resend/HTTP (fallo al enviar). El stack trace indica si el problema es API key, dominio no verificado, timeout o cola.
+
+5. **Base de datos y tabla `jobs`**  
+   Si `QUEUE_CONNECTION=database`, la tabla `jobs` debe existir. Ejecuta migraciones en el entorno de Laravel Cloud si hace falta.
+
+Resumen: definir bien `APP_NAME`, `MAIL_*`, `RESEND_API_KEY`, verificar el dominio en Resend, tener queue workers activos y revisar los logs para el mensaje concreto del error.
+
 ---
 
 ## Datos de Seeders (Chilenos)
