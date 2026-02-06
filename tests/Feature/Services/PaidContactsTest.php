@@ -96,7 +96,7 @@ test('mis contactos comprados muestra mensaje vacío cuando no hay compras', fun
     $response = $this->get(route('services.paid-contacts'));
     $response->assertOk();
     $response->assertSee('Aún no has comprado el contacto de ningún servicio');
-    $response->assertSee('Servicios');
+    $response->assertSee('Solicitudes de cotización');
 });
 
 test('flujo completo con pago con tarjeta: pagar contacto → aparece en Contactos comprados', function () {

@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             BankSeeder::class,
             AccountTypeSeeder::class,
             SystemSettingSeeder::class,
+            DemoCredentialsSeeder::class,
             UserSeeder::class,
             BillingDemoSeeder::class,
             SubscriptionSeeder::class,

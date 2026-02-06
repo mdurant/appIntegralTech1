@@ -2,7 +2,7 @@
     <livewire:services.detail-modal />
     <div class="flex flex-col gap-4 sm:gap-3 md:flex-row md:items-end md:justify-between">
         <div class="space-y-2">
-            <flux:heading size="lg" class="text-2xl sm:text-3xl">{{ __('Servicios publicados') }}</flux:heading>
+            <flux:heading size="lg" class="text-2xl sm:text-3xl">{{ __('Solicitudes de cotización publicadas') }}</flux:heading>
             <flux:text class="text-sm sm:text-base">{{ __('Explora necesidades publicadas y oferta si puedes resolverlas.') }}</flux:text>
         </div>
 
@@ -69,7 +69,7 @@
             </div>
         @empty
             <div class="rounded-lg border border-zinc-200 bg-white p-8 text-center dark:border-zinc-700 dark:bg-zinc-900 sm:rounded-xl">
-                <flux:text class="text-sm sm:text-base">{{ __('No hay servicios publicados aún.') }}</flux:text>
+                <flux:text class="text-sm sm:text-base">{{ __('No hay solicitudes de cotización publicadas aún.') }}</flux:text>
             </div>
         @endforelse
     </div>

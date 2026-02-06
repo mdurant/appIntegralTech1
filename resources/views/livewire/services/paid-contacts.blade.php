@@ -1,17 +1,23 @@
 <section class="mx-auto w-full max-w-6xl space-y-4 px-4 py-6 sm:space-y-6 sm:px-6">
     <div class="space-y-2">
         <flux:heading size="lg" class="text-2xl sm:text-3xl">{{ __('Contactos comprados') }}</flux:heading>
-        <flux:text class="text-sm sm:text-base">{{ __('Servicios cuyo contacto ya compraste. Aquí ves los datos completos para tu modelo de negocio.') }}</flux:text>
+        <flux:text class="text-sm sm:text-base">{{ __('Solicitudes de cotización cuyo contacto ya compraste. Aquí ves los datos completos para tu modelo de negocio.') }}</flux:text>
     </div>
 
     <div class="space-y-3">
         @forelse ($this->paidServiceRequests as $request)
+            @php($payment = $this->paymentForRequest($request))
             <div class="block min-h-[140px] rounded-lg border border-zinc-200 bg-white p-4 shadow-sm transition hover:border-zinc-300 hover:shadow dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-zinc-600 sm:min-h-[160px] sm:rounded-xl sm:p-5" wire:key="paid-{{ $request->id }}">
                 <div class="flex flex-col gap-3 sm:gap-4">
-                    {{-- Título y Categoría --}}
+                    {{-- Título, referencia y Categoría --}}
                     <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                         <div class="min-w-0 flex-1 space-y-1">
-                            <flux:heading size="md" class="text-base sm:text-lg">{{ $request->title }}</flux:heading>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <flux:heading size="md" class="text-base sm:text-lg">{{ $request->title }}</flux:heading>
+                                @if ($request->reference_id)
+                                    <flux:text class="text-xs font-mono text-app-muted">{{ $request->reference_id }}</flux:text>
+                                @endif
+                            </div>
                             <flux:text class="text-xs sm:text-sm text-app-muted">
                                 {{ $request->category?->name }}
                             </flux:text>
@@ -20,6 +26,14 @@
                             {{ __('Ver datos completos') }} »
                         </a>
                     </div>
+
+                    {{-- Comprado el / Medio de pago --}}
+                    @if ($payment)
+                        <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-app-muted">
+                            <span>{{ __('Comprado el') }} {{ $payment->paid_at?->translatedFormat('d/m/Y H:i') ?? '—' }}</span>
+                            <span>{{ __('Medio de pago') }}: {{ __('Tarjeta') }} ****{{ $payment->card_last_four }}</span>
+                        </div>
+                    @endif
 
                     {{-- Localización --}}
                     <div class="flex items-center gap-2 text-xs sm:text-sm">
@@ -55,8 +69,8 @@
             </div>
         @empty
             <div class="rounded-lg border border-zinc-200 bg-white p-8 text-center dark:border-zinc-700 dark:bg-zinc-900 sm:rounded-xl">
-                <flux:text class="text-sm sm:text-base">{{ __('Aún no has comprado el contacto de ningún servicio.') }}</flux:text>
-                <p class="mt-2 text-sm text-app-muted">{{ __('En') }} <a href="{{ route('services.browse') }}" wire:navigate class="font-medium text-brand-600 hover:underline">{{ __('Servicios') }}</a> {{ __('puedes explorar y pagar para ver datos de contacto.') }}</p>
+                <flux:text class="text-sm sm:text-base">{{ __('Aún no has comprado el contacto de ninguna solicitud de cotización.') }}</flux:text>
+                <p class="mt-2 text-sm text-app-muted">{{ __('En') }} <a href="{{ route('services.browse') }}" wire:navigate class="font-medium text-brand-600 hover:underline">{{ __('Solicitudes de cotización') }}</a> {{ __('puedes explorar y pagar para ver datos de contacto.') }}</p>
             </div>
         @endforelse
     </div>

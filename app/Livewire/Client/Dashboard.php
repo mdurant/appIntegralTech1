@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Client;
 
+use App\Models\ServiceRequest;
 use App\Models\WorkOrder;
+use App\ServiceRequestStatus;
 use App\WorkOrderStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
@@ -10,6 +12,28 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
+    #[Computed]
+    public function requestsWithNewBids(): Collection
+    {
+        return ServiceRequest::query()
+            ->where('tenant_id', auth()->user()->current_tenant_id)
+            ->where('status', ServiceRequestStatus::Published->value)
+            ->whereNull('awarded_bid_id')
+            ->whereHas('bids', fn ($q) => $q->where('status', 'submitted'))
+            ->with(['category', 'bids' => fn ($q) => $q->where('status', 'submitted')])
+            ->latest('updated_at')
+            ->get();
+    }
+
+    #[Computed]
+    public function unreadBidNotificationsCount(): int
+    {
+        return auth()->user()
+            ->unreadNotifications()
+            ->where('type', \App\Notifications\BidReceivedNotification::class)
+            ->count();
+    }
+
     #[Computed]
     public function workOrders(): Collection
     {

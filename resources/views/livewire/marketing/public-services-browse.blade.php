@@ -1,7 +1,7 @@
 <section class="mx-auto w-full max-w-6xl space-y-6 px-6 py-10">
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div class="space-y-2">
-            <flux:heading size="lg">{{ __('Explorar servicios publicados') }}</flux:heading>
+            <flux:heading size="lg">{{ __('Explorar solicitudes de cotización publicadas') }}</flux:heading>
             <flux:text class="text-app-muted">{{ __('Encuentra oportunidades reales y decide si quieres cotizar (requiere cuenta).') }}</flux:text>
         </div>
 

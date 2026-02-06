@@ -192,6 +192,11 @@ class Index extends Component
             ->where('tenant_id', auth()->user()->current_tenant_id)
             ->findOrFail($serviceRequestId);
 
+        if ($request->awarded_bid_id !== null) {
+            $this->dispatch('toast', [['message' => __('No se puede eliminar una solicitud adjudicada (ya tiene Orden de Trabajo).'), 'type' => 'error']]);
+            return;
+        }
+
         $this->deletingId = $request->id;
         $this->deletingTitle = $request->title;
     }
@@ -236,7 +241,10 @@ class Index extends Component
         $id = $this->editConfirmId;
         $this->closeEditConfirmModal();
         if ($id) {
-            $this->redirect(route('client.requests.edit', ['serviceRequest' => $id]), navigate: true);
+            $request = ServiceRequest::find($id);
+            if ($request) {
+                $this->redirect(route('client.requests.edit', $request), navigate: true);
+            }
         }
     }
 
@@ -465,6 +473,12 @@ class Index extends Component
         $serviceRequest = ServiceRequest::query()
             ->where('tenant_id', auth()->user()->current_tenant_id)
             ->findOrFail($this->deletingId);
+
+        if ($serviceRequest->awarded_bid_id !== null) {
+            $this->closeDeleteModal();
+            $this->dispatch('toast', [['message' => __('No se puede eliminar una solicitud adjudicada (ya tiene Orden de Trabajo).'), 'type' => 'error']]);
+            return;
+        }
 
         $this->authorize('delete', $serviceRequest);
 

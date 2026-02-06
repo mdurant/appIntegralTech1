@@ -18,22 +18,39 @@ class PaidContacts extends Component
     }
 
     /**
-     * Servicios cuyo contacto ya compró el usuario (pago aprobado).
+     * Solicitudes de cotización cuyo contacto ya compró el usuario (pago aprobado).
      *
      * @return Collection<int, ServiceRequest>
      */
     #[Computed]
     public function paidServiceRequests(): Collection
     {
+        $userId = auth()->id();
+
         return ServiceRequest::query()
             ->where('status', 'published')
-            ->whereHas('paymentSimulations', function ($q) {
-                $q->where('user_id', auth()->id())
-                    ->where('status', 'approved');
+            ->whereHas('paymentSimulations', function ($q) use ($userId) {
+                $q->where('user_id', $userId)->where('status', 'approved');
             })
-            ->with(['category', 'region', 'commune'])
+            ->with([
+                'category',
+                'region',
+                'commune',
+                'paymentSimulations' => fn ($q) => $q->where('user_id', $userId)->where('status', 'approved'),
+            ])
             ->latest('published_at')
             ->get();
+    }
+
+    /**
+     * Obtiene el pago (simulación) del usuario actual para una solicitud.
+     */
+    public function paymentForRequest(ServiceRequest $request): ?\App\Models\PaymentSimulation
+    {
+        return $request->paymentSimulations
+            ->where('user_id', auth()->id())
+            ->where('status', 'approved')
+            ->first();
     }
 
     public function render()

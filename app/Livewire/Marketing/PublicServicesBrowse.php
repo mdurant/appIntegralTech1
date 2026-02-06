@@ -51,7 +51,7 @@ class PublicServicesBrowse extends Component
     public function render()
     {
         return view('livewire.marketing.public-services-browse')
-            ->layout('layouts.marketing', ['title' => 'Explorar servicios']);
+            ->layout('layouts.marketing', ['title' => __('Explorar solicitudes de cotización')]);
     }
 }
 

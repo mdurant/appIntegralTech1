@@ -34,10 +34,10 @@
                 </div>
             </div>
 
-            {{-- Gráfico: Servicios Solicitados (Cotizaciones) --}}
+            {{-- Gráfico: Solicitudes de cotización --}}
             <div class="rounded-xl border border-app-border bg-app-surface p-6">
                 <div class="mb-4 flex items-center justify-between">
-                    <flux:heading size="md">{{ __('Servicios Solicitados') }}</flux:heading>
+                    <flux:heading size="md">{{ __('Solicitudes de cotización') }}</flux:heading>
                     <div class="grid size-10 place-items-center rounded-lg bg-brand-50 text-brand-700">
                         <flux:icon.layout-grid class="size-5" />
                     </div>
@@ -253,7 +253,7 @@
                 servicios_solicitados: {
                     labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                     datasets: [{
-                        label: 'Servicios Solicitados',
+                        label: 'Solicitudes de cotización',
                         data: [45, 62, 78, 95, 110, 125, 145, 160, 180, 200, 220, 245],
                         borderColor: 'rgb(59, 130, 246)',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -367,7 +367,7 @@
                         document.getElementById('total-usuarios').textContent = data.usuarios_registrados.total.toLocaleString('es-CL');
                     }
 
-                    // Gráfico: Servicios Solicitados
+                    // Gráfico: Solicitudes de cotización
                     const ctxServicios = document.getElementById('chart-servicios-solicitados');
                     if (ctxServicios) {
                         ctxServicios.chart = new Chart(ctxServicios, {
