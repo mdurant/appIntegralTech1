@@ -28,6 +28,12 @@ class Show extends Component
         ]);
 
         $this->price = $workOrder->final_price ? (string) $workOrder->final_price : '';
+
+        auth()->user()
+            ->unreadNotifications()
+            ->where('type', \App\Notifications\BidAcceptedNotification::class)
+            ->where('data->work_order_id', $workOrder->id)
+            ->update(['read_at' => now()]);
     }
 
     public function updateFinalPrice(): void

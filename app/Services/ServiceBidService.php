@@ -6,6 +6,8 @@ use App\Models\ServiceBid;
 use App\Models\ServiceRequest;
 use App\Models\SystemSetting;
 use App\Models\User;
+use App\Notifications\BidAcceptedNotification;
+use App\Notifications\BidReceivedNotification;
 use App\ServiceBidStatus;
 use App\ServiceRequestStatus;
 
@@ -26,7 +28,7 @@ class ServiceBidService
         // Obtener vigencia desde configuración del sistema
         $validityDays = (int) SystemSetting::get('quote_validity_days', 15);
 
-        return ServiceBid::updateOrCreate(
+        $bid = ServiceBid::updateOrCreate(
             [
                 'service_request_id' => $serviceRequest->id,
                 'user_id' => $actor->id,
@@ -39,6 +41,15 @@ class ServiceBidService
                 'valid_until' => now()->addDays($validityDays),
             ],
         );
+
+        $bid->load('user');
+        $serviceRequest->load('creator');
+        $client = $serviceRequest->creator;
+        if ($client && $client->id !== $actor->id) {
+            $client->notify(new BidReceivedNotification($bid, $serviceRequest));
+        }
+
+        return $bid;
     }
 
     public function withdraw(ServiceBid $bid): ServiceBid
@@ -69,7 +80,14 @@ class ServiceBidService
             'awarded_bid_id' => $bid->id,
         ]);
 
-        $this->workOrderService->createFromBid($bid);
+        $workOrder = $this->workOrderService->createFromBid($bid);
+
+        $bid->load('user');
+        $request->load('creator');
+        $provider = $bid->user;
+        if ($provider) {
+            $provider->notify(new BidAcceptedNotification($bid, $request, $workOrder));
+        }
 
         return $bid;
     }

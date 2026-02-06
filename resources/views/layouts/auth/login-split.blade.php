@@ -20,7 +20,7 @@
                         </div>
                         <div class="text-xl font-semibold text-app-text">Integral Service Tech</div>
                     </div>
-                    <div class="text-sm text-app-muted">{{ __('Marketplace de Servicios Técnicos') }}</div>
+                    <div class="text-sm text-app-muted">{{ __('Marketplace de Solicitudes de Cotización') }}</div>
                 </div>
 
                 {{-- Welcome Message --}}
@@ -77,7 +77,7 @@
                             </div>
                             <div>
                                 <div class="text-xl font-semibold">Integral Service Tech</div>
-                                <div class="text-sm text-white/80">{{ __('Servicios Técnicos Profesionales') }}</div>
+                                <div class="text-sm text-white/80">{{ __('Solicitudes de Cotización Profesionales') }}</div>
                             </div>
                         </div>
                     </div>

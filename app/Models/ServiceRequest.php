@@ -16,9 +16,50 @@ class ServiceRequest extends Model
     use HasFactory;
 
     /**
+     * Formato: SC-DDMMAA-NNNNNN (Solicitud Cotización, día/mes/año, 5 dígitos aleatorios).
+     */
+    public const REFERENCE_ID_PREFIX = 'SC';
+
+    protected static function booted(): void
+    {
+        static::creating(function (ServiceRequest $model): void {
+            if (empty($model->reference_id)) {
+                $model->reference_id = self::generateUniqueReferenceId($model->created_at ?? now());
+            }
+        });
+    }
+
+    /**
+     * Genera un reference_id único en formato SC-DDMMAA-NNNNNN.
+     */
+    public static function generateUniqueReferenceId(?\DateTimeInterface $date = null): string
+    {
+        $date = $date ?? now();
+        $dd = $date->format('d');
+        $mm = $date->format('m');
+        $aa = $date->format('y');
+
+        do {
+            $nnnnn = str_pad((string) random_int(0, 99_999), 5, '0', STR_PAD_LEFT);
+            $referenceId = self::REFERENCE_ID_PREFIX . '-' . $dd . $mm . $aa . '-' . $nnnnn;
+        } while (self::query()->where('reference_id', $referenceId)->exists());
+
+        return $referenceId;
+    }
+
+    /**
+     * Ruta de enlace por reference_id (para uso en rutas y URLs).
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'reference_id';
+    }
+
+    /**
      * @var list<string>
      */
     protected $fillable = [
+        'reference_id',
         'tenant_id',
         'category_id',
         'created_by_user_id',

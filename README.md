@@ -150,6 +150,7 @@ docker run --rm -p 8080:8080 -e APP_KEY=base64:... app-integraltech:latest
 - PHP 8.4+
 - Composer
 - Node.js + npm
+- **Para PDF de solicitudes**: extensiones PHP `mbstring`, `dom` (habituales) y `gd` (recomendado para imágenes en el PDF).
 
 ### Instalación
 
@@ -160,6 +161,25 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate:fresh --seed
 ```
+
+### PDF de Solicitudes (DomPDF)
+
+Para que funcione la generación de PDF en **Solicitudes de cotización** (ver/descargar PDF desde Mis solicitudes):
+
+1. **Dependencias** (incluidas en `composer.json`):
+   - `barryvdh/laravel-dompdf` (incluye `dompdf/dompdf`).
+
+2. **Configuración** (opcional; ya publicada en `config/dompdf.php`):
+   ```bash
+   php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider" --tag=config
+   ```
+
+3. **Enlace de almacenamiento** (para guardar/leer PDF en `storage/app/public`):
+   ```bash
+   php artisan storage:link
+   ```
+
+4. **Extensiones PHP**: `mbstring`, `dom` (requeridas); `gd` (recomendado para imágenes en el PDF). En Ubuntu/Debian: `sudo apt install php8.4-mbstring php8.4-gd`.
 
 ### Ejecutar en desarrollo
 

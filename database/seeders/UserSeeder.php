@@ -13,13 +13,17 @@ class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * Las credenciales demo (admin, cliente, usuario) se crean en DemoCredentialsSeeder.
+     * Este seeder usa al admin existente y crea el resto de usuarios (invitado, proveedor, etc.).
      */
     public function run(): void
     {
-        $admin = User::factory()->admin()->create([
-            'name' => 'Administrador',
-            'email' => 'admin@integraltech.cl',
-        ]);
+        $admin = User::query()->where('email', 'admin@integraltech.cl')->first();
+        if (! $admin) {
+            $this->command?->warn('UserSeeder: Ejecutar DemoCredentialsSeeder primero (incluido en DatabaseSeeder).');
+            return;
+        }
 
         User::factory()->guest()->create([
             'name' => 'Invitado',

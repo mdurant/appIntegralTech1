@@ -54,5 +54,15 @@
                 <flux:link :href="route('register')" wire:navigate>{{ __('Crear cuenta') }}</flux:link>
             </div>
         @endif
+
+        {{-- Credenciales demo para auto-guiarse --}}
+        <div class="rounded-xl border border-app-border bg-app-surface-2 p-4 text-sm">
+            <div class="mb-2 font-semibold text-app-text">{{ __('Credenciales demo') }}</div>
+            <ul class="space-y-1.5 text-app-muted">
+                <li><span class="font-mono text-zinc-700 dark:text-zinc-300">admin@integraltech.cl</span> / password — {{ __('Perfil Admin') }}</li>
+                <li><span class="font-mono text-zinc-700 dark:text-zinc-300">cliente@integraltech.cl</span> / password — {{ __('Perfil Cliente') }}</li>
+                <li><span class="font-mono text-zinc-700 dark:text-zinc-300">usuario@integraltech.cl</span> / password — {{ __('Perfil Usuario') }}</li>
+            </ul>
+        </div>
     </div>
 </x-layouts::auth.login-split>

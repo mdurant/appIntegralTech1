@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>{{ __('Solicitud') }} #{{ $request->id }}</title>
+    <title>{{ __('Solicitud') }} @if($request->reference_id){{ $request->reference_id }} @else #{{ $request->id }} @endif</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; font-size: 12px; line-height: 1.4; color: #333; }
         h1 { font-size: 18px; margin-bottom: 8px; }
@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    <h1>{{ __('Solicitud de servicio') }} #{{ $request->id }}</h1>
+    <h1>{{ __('Solicitud de servicio') }} @if($request->reference_id){{ $request->reference_id }} @else #{{ $request->id }} @endif</h1>
 
     <div class="section">
         <h2>{{ __('Cliente / Contacto') }}</h2>

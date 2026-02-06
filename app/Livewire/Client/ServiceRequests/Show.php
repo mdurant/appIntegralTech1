@@ -25,6 +25,12 @@ class Show extends Component
 
         abort_unless(auth()->user()->isClient(), 403);
         abort_unless(auth()->user()->belongsToTenant($this->serviceRequest->tenant), 403);
+
+        auth()->user()
+            ->unreadNotifications()
+            ->where('type', \App\Notifications\BidReceivedNotification::class)
+            ->where('data->service_request_id', $this->serviceRequest->id)
+            ->update(['read_at' => now()]);
     }
 
     #[Computed]
@@ -53,6 +59,8 @@ class Show extends Component
         $serviceBidService->accept($bid);
 
         $this->serviceRequest->refresh();
+
+        $this->dispatch('toast', [['message' => __('Orden de Trabajo creada. Tú y el proveedor pueden verla en sus paneles.'), 'type' => 'success']]);
     }
 
     public function render()

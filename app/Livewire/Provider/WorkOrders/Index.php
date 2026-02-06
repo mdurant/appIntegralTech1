@@ -22,6 +22,11 @@ class Index extends Component
     public function mount(): void
     {
         abort_unless(! auth()->user()->isGuest() && ! auth()->user()->isClient(), 403);
+
+        auth()->user()
+            ->unreadNotifications()
+            ->where('type', \App\Notifications\BidAcceptedNotification::class)
+            ->update(['read_at' => now()]);
     }
 
     public function render()

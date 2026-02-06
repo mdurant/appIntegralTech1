@@ -13,7 +13,7 @@
             </div>
 
             <flux:button variant="primary" type="submit" class="w-full sm:w-auto">
-                {{ __('Buscar servicios') }}
+                {{ __('Buscar solicitudes de cotización') }}
             </flux:button>
         </div>
     </form>

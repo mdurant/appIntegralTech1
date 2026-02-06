@@ -24,7 +24,7 @@
                 </div>
                 <div class="min-w-0 leading-tight">
                     <div class="truncate text-sm font-semibold">Integral Service Tech</div>
-                    <div class="hidden text-xs text-app-muted sm:block">{{ __('Servicios técnicos · Cotizaciones · Ordenes de trabajo') }}</div>
+                    <div class="hidden text-xs text-app-muted sm:block">{{ __('Solicitudes de cotización · Cotizaciones · Ordenes de trabajo') }}</div>
                 </div>
             </a>
 
@@ -69,7 +69,7 @@
                     </a>
                     <a href="{{ route('public.services.browse') }}" class="w-full sm:w-auto">
                         <flux:button class="w-full min-h-[44px] px-6 py-3 text-base sm:w-auto">
-                            {{ __('Ver servicios disponibles') }}
+                            {{ __('Ver solicitudes de cotización disponibles') }}
                         </flux:button>
                     </a>
                 </div>
@@ -162,7 +162,7 @@
     <section class="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
         <div class="mb-8 text-center sm:mb-12">
             <flux:heading size="xl" class="text-app-text">
-                {{ __('Explora las categorías de servicios disponibles') }}
+                {{ __('Explora las categorías de solicitudes de cotización disponibles') }}
             </flux:heading>
             <flux:text class="mt-3 text-base text-app-muted sm:text-lg">
                 {{ __('Desde construcción hasta instalaciones especializadas, encuentra el profesional adecuado para cada necesidad') }}
@@ -261,7 +261,7 @@
             <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
                 <div class="space-y-2">
                     <div class="text-sm font-semibold">Integral Service Tech</div>
-                    <div class="text-xs text-app-muted sm:text-sm">{{ __('Marketplace de Servicios a Cotizaciones') }}</div>
+                    <div class="text-xs text-app-muted sm:text-sm">{{ __('Marketplace de Solicitudes de Cotización') }}</div>
                     <div class="text-xs text-app-muted">
                         {{ __('IntegralTech - Soluciones Tech. Chile') }}
                     </div>

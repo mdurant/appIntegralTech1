@@ -141,6 +141,7 @@ class TwoFactor extends Component
 
     /**
      * Close the two-factor authentication modal.
+     * Redirige a profile para que al cancelar/cerrar el usuario permanezca en configuración.
      */
     public function closeModal(): void
     {
@@ -157,6 +158,8 @@ class TwoFactor extends Component
         if (! $this->requiresConfirmation) {
             $this->twoFactorEnabled = auth()->user()->hasEnabledTwoFactorAuthentication();
         }
+
+        $this->redirect(route('profile.edit'), navigate: true);
     }
 
     /**

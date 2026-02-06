@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureNotClient
 {
     /**
-     * Evita que el perfil Cliente acceda al marketplace de servicios (solo usuarios/providers pueden simular pago y ver datos de contacto).
+     * Evita que el perfil Cliente acceda al marketplace de solicitudes de cotización (solo usuarios/providers pueden simular pago y ver datos de contacto).
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

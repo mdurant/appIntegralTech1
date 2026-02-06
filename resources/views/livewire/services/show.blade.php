@@ -4,6 +4,10 @@
     <div class="space-y-2">
         <flux:heading size="lg" class="text-2xl sm:text-3xl">{{ $serviceRequest->title }}</flux:heading>
         <flux:text class="text-xs sm:text-sm">
+            @if ($serviceRequest->reference_id)
+                <span class="font-mono text-app-muted">{{ $serviceRequest->reference_id }}</span>
+                ·
+            @endif
             {{ $serviceRequest->category?->parent?->name }} / {{ $serviceRequest->category?->name }}
             · {{ $serviceRequest->tenant?->name }}
             · <span class="font-medium">{{ $serviceRequest->status->value }}</span>

@@ -92,21 +92,33 @@
                     </flux:sidebar.item>
 
                     @if (!auth()->user()->isClient())
-                        <flux:sidebar.item icon="rectangle-stack" :href="route('services.browse')" :current="request()->routeIs('services.browse')" wire:navigate>
-                            {{ __('Servicios') }}
-                        </flux:sidebar.item>
                         <flux:sidebar.item icon="user-group" :href="route('services.paid-contacts')" :current="request()->routeIs('services.paid-contacts')" wire:navigate>
                             {{ __('Contactos comprados') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="rectangle-stack" :href="route('services.browse')" :current="request()->routeIs('services.browse')" wire:navigate>
+                            {{ __('Solicitudes de cotización') }}
                         </flux:sidebar.item>
                     @endif
 
                     @if (auth()->user()->isClient())
+                        @php($bidNotificationsCount = auth()->user()->unreadNotifications()->where('type', \App\Notifications\BidReceivedNotification::class)->count())
+                        @if ($bidNotificationsCount > 0)
+                            <flux:sidebar.item icon="bell-alert" :href="route('client.dashboard')" :current="request()->routeIs('client.dashboard')" :badge="$bidNotificationsCount" badge-color="red" wire:navigate>
+                                {{ __('Notificaciones') }}
+                            </flux:sidebar.item>
+                        @endif
                         <flux:sidebar.item icon="folder" :href="route('client.requests.index')" :current="request()->routeIs('client.requests.*')" wire:navigate>
                             {{ __('Mis solicitudes') }}
                         </flux:sidebar.item>
                     @endif
 
                     @if (!auth()->user()->isClient() && !auth()->user()->isGuest())
+                        @php($bidAcceptedCount = auth()->user()->unreadNotifications()->where('type', \App\Notifications\BidAcceptedNotification::class)->count())
+                        @if ($bidAcceptedCount > 0)
+                            <flux:sidebar.item icon="bell-alert" :href="route('provider.work-orders.index')" :current="request()->routeIs('provider.work-orders.*')" :badge="$bidAcceptedCount" badge-color="green" wire:navigate>
+                                {{ __('Notificaciones (OT creada)') }}
+                            </flux:sidebar.item>
+                        @endif
                         <flux:sidebar.item icon="wrench" :href="route('provider.work-orders.index')" :current="request()->routeIs('provider.work-orders.*')" wire:navigate>
                             {{ __('Mis Órdenes de Trabajo') }}
                         </flux:sidebar.item>
